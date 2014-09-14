@@ -9,10 +9,12 @@ public class Info : MonoBehaviour {
 	public float timeZombie = 1;
 	public Texture2D goal, info;
 	public Transform Player;
+	public string actorName= "";
 
 	void Start () {
 		Screen.showCursor = false;
 		Player = GameObject.Find ("Actor").transform;
+		GameObject.Find ("Directional light").GetComponent<Light> ().intensity = LightIntens ();
 		_helthRect = new Rect (Screen.width - 40, 0, 30, 30);
 		_armourRect = new Rect (Screen.width - 80, 0, 30, 30);
 		_accountRect = new Rect (10, 0, 50, 30);
@@ -20,7 +22,14 @@ public class Info : MonoBehaviour {
 		_countRect = new Rect (130, 0, -130, 28);
 		_pauseRect = new Rect (Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200);
 	}
-	
+
+	public float LightIntens(){
+		if (Random.Range (0, 3) == 1)
+			return 0f;
+		else
+			return 0.5f;
+	}
+
 	void OnGUI (){
 		Vector2 mp = Event.current.mousePosition;
 		GUI.depth = 0;
@@ -38,10 +47,14 @@ public class Info : MonoBehaviour {
 	void WindowFunction(int id){
 		switch (id) {
 			case 0:
-				GUI.Label ( new Rect(20, 30, 80, 80), "Ваш счет");
-				GUI.Label ( new Rect(30, 60, 80, 80), Player.GetComponent<Actor>().count.ToString());
-			if(GUI.Button (new Rect(30, 140, 140, 30), "В меню")){
-				Application.LoadLevel("menu");
+				GUI.Label ( new Rect(20, 30, 80, 80), "Ваш счет: ");
+				GUI.Label ( new Rect(95, 30, 80, 80), Player.GetComponent<Actor>().count.ToString());
+				GUI.Label (new Rect(40, 60, 140, 30), "Введите Ваше имя");
+				actorName = GUI.TextArea (new Rect (30, 90, 140, 25), actorName, 15);
+				if(GUI.Button (new Rect(30, 155, 140, 30), "Сохранить")){
+						PlayerPrefs.SetString("ActorNameSurvival", actorName);
+						PlayerPrefs.SetInt("ActorNameSurvivalScore", Player.GetComponent<Actor>().count);
+					Application.LoadLevel("menu");
 			}
 			break;
 		}

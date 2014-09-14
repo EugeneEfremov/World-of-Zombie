@@ -9,6 +9,7 @@ public class Weapons : MonoBehaviour {
 	public bool pustolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false; //Наличие
 	public string currentW;
 	public Transform pistols, gun, grenade, boom, minigun, rocket, diskgun; //Объекты
+	public AudioClip[] pistolsA, gunA, grenadeA; //Звуки выстрелов
 
 	void Start(){
 		bulletSpawn = GameObject.Find ("BulletSpawn");
@@ -27,13 +28,16 @@ public class Weapons : MonoBehaviour {
 	Ray camRay; //Луч выпускаемый из прицела
 	RaycastHit goal; //Куда смотрит прицел
 	
-//Хор-ки оружия
+//Хор-ки оружия (СОБЫТИЕ ВО ВРЕМЯ ВЫСТРЕЛА)
 	void ShotPistols(){
 		if (delayShot <= 0 && hitObj.transform.tag == "Zombie") {
 						GameObject.Find (hitObj.transform.name).GetComponent<ZombieMove> ().helth -= 30;
 						GameObject.Find ("Actor").GetComponent<Actor> ().count += 30;
 				}
-				if (delayShot <= 0) delayShot = 0.5f;
+				if (delayShot <= 0) {
+						delayShot = 0.3f;
+						GetComponent<AudioSource> ().PlayOneShot (pistolsA [Random.Range (0, pistolsA.Length)]);
+				}
 	}
 
 	void ShotGun(){
@@ -48,7 +52,10 @@ public class Weapons : MonoBehaviour {
 		if (delayShot <= 0) {
 			Instantiate(boom, hitObj.point, Quaternion.Euler(0,0,0));
 		}
-		if (delayShot <= 0) delayShot = 0.8f;
+		if (delayShot <= 0) {
+				delayShot = 0.8f;
+				GetComponent<AudioSource> ().PlayOneShot (grenadeA [0]);
+		}
 	}
 
 	void ShotMinigun(){
@@ -56,7 +63,10 @@ public class Weapons : MonoBehaviour {
 			GameObject.Find (hitObj.transform.name).GetComponent<ZombieMove> ().helth -= 30;
 			GameObject.Find ("Actor").GetComponent<Actor> ().count += 25;
 		}
-		if (delayShot <= 0) delayShot = 0.1f;
+		if (delayShot <= 0) {
+				delayShot = 0.1f;
+				
+		}
 	}
 
 	void ShotRocket(){

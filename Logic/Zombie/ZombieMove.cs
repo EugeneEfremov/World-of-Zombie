@@ -5,7 +5,7 @@ public class ZombieMove : MonoBehaviour {
 
 	private Transform Player;
 	private CharacterController cc;
-	private float timeDamage = 1, bloodY = 0.9f; //Переодичность нанесения урона, смещение текстуры
+	private float timeDamage = 1, bloodY = 1f; //Переодичность нанесения урона, смещение текстуры
 
 	Vector3 moveDirection = Vector3.zero;
 
@@ -13,6 +13,7 @@ public class ZombieMove : MonoBehaviour {
 
 	public Transform blod;
 	public int helth = 100, speed = 3, done = 2;
+	public AudioClip[] ratA;
 	
 	void Start () {
 		Player = GameObject.FindWithTag ("Player").transform;
