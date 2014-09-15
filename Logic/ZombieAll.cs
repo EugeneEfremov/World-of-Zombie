@@ -9,46 +9,46 @@ public class ZombieAll : MonoBehaviour {
 	private bool _bRat = false, _bZombie, _bDog = false, _bSolders = false, _bGrenade = false, _bBigZ = false; //Можно ли создавать
 	public Transform zombie, rat, dog, solders, grenade, bigZ, instans; //Объекты
 	public int  accountZombNew = 0; //Кол-во зомби в игре на данный момент
-	public float timeZombie = 0.5f, timeZombieNew = 0, _timeInGame = 0; //Время до создания зомби, Новое время до создания, Время в игре
+	public float timeZombie = 0.5f, timeZombieNew = 0, timeInGame = 0; //Время до создания зомби, Новое время до создания, Время в игре
 
 	void Start(){
 		Player = GameObject.FindWithTag ("Player").transform;
 	}
 
 	void Update(){
-		_timeInGame += Time.deltaTime;
+		timeInGame += Time.deltaTime;
 
 		//Каких зомби создавать
-		if (_timeInGame > 0) {
+		if (timeInGame > 0) {
 			_accountZombMax = 5;
 			if(timeZombie != 0.5f)timeZombie = 0.5f;
 			_bRat = true;
 				}
-		if (_timeInGame > 10) {
+		if (timeInGame > 10) {
 			_accountZombMax = 10;
 			if(timeZombie != 0.4f)timeZombie = 0.4f;
 			_bZombie = true;
 			if(_countTypeZombieInGame == 1) _countTypeZombieInGame++;
 		}
-		if (_timeInGame > 15) _accountZombMax = 15;
-		if (_timeInGame > 20) _accountZombMax = 20;
-		if (_timeInGame > 60) {
+		if (timeInGame > 15) _accountZombMax = 15;
+		if (timeInGame > 20) _accountZombMax = 20;
+		if (timeInGame > 60) {
 			_accountZombMax = 30;
 			if(timeZombie != 0.3f)timeZombie = 0.3f;
 			_bDog = true;
 			if(_countTypeZombieInGame == 2) _countTypeZombieInGame++;
 		}
-		if (_timeInGame > 180) {
+		if (timeInGame > 180) {
 			_accountZombMax = 40;
 			if(timeZombie != 0.2f)timeZombie = 0.2f;
 			_bSolders = true;
 			if(_countTypeZombieInGame == 3) _countTypeZombieInGame++;
 		}
-		if (_timeInGame > 240) {
+		if (timeInGame > 240) {
 			_bGrenade = true;
 			if(_countTypeZombieInGame == 4) _countTypeZombieInGame++;
 		}
-		if (_timeInGame > 300) {
+		if (timeInGame > 300) {
 			_bBigZ = true;
 			if(_countTypeZombieInGame == 5) _countTypeZombieInGame++;
 		}

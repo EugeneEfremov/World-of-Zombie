@@ -2,7 +2,15 @@ fileFormatVersion: 2
 guid: c87e1e955ae5973458b9c434c9953822
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - blod: {fileID: 400000, guid: 87f770d4a63f24243ab5a6137d698bff, type: 2}
+  - helth20: {fileID: 400000, guid: b4ea94f2a74f4a940b338217a6127be6, type: 2}
+  - gunBul50: {fileID: 400000, guid: a5b0ecb840c418148a2d58fa590efed9, type: 2}
+  - gun: {fileID: 400000, guid: 7e0439ebd2a509e428445be12ae82d55, type: 2}
+  - grenage: {fileID: 400000, guid: e073b9cce0748664eb3b2576fa5bc3fb, type: 2}
+  - minigun: {fileID: 400000, guid: f3f5942cda856954b90b37822da59934, type: 2}
+  - rocket: {fileID: 400000, guid: 5dbcac1471281a144a53d51af9698e34, type: 2}
+  - diskgun: {fileID: 400000, guid: 7067534f934441c4c9b26d521de3556f, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -2,14 +2,15 @@
 using System.Collections;
 
 public class Weapons : MonoBehaviour {
-	private int _gun = 100; //Патроны
 	private float delayShot; //Пауза выстрела
 
+	public int gunBullet = 20, grenadeBullet = 20, minigunBullet = 1000, rocketBullet = 20, diskgunBullet = 20; //Патроны
 	public GameObject cam, bulletSpawn;
-	public bool pustolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false; //Наличие
+	public bool pistolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false; //Наличие
 	public string currentW;
 	public Transform pistols, gun, grenade, boom, minigun, rocket, diskgun; //Объекты
 	public AudioClip[] pistolsA, gunA, grenadeA; //Звуки выстрелов
+	public bool GBgun = false, GBgrenade = false, GBminigun = false, GBrocket = false, GBdiskgun = false; //Открыто ли оружие
 
 	void Start(){
 		bulletSpawn = GameObject.Find ("BulletSpawn");
@@ -41,69 +42,79 @@ public class Weapons : MonoBehaviour {
 	}
 
 	void ShotGun(){
-		if (delayShot <= 0 && hitObj.transform.tag == "Zombie") {
+		if (delayShot <= 0 && hitObj.transform.tag == "Zombie" && gunBullet > 0) {
 						GameObject.Find (hitObj.transform.name).GetComponent<ZombieMove> ().helth -= 60;
 						GameObject.Find ("Actor").GetComponent<Actor> ().count += 60;
-				}
-				if (delayShot <= 0) delayShot = 0.8f;
+		}
+		if (delayShot <= 0) {
+				gunBullet--;
+				delayShot = 0.8f;
+		}
 	}
 
 	void ShotGrenade(){
-		if (delayShot <= 0) {
+		if (delayShot <= 0 && grenadeBullet > 0) {
 			Instantiate(boom, hitObj.point, Quaternion.Euler(0,0,0));
 		}
 		if (delayShot <= 0) {
+				grenadeBullet--;
 				delayShot = 0.8f;
 				GetComponent<AudioSource> ().PlayOneShot (grenadeA [0]);
 		}
 	}
 
 	void ShotMinigun(){
-		if (delayShot <= 0 && hitObj.transform.tag == "Zombie") {
+		if (delayShot <= 0 && hitObj.transform.tag == "Zombie" && minigunBullet > 0) {
 			GameObject.Find (hitObj.transform.name).GetComponent<ZombieMove> ().helth -= 30;
 			GameObject.Find ("Actor").GetComponent<Actor> ().count += 25;
 		}
 		if (delayShot <= 0) {
+				minigunBullet--;
 				delayShot = 0.1f;
-				
 		}
 	}
 
 	void ShotRocket(){
-		if (delayShot <= 0) {
+		if (delayShot <= 0 && rocketBullet > 0) {
 			Instantiate(boom, hitObj.point, Quaternion.Euler(0,0,0));
 		}
-		if (delayShot <= 0) delayShot = 0.4f;
+		if (delayShot <= 0) {
+			rocketBullet--;
+			delayShot = 0.4f;
+		}
 	}
 
 	void ShotDiskgun(){
-		if (delayShot <= 0 && hitObj.transform.tag == "Zombie") {
+		if (delayShot <= 0 && hitObj.transform.tag == "Zombie" && diskgunBullet > 0) {
 			GameObject.Find (hitObj.transform.name).GetComponent<ZombieMove> ().helth -= 150;
 			GameObject.Find ("Actor").GetComponent<Actor> ().count += 150;
 		}
-		if (delayShot <= 0) delayShot = 0.5f;
+		if (delayShot <= 0) {
+			diskgunBullet--;
+			delayShot = 0.5f;
+		}
 	}
 //Хор-ки оружия КОНЕЦ
 
 	void Update() {
 		delayShot -= Time.deltaTime;
 
-		if(Input.GetKey(KeyCode.Alpha1) && currentW != "pistols"){
+		if(Input.GetKey(KeyCode.Alpha1) && currentW != "pistols" && pistolsC){
 			SwitchWeapon(pistols);
 		}
-		if(Input.GetKey(KeyCode.Alpha2) && currentW != "gun"){
+		if(Input.GetKey(KeyCode.Alpha2) && currentW != "gun" && gunC){
 			SwitchWeapon(gun);
 		}
-		if(Input.GetKey(KeyCode.Alpha3) && currentW != "grenade"){
+		if(Input.GetKey(KeyCode.Alpha3) && currentW != "grenade" && grenadeC){
 			SwitchWeapon(grenade);
 		}
-		if(Input.GetKey(KeyCode.Alpha4) && currentW != "minigun"){
+		if(Input.GetKey(KeyCode.Alpha4) && currentW != "minigun" && minigunC){
 			SwitchWeapon(minigun);
 		}
-		if(Input.GetKey(KeyCode.Alpha5) && currentW != "rocket"){
+		if(Input.GetKey(KeyCode.Alpha5) && currentW != "rocket" && rocketC){
 			SwitchWeapon(rocket);
 		}
-		if(Input.GetKey(KeyCode.Alpha6) && currentW != "diskgun"){
+		if(Input.GetKey(KeyCode.Alpha6) && currentW != "diskgun" && diskgunC){
 			SwitchWeapon(diskgun);
 		}
 

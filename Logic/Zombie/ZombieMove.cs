@@ -5,55 +5,84 @@ public class ZombieMove : MonoBehaviour {
 
 	private Transform Player;
 	private CharacterController cc;
-	private float timeDamage = 1, bloodY = 1f; //Переодичность нанесения урона, смещение текстуры
+	private float timeInGame, timeDamage = 1; //Переодичность нанесения урона
 
 	Vector3 moveDirection = Vector3.zero;
 
 	public string typeZomb;
 
-	public Transform blod;
-	public int helth = 100, speed = 3, done = 2;
+	public Transform blod, helth20, gunBul50, gun, grenage, minigun, rocket, diskgun;
+	public int helth = 100, speed = 3, done = 2; //жизнь, скорость, урон
 	public AudioClip[] ratA;
-	
+
 	void Start () {
 		Player = GameObject.FindWithTag ("Player").transform;
 		cc = GetComponent<CharacterController> ();
+		timeInGame = GameObject.Find("ZombieLogic").GetComponent<ZombieAll> ().timeInGame;
 
 		if (typeZomb == "Zombie") {
-			speed = 3;
-			helth = 100;
-			done = 10;
-			bloodY = 0.9f;
+			speed = 2;
+			helth = 70;
+			done = 6;
 		}
 		if (typeZomb == "Rat") {
 			speed = 6;
 			helth = 30;
 			done = 2;
-			bloodY = 0.1f;
 		}
 		if (typeZomb == "Dog") {
 			speed = 7;
 			helth = 70;
-			done = 12;
-			bloodY = 0.1f;
+			done = 10;
 		}
 		if (typeZomb == "Solders") {
 			speed = 6;
 			helth = 150;
 			done = 15;
-			bloodY = 0.9f;
 		}
 		if (typeZomb == "Grenade") {
 			speed = 6;
 			helth = 300;
 			done = 20;
-			bloodY = 0.9f;
 		}
 		if (typeZomb == "bZomb") {
 			speed = 6;
 			helth = 350;
 			done = 30;
-			bloodY = 0.9f;
+		}
+	}
+//Оружие в бонус
+	void GunBonus(){
+		if (timeInGame > 30 && Player.GetComponent<Weapons>().GBgun == false) {
+				Instantiate(gun, transform.position, Quaternion.Euler(0,0,0));
+			Player.GetComponent<Weapons>().GBgun = true;
+		}
+		if (timeInGame > 90 && Player.GetComponent<Weapons>().GBgrenade == false) {
+				Instantiate(grenage, transform.position, Quaternion.Euler(0,0,0));
+			Player.GetComponent<Weapons>().GBgrenade = true;
+		}
+		if (timeInGame > 140 && Player.GetComponent<Weapons>().GBminigun == false) {
+				Instantiate(minigun, transform.position, Quaternion.Euler(0,0,0));
+			Player.GetComponent<Weapons>().GBminigun = true;
+		}
+		if (timeInGame > 240 && Player.GetComponent<Weapons>().GBrocket == false) {
+				Instantiate(rocket, transform.position, Quaternion.Euler(0,0,0));
+			Player.GetComponent<Weapons>().GBrocket = true;
+		}
+		if (timeInGame > 240 && Player.GetComponent<Weapons>().GBdiskgun == false) {
+				Instantiate(diskgun, transform.position, Quaternion.Euler(0,0,0));
+			Player.GetComponent<Weapons>().GBdiskgun = true;
+		}
+	}
+
+//Бонусы
+	void BonusRandom(){
+		int rand = Random.Range (0, 30);
+		if (rand <= 3){
+			Instantiate(helth20, transform.position, Quaternion.Euler(0,0,0));
+		}
+		if (rand > 3 && rand <= 6) {
+			Instantiate(gunBul50, transform.position, Quaternion.Euler(0,0,0));
 		}
 	}
 
@@ -73,7 +102,9 @@ public class ZombieMove : MonoBehaviour {
 		
 				//Смерть 
 				if (helth < 1 || transform.position.x < 35 || transform.position.x > 156 || transform.position.z < 25.5f || transform.position.z > 160 || transform.position.y < -2) {
-						Instantiate(blod, new Vector3(transform.position.x, transform.position.y - bloodY, transform.position.z), Quaternion.Euler(new Vector3(0,0,0)));
+						BonusRandom();
+						GunBonus();
+						Instantiate(blod, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.Euler(new Vector3(0,0,0)));
 						Destroy (gameObject);
 						GameObject.Find("ZombieLogic").GetComponent<ZombieAll>().accountZombNew--;
 				}
