@@ -4,7 +4,7 @@ using System.Collections;
 public class Weapons : MonoBehaviour {
 	private float delayShot; //Пауза выстрела
 
-	public int gunBullet = 20, grenadeBullet = 20, minigunBullet = 1000, rocketBullet = 20, diskgunBullet = 20; //Патроны
+	public int gunBullet = 20, gunMax = 100, grenadeBullet = 20, grenadeMax = 100, minigunBullet = 1000, minigunMax = 100, rocketBullet = 20, rocketMax = 100, diskgunBullet = 20, diskgunMax = 100; //Патроны, максимальное кол-во
 	public GameObject cam, bulletSpawn;
 	public bool pistolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false; //Наличие
 	public string currentW;
@@ -12,11 +12,20 @@ public class Weapons : MonoBehaviour {
 	public AudioClip[] pistolsA, gunA, grenadeA; //Звуки выстрелов
 	public bool GBgun = false, GBgrenade = false, GBminigun = false, GBrocket = false, GBdiskgun = false; //Открыто ли оружие
 
-	void Start(){
-		bulletSpawn = GameObject.Find ("BulletSpawn");
-		cam = GameObject.Find("Camera");
-		currentW = "pistols(Clone)";
-	}
+    void Start()
+    {
+        bulletSpawn = GameObject.Find("BulletSpawn");
+        cam = GameObject.Find("Camera");
+        currentW = "pistols(Clone)";
+    }
+
+    //Проверка на макс. кол-во патрон
+    public int MaxBullet(int max, int bullet)
+    {
+        if (bullet > max)
+            return max;
+        return bullet;
+    }
 
 	void SwitchWeapon(Transform weapon){
 		Destroy (GameObject.Find(currentW));
@@ -24,7 +33,7 @@ public class Weapons : MonoBehaviour {
 		newWeap.parent = transform; //Присвоение к объекту актера
 		currentW = newWeap.transform.name;
 	}
-
+    
 	RaycastHit hitObj; //Куда попал патрон
 	Ray camRay; //Луч выпускаемый из прицела
 	RaycastHit goal; //Куда смотрит прицел
@@ -42,6 +51,8 @@ public class Weapons : MonoBehaviour {
 	}
 
 	void ShotGun(){
+        gunBullet = MaxBullet(gunMax, gunBullet);
+
 		if (delayShot <= 0 && hitObj.transform.tag == "Zombie" && gunBullet > 0) {
 						GameObject.Find (hitObj.transform.name).GetComponent<ZombieMove> ().helth -= 60;
 						GameObject.Find ("Actor").GetComponent<Actor> ().count += 60;
@@ -53,6 +64,8 @@ public class Weapons : MonoBehaviour {
 	}
 
 	void ShotGrenade(){
+        grenadeBullet = MaxBullet(grenadeMax, grenadeBullet);
+
 		if (delayShot <= 0 && grenadeBullet > 0) {
 			Instantiate(boom, hitObj.point, Quaternion.Euler(0,0,0));
 		}
@@ -64,6 +77,8 @@ public class Weapons : MonoBehaviour {
 	}
 
 	void ShotMinigun(){
+        minigunBullet = MaxBullet(minigunMax, minigunBullet);
+
 		if (delayShot <= 0 && hitObj.transform.tag == "Zombie" && minigunBullet > 0) {
 			GameObject.Find (hitObj.transform.name).GetComponent<ZombieMove> ().helth -= 30;
 			GameObject.Find ("Actor").GetComponent<Actor> ().count += 25;
@@ -75,6 +90,8 @@ public class Weapons : MonoBehaviour {
 	}
 
 	void ShotRocket(){
+        rocketBullet = MaxBullet(rocketMax, rocketBullet);
+
 		if (delayShot <= 0 && rocketBullet > 0) {
 			Instantiate(boom, hitObj.point, Quaternion.Euler(0,0,0));
 		}
@@ -85,6 +102,8 @@ public class Weapons : MonoBehaviour {
 	}
 
 	void ShotDiskgun(){
+        diskgunBullet = MaxBullet(diskgunMax, diskgunBullet);
+
 		if (delayShot <= 0 && hitObj.transform.tag == "Zombie" && diskgunBullet > 0) {
 			GameObject.Find (hitObj.transform.name).GetComponent<ZombieMove> ().helth -= 150;
 			GameObject.Find ("Actor").GetComponent<Actor> ().count += 150;

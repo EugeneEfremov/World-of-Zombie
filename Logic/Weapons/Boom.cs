@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Boom : MonoBehaviour {
 
-	public AudioClip[] boomA;
+	public AudioClip boomA;
 
 	void OnTriggerStay (Collider other){
 		if (other.transform.tag == "Zombie") {
@@ -12,8 +12,8 @@ public class Boom : MonoBehaviour {
 		}
 	}
 
-	void Update() {
-		//GetComponent<AudioSource> ().PlayOneShot (boomA [Random.Range (0, boomA.Length)]);
-		Destroy (gameObject, 0.1f);
+	void Start() {
+		GetComponent<AudioSource> ().PlayOneShot (boomA);
+		Destroy (gameObject, 0.7f);
 	}
 }

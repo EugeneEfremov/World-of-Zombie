@@ -2,12 +2,13 @@
 using System.Collections;
 
 public class Bonus : MonoBehaviour {
-	public string typeBonus = ""; //helth20, 
+	public string typeBonus = ""; //helth20, gunBul50 и т.д.
 	public GameObject Actor;
 
 	void Start(){
 		Actor = GameObject.Find ("Actor");
-		Destroy (gameObject, 15);
+        //if (gameObject.transform.tag != "Weapons")
+        Destroy(gameObject, 15);
 	}
 
 	void OnTriggerEnter(Collider other){
@@ -23,18 +24,23 @@ public class Bonus : MonoBehaviour {
 				//Оружие
 				case "gun":
 					Actor.GetComponent<Weapons>().gunC = true;
+                    Actor.GetComponent<Weapons>().GBgun = true;
 				break;
 				case "grenade":
 					Actor.GetComponent<Weapons>().grenadeC = true;
+                    Actor.GetComponent<Weapons>().GBgrenade = true;
 				break;
 				case "minigun":
 					Actor.GetComponent<Weapons>().minigunC = true;
+                    Actor.GetComponent<Weapons>().GBminigun = true;
 				break;
 				case "rocket":
 					Actor.GetComponent<Weapons>().rocketC = true;
+                    Actor.GetComponent<Weapons>().GBrocket = true;
 				break;
 				case "diskgun":
 					Actor.GetComponent<Weapons>().diskgunC = true;
+                    Actor.GetComponent<Weapons>().GBdiskgun = true;
 				break;
 			}
 			Destroy(gameObject);

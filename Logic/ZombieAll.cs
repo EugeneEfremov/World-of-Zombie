@@ -9,7 +9,7 @@ public class ZombieAll : MonoBehaviour {
 	private bool _bRat = false, _bZombie, _bDog = false, _bSolders = false, _bGrenade = false, _bBigZ = false; //Можно ли создавать
 	public Transform zombie, rat, dog, solders, grenade, bigZ, instans; //Объекты
 	public int  accountZombNew = 0; //Кол-во зомби в игре на данный момент
-	public float timeZombie = 0.5f, timeZombieNew = 0, timeInGame = 0; //Время до создания зомби, Новое время до создания, Время в игре
+    public float timeZombie = 0.5f, timeZombieNew = 0, timeInGame = 0, instNewWeapTime = 0; //Время до создания зомби, Новое время до создания, Время в игре, время до появления нового оружия
 
 	void Start(){
 		Player = GameObject.FindWithTag ("Player").transform;
@@ -17,6 +17,7 @@ public class ZombieAll : MonoBehaviour {
 
 	void Update(){
 		timeInGame += Time.deltaTime;
+        instNewWeapTime -= Time.deltaTime;
 
 		//Каких зомби создавать
 		if (timeInGame > 0) {
@@ -25,21 +26,21 @@ public class ZombieAll : MonoBehaviour {
 			_bRat = true;
 				}
 		if (timeInGame > 10) {
-			_accountZombMax = 10;
+			_accountZombMax = 9;
 			if(timeZombie != 0.4f)timeZombie = 0.4f;
 			_bZombie = true;
 			if(_countTypeZombieInGame == 1) _countTypeZombieInGame++;
 		}
-		if (timeInGame > 15) _accountZombMax = 15;
-		if (timeInGame > 20) _accountZombMax = 20;
+		if (timeInGame > 15) _accountZombMax = 14;
+		if (timeInGame > 20) _accountZombMax = 18;
 		if (timeInGame > 60) {
-			_accountZombMax = 30;
+			_accountZombMax = 28;
 			if(timeZombie != 0.3f)timeZombie = 0.3f;
 			_bDog = true;
 			if(_countTypeZombieInGame == 2) _countTypeZombieInGame++;
 		}
 		if (timeInGame > 180) {
-			_accountZombMax = 40;
+			_accountZombMax = 35;
 			if(timeZombie != 0.2f)timeZombie = 0.2f;
 			_bSolders = true;
 			if(_countTypeZombieInGame == 3) _countTypeZombieInGame++;

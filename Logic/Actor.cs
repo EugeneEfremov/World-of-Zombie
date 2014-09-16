@@ -8,13 +8,14 @@ public class Actor : MonoBehaviour {
 	private int score; //Очки
 
 	public bool pause = false;// Пауза
-	public int helth = 100, armour = 0, count = 0, speed = 8, gravity = 80;
+	public int helth = 100, maxHelth = 120, armour = 0, count = 0, speed = 8, gravity = 80;
 
 	void Start(){
 		cc = GetComponent<CharacterController> ();
 	}
 
 	void Update () {
+        if (helth > maxHelth) helth = maxHelth;
 		if (!pause) {
 						//Вперед
 						moveDirectionZ = new Vector3 (0, 0, Input.GetAxis ("Vertical"));

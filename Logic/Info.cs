@@ -1,4 +1,4 @@
-﻿ using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class Info : MonoBehaviour {
@@ -23,7 +23,7 @@ public class Info : MonoBehaviour {
 		_pauseRect = new Rect (Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200);
 	}
 
-	public float LightIntens(){
+    public float LightIntens(){
 		if (Random.Range (0, 3) == 1)
 			return 0f;
 		else
@@ -39,6 +39,14 @@ public class Info : MonoBehaviour {
 		GUI.Label (_helthRect, Player.GetComponent<Actor>().helth.ToString());
 		GUI.Label (_armourRect, Player.GetComponent<Actor>().armour.ToString());
 		GUI.Label (_accountRect, Player.GetComponent<Actor>().count.ToString());
+
+        //Инфо об оружии
+        GUI.Label (new Rect (Screen.width / 2 - 150, 0, 50, 50), "infininy");
+        GUI.Label(new Rect(Screen.width / 2 - 100, 0, 50, 50), Player.GetComponent<Weapons>().gunBullet.ToString());
+        GUI.Label(new Rect(Screen.width / 2 - 50, 0, 50, 50), Player.GetComponent<Weapons>().grenadeBullet.ToString());
+        GUI.Label(new Rect(Screen.width / 2, 0, 50, 50), Player.GetComponent<Weapons>().minigunBullet.ToString());
+        GUI.Label(new Rect(Screen.width / 2 + 50, 0, 50, 50), Player.GetComponent<Weapons>().rocketBullet.ToString());
+        GUI.Label(new Rect(Screen.width / 2 + 100, 0, 50, 50), Player.GetComponent<Weapons>().diskgunBullet.ToString());
 		if (Player.GetComponent<Actor> ().pause) {
 			GUI.Window(0, _pauseRect, WindowFunction, "лол");
 		}
