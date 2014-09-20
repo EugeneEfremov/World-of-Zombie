@@ -5,7 +5,12 @@ MonoImporter:
   defaultReferences:
   - blod: {fileID: 400000, guid: 87f770d4a63f24243ab5a6137d698bff, type: 2}
   - helth20: {fileID: 400000, guid: b4ea94f2a74f4a940b338217a6127be6, type: 2}
+  - armour100: {fileID: 400002, guid: 603d1066ac9e2e94785e4afcf6ae29e5, type: 2}
   - gunBul50: {fileID: 400000, guid: a5b0ecb840c418148a2d58fa590efed9, type: 2}
+  - grenadeBul50: {fileID: 400002, guid: 674c399d819922c42913ce0e757d65d2, type: 2}
+  - minigunBul500: {fileID: 400002, guid: ba95d812629f82a4d988af2a9d3a044f, type: 2}
+  - rocketBul50: {fileID: 400002, guid: b4405f3288cb8c549a7058cfdcd7f183, type: 2}
+  - diskgunBul50: {fileID: 400002, guid: 8d49b7188f9fb744c86aec182d1bd4e0, type: 2}
   - gun: {fileID: 400000, guid: 7e0439ebd2a509e428445be12ae82d55, type: 2}
   - grenage: {fileID: 400000, guid: e073b9cce0748664eb3b2576fa5bc3fb, type: 2}
   - minigun: {fileID: 400000, guid: f3f5942cda856954b90b37822da59934, type: 2}

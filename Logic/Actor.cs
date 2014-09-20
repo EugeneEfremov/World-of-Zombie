@@ -7,16 +7,28 @@ public class Actor : MonoBehaviour {
 	private Vector3 moveDirectionZ, moveDirectionX = Vector3.zero;// Перед назад, лево право
 	private int score; //Очки
 
-	public bool pause = false;// Пауза
-	public int helth = 100, maxHelth = 120, armour = 0, count = 0, speed = 8, gravity = 80;
+    public bool death = false;
+	public int helth = 100, maxHelth, armour = 0, armourMax, count = 0, speed = 8, gravity = 80;
 
 	void Start(){
 		cc = GetComponent<CharacterController> ();
+
+        helth += GetComponent<Global>().helthMax;
+        maxHelth = 100 + GetComponent<Global>().helthMax;
+
+        armour = 100 * GetComponent<Global>().armour;
+        armourMax = 100 * GetComponent<Global>().armour;
+
+        speed += (GetComponent<Global>().speedMax * speed) / 2;
 	}
 
 	void Update () {
         if (helth > maxHelth) helth = maxHelth;
-		if (!pause) {
+        if (armour > armourMax) armour = armourMax;
+        if (armour < 0) armour = 0;
+
+        if (!death)
+        {
 						//Вперед
 						moveDirectionZ = new Vector3 (0, 0, Input.GetAxis ("Vertical"));
 						moveDirectionZ = transform.TransformDirection (moveDirectionZ);
@@ -32,12 +44,13 @@ public class Actor : MonoBehaviour {
 						cc.Move (moveDirectionZ * Time.deltaTime);
 						cc.Move (moveDirectionX * Time.deltaTime);
 				}
-		if (pause) {
+        if (death)
+        {
 						Time.timeScale = 0.2f;
 						GameObject.Find ("Camera").GetComponent<SepiaToneEffect> ().enabled = true;
 				}
 		if (helth < 1) {
-			pause = true;
+            death = true;
 			helth = 0;
 		}
 	}

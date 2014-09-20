@@ -6,14 +6,14 @@ public class ZombieMove : MonoBehaviour {
 	private Transform Player;
 	private CharacterController cc;
     private GameObject ZombieAll;
-    private float timeInGame, instNewWeapTime, timeDamage = 1, bloodY = 1f; //время в игре, время до созжания нового оружия, переодичность нанесения урона, смещение текстуры
+    private float timeInGame, instNewWeapTime, timeDamage = 1.2f, bloodY = 1f; //время в игре, время до созжания нового оружия, переодичность нанесения урона, смещение текстуры
    // public bool InstNewWeap = false;
 
 	Vector3 moveDirection = Vector3.zero;
 
 	public string typeZomb;
 
-	public Transform blod, helth20, gunBul50, gun, grenage, minigun, rocket, diskgun;
+    public Transform blod, helth20, armour100, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, gun, grenage, minigun, rocket, diskgun;
 	public int helth = 100, done = 2; //жизнь, урон
     public float speed = 3, speedMax = 3;
 	public AudioClip[] ratA;
@@ -98,19 +98,39 @@ public class ZombieMove : MonoBehaviour {
 
 //Бонусы
 	void BonusRandom(){
-		int rand = Random.Range (0, 30);
-		if (rand <= 3){
+		int rand = Random.Range (0, 200);
+		if (rand <= 10){
 			Instantiate(helth20, transform.position, Quaternion.Euler(0,0,0));
 		}
-		if (rand > 3 && rand <= 6) {
+		if (rand > 10 && rand <= 15) {
 			Instantiate(gunBul50, transform.position, Quaternion.Euler(0,0,0));
 		}
+        if (rand > 30 && rand <= 35)
+        {
+            Instantiate(grenadeBul50, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+        if (rand > 50 && rand <= 55)
+        {
+            Instantiate(minigunBul500, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+        if (rand > 70 && rand <= 75)
+        {
+            Instantiate(rocketBul50, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+        if (rand > 90 && rand <= 95)
+        {
+            Instantiate(diskgunBul50, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+        if (rand > 90 && rand <= 95)
+        {
+            Instantiate(armour100, transform.position, Quaternion.Euler(0, 0, 0));
+        }
 	}
 
     RaycastHit Hit; //Что перед зомби
     RaycastHit HitRight; //Справа от зомби
 
-	void Update () {
+	void FixedUpdate () {
         instNewWeapTime = ZombieAll.GetComponent<ZombieAll>().instNewWeapTime;
 
 //Физика движения зомби
@@ -139,7 +159,7 @@ public class ZombieMove : MonoBehaviour {
 						GunBonus();
                         Instantiate(blod, new Vector3(transform.position.x, transform.position.y - bloodY, transform.position.z), Quaternion.Euler(new Vector3(0, 0, 0)));
 						Destroy (gameObject);
-						GameObject.Find("ZombieLogic").GetComponent<ZombieAll>().accountZombNew--;
+						ZombieAll.GetComponent<ZombieAll>().accountZombNew--;
 				}
 
 				RaycastHit zombHit;
@@ -148,8 +168,15 @@ public class ZombieMove : MonoBehaviour {
 				if (Physics.Raycast (gameObject.transform.position, transform.forward, out zombHit, 1.5f)) {
 						if (zombHit.transform.tag == "Player") {
 							if(timeDamage <= 0){
-								Player.GetComponent<Actor> ().helth -= done;
-								timeDamage = 1;
+                                if (Player.GetComponent<Actor>().armour > 0)
+                                {
+                                    Player.GetComponent<Actor>().helth -= (int)(done / 2f);
+                                    Player.GetComponent<Actor>().armour -= (int)(done / 2f);
+                                }
+                                if (Player.GetComponent<Actor> ().armour <= 0)
+								    Player.GetComponent<Actor> ().helth -= done;
+
+								timeDamage = 1.2f;
 							}
 						}
 				}

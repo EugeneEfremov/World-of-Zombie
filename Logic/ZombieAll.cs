@@ -58,12 +58,13 @@ public class ZombieAll : MonoBehaviour {
 
 		timeZombieNew -= Time.deltaTime;
 
-		if (timeZombieNew <= 0 && accountZombNew <= _accountZombMax && Player.GetComponent<Actor>().pause != true) {
+        //Создание зомби
+		/*if (timeZombieNew <= 0 && accountZombNew <= _accountZombMax && Player.GetComponent<Actor>().death != true) {
 			instans = Instantiate (Zombie(), Spawn(), Quaternion.Euler (0, 0, 0)) as Transform;
 			_newNameZomb++;
 			instans.transform.name+=_newNameZomb.ToString();
 			timeZombieNew = timeZombie;
-		}
+		}*/
 	}
 
 	private Transform Zombie(){

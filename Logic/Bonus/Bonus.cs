@@ -20,6 +20,22 @@ public class Bonus : MonoBehaviour {
 				case "gunBul50":
 					Actor.GetComponent<Weapons>().gunBullet += 50;
 				break;
+                case "grenadeBul50":
+                     Actor.GetComponent<Weapons>().grenadeBullet += 50;
+                break;
+                case "minigunBul500":
+                     Actor.GetComponent<Weapons>().minigunBullet += 500;
+                break;
+                case "rocketBul50":
+                    Actor.GetComponent<Weapons>().rocketBullet += 50;
+                break;
+                case "diskgunBul50":
+                    Actor.GetComponent<Weapons>().diskgunBullet += 50;
+                break;
+                case "armour100":
+                    Actor.GetComponent<Actor>().armour += 100;
+                 break;
+
 
 				//Оружие
 				case "gun":

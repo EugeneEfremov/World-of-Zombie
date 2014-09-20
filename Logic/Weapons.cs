@@ -4,19 +4,30 @@ using System.Collections;
 public class Weapons : MonoBehaviour {
 	private float delayShot; //Пауза выстрела
 
-	public int gunBullet = 20, gunMax = 100, grenadeBullet = 20, grenadeMax = 100, minigunBullet = 1000, minigunMax = 100, rocketBullet = 20, rocketMax = 100, diskgunBullet = 20, diskgunMax = 100; //Патроны, максимальное кол-во
-	public GameObject cam, bulletSpawn;
+	public int strongMax, accuracyMax, gunBullet = 20, gunMax = 100, grenadeBullet = 20, grenadeMax = 100, minigunBullet = 1000, minigunMax = 100, rocketBullet = 20, rocketMax = 100, diskgunBullet = 20, diskgunMax = 100; //Патроны, максимальное кол-во
+    public GameObject cam, bulletSpawn;
 	public bool pistolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false; //Наличие
 	public string currentW;
 	public Transform pistols, gun, grenade, boom, minigun, rocket, diskgun; //Объекты
 	public AudioClip[] pistolsA, gunA, grenadeA; //Звуки выстрелов
 	public bool GBgun = false, GBgrenade = false, GBminigun = false, GBrocket = false, GBdiskgun = false; //Открыто ли оружие
+    public Vector3 NewPositionGoal;
 
     void Start()
     {
+        strongMax = GetComponent<Global>().strongMax;
+        accuracyMax = GetComponent<Global>().accuracyMax;
+
         bulletSpawn = GameObject.Find("BulletSpawn");
         cam = GameObject.Find("Camera");
         currentW = "pistols(Clone)";
+
+        //Изменение макс. кол-ва патрон
+        gunMax += gunMax * strongMax;
+        grenadeMax += grenadeMax * strongMax;
+        minigunMax += minigunMax * strongMax;
+        rocketMax += rocketMax * strongMax;
+        diskgunMax += diskgunMax * strongMax;
     }
 
     //Проверка на макс. кол-во патрон
@@ -143,11 +154,14 @@ public class Weapons : MonoBehaviour {
 						if (Physics.Raycast (cam.transform.position, camRay.direction, out goal, 100f)) {//Куда смотрит прицел
 								Debug.DrawLine (cam.transform.position, goal.point, Color.red);
 			
+                                //Вращение точки спавна патрон за прицелом
 								Vector3 relativePos = goal.point - bulletSpawn.transform.position;
 								Quaternion rotation = Quaternion.LookRotation (relativePos);
 								bulletSpawn.transform.rotation = rotation;
-			
-								if (Physics.Raycast (bulletSpawn.transform.position, bulletSpawn.transform.forward, out hitObj, 100f)) {
+
+                                NewPositionGoal = new Vector3(bulletSpawn.transform.position.x + Random.Range(-0.1f - accuracyMax, 0.1f + accuracyMax), bulletSpawn.transform.position.y + Random.Range(-0.01f - accuracyMax / 10, 0.01f + accuracyMax / 10), bulletSpawn.transform.position.z);
+                                if (Physics.Raycast(NewPositionGoal, bulletSpawn.transform.forward, out hitObj, 100f))
+                                {
 										Debug.DrawLine (bulletSpawn.transform.position, bulletSpawn.transform.forward + (goal.normal * 0.5f), Color.yellow);
 												//Действия в зависимости от текущего оружия
 												switch (currentW) {
