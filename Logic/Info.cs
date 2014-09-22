@@ -14,12 +14,8 @@ public class Info : MonoBehaviour {
 	public string actorName= "";
 
 	void Start () {
-		Screen.showCursor = false;
+		//Screen.showCursor = false;
 		Player = GameObject.Find ("Actor").transform;
-		GameObject.Find ("Directional light").GetComponent<Light> ().intensity = LightIntens ();
-        //Фонарь
-        if (GameObject.Find("Directional light").GetComponent<Light>().light.intensity < 0.3f && GameObject.Find("Actor").GetComponent<Global>().lantern == 1)
-            GameObject.Find("Lantern").GetComponent<Light>().light.enabled = true;
 		_helthRect = new Rect (Screen.width - 40, 0, 30, 30);
 		_armourRect = new Rect (Screen.width - 80, 0, 30, 30);
 		_accountRect = new Rect (10, 0, 50, 30);
@@ -30,19 +26,12 @@ public class Info : MonoBehaviour {
         _continueButtonRect = new Rect(Screen.width / 2 - 75, Screen.height - (Screen.height / 3), 300, 70);
 	}
 
-    public float LightIntens(){
-		if (Random.Range (0, 3) == 1)
-			return 0f;
-		else
-			return 0.5f;
-	}
-
 	void OnGUI (){
         Vector2 mp = Event.current.mousePosition;
 		GUI.depth = 1;
 		GUI.DrawTexture (_infoRect, info);
 		GUI.DrawTexture (_countRect, info);
-		GUI.Label (new Rect (mp.x - 12, mp.y - 15, goal.width, goal.height), goal);
+		//GUI.Label (new Rect (mp.x - 12, mp.y - 15, goal.width, goal.height), goal);
 		GUI.Label (_helthRect, Player.GetComponent<Actor>().helth.ToString());
 		GUI.Label (_armourRect, Player.GetComponent<Actor>().armour.ToString());
         GUI.Label(_accountRect, Player.GetComponent<Actor>().count.ToString());

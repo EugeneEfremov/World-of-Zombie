@@ -47,7 +47,6 @@ public class Actor : MonoBehaviour {
         if (death)
         {
 						Time.timeScale = 0.2f;
-						GameObject.Find ("Camera").GetComponent<SepiaToneEffect> ().enabled = true;
 				}
 		if (helth < 1) {
             death = true;

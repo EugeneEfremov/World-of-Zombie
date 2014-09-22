@@ -4,10 +4,9 @@ using System.Collections;
 public class ZombieAll : MonoBehaviour {
 	
 	private int _newNameZomb = 0, rand, _countTypeZombieInGame = 1, _accountZombMax = 10;
-	private Vector3 _actorPos;
 	private Transform Player;
 	private bool _bRat = false, _bZombie, _bDog = false, _bSolders = false, _bGrenade = false, _bBigZ = false; //Можно ли создавать
-	public Transform zombie, rat, dog, solders, grenade, bigZ, instans; //Объекты
+    public Transform zombie, rat, dog, solders, grenade, bigZ, instans; //Объекты
 	public int  accountZombNew = 0; //Кол-во зомби в игре на данный момент
     public float timeZombie = 0.5f, timeZombieNew = 0, timeInGame = 0, instNewWeapTime = 0; //Время до создания зомби, Новое время до создания, Время в игре, время до появления нового оружия
 
@@ -54,17 +53,15 @@ public class ZombieAll : MonoBehaviour {
 			if(_countTypeZombieInGame == 5) _countTypeZombieInGame++;
 		}
 
-		_actorPos = Player.position;
-
 		timeZombieNew -= Time.deltaTime;
 
         //Создание зомби
-		/*if (timeZombieNew <= 0 && accountZombNew <= _accountZombMax && Player.GetComponent<Actor>().death != true) {
-			instans = Instantiate (Zombie(), Spawn(), Quaternion.Euler (0, 0, 0)) as Transform;
-			_newNameZomb++;
-			instans.transform.name+=_newNameZomb.ToString();
-			timeZombieNew = timeZombie;
-		}*/
+		if (timeZombieNew <= 0 && accountZombNew <= _accountZombMax && Player.GetComponent<Actor>().death != true) {
+            instans = Instantiate(Zombie(), Spawn(), Quaternion.Euler(0, 0, 0)) as Transform;
+            _newNameZomb++;
+            instans.transform.name += _newNameZomb.ToString();
+            timeZombieNew = timeZombie;
+		}
 	}
 
 	private Transform Zombie(){
@@ -99,16 +96,12 @@ public class ZombieAll : MonoBehaviour {
 	}
 
 	private Vector3 Spawn(){
-		rand = Random.Range (0, 5);
-		if (rand == 1)//верх
-			return new Vector3 (_actorPos.x + Random.Range (-19, 19), _actorPos.y + 0.1f, _actorPos.z + 28);
-		if (rand == 2)//низ
-			return new Vector3 (_actorPos.x + Random.Range (-19, 19), _actorPos.y + 0.1f, _actorPos.z - 14);
-		if (rand == 3)//право
-			return new Vector3 (_actorPos.x + 20, _actorPos.y + 0.1f, _actorPos.z + Random.Range(-13, 25));
-		if (rand == 4)//лево
-			return new Vector3 (_actorPos.x - 29, _actorPos.y + 0.1f, _actorPos.z + Random.Range (-13, 25));
+		rand = Random.Range (0, 3);
+		if (rand == 1)//лево
+			return new Vector3 (-30, 1, Random.Range(-27, 27));
+		if (rand == 2)//право
+            return new Vector3(30, 1, Random.Range(-27, 27));
 		else
-			return new Vector3 (_actorPos.x + Random.Range (-19, 19), _actorPos.y + 0.1f, _actorPos.z - 14);
+            return new Vector3(-30, 1, Random.Range(-27, 27));
 	}
 }

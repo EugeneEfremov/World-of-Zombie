@@ -154,7 +154,7 @@ public class ZombieMove : MonoBehaviour {
 				cc.Move (moveDirection * Time.deltaTime);
 		
 				//Смерть 
-				if (helth < 1 || transform.position.x < 35 || transform.position.x > 156 || transform.position.z < 25.5f || transform.position.z > 160 || transform.position.y < -2) {
+				if (helth < 1) {
 						BonusRandom();
 						GunBonus();
                         Instantiate(blod, new Vector3(transform.position.x, transform.position.y - bloodY, transform.position.z), Quaternion.Euler(new Vector3(0, 0, 0)));
@@ -173,8 +173,8 @@ public class ZombieMove : MonoBehaviour {
                                     Player.GetComponent<Actor>().helth -= (int)(done / 2f);
                                     Player.GetComponent<Actor>().armour -= (int)(done / 2f);
                                 }
-                                if (Player.GetComponent<Actor> ().armour <= 0)
-								    Player.GetComponent<Actor> ().helth -= done;
+                                if (Player.GetComponent<Actor>().armour <= 0)
+                                    Player.GetComponent<Actor>().helth -= done;
 
 								timeDamage = 1.2f;
 							}
