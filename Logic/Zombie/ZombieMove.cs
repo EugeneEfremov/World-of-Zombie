@@ -12,8 +12,8 @@ public class ZombieMove : MonoBehaviour {
 	Vector3 moveDirection = Vector3.zero;
 
 	public string typeZomb;
-
-    public Transform blod, helth20, armour100, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, gun, grenage, minigun, rocket, diskgun;
+    public bool magic1;
+    public Transform blod, helth20, armour100, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, gun, grenage, minigun, rocket, diskgun, accuracyMaxBonus, strongMaxBonus, speedMaxBonus, helthMaxBonus;
 	public int helth = 100, done = 2; //жизнь, урон
     public float speed = 3, speedMax = 3;
 	public AudioClip[] ratA;
@@ -98,7 +98,7 @@ public class ZombieMove : MonoBehaviour {
 
 //Бонусы
 	void BonusRandom(){
-		int rand = Random.Range (0, 200);
+		int rand = Random.Range (0, 300);
 		if (rand <= 10){
 			Instantiate(helth20, transform.position, Quaternion.Euler(0,0,0));
 		}
@@ -121,9 +121,31 @@ public class ZombieMove : MonoBehaviour {
         {
             Instantiate(diskgunBul50, transform.position, Quaternion.Euler(0, 0, 0));
         }
-        if (rand > 90 && rand <= 95)
+        if (rand > 110 && rand <= 115)
         {
             Instantiate(armour100, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+
+        //Способности
+        if (rand > 130 && rand <= 135 && ZombieAll.GetComponent<ZombieAll>().accuracyMax < 5)
+        {
+            Instantiate(accuracyMaxBonus, transform.position, Quaternion.Euler(0, 0, 0));
+            ZombieAll.GetComponent<ZombieAll>().accuracyMax += 1;
+        }
+        if (rand > 150 && rand <= 155 && ZombieAll.GetComponent<ZombieAll>().strongMax < 5)
+        {
+            Instantiate(strongMaxBonus, transform.position, Quaternion.Euler(0, 0, 0));
+            ZombieAll.GetComponent<ZombieAll>().strongMax += 1;
+        }
+        if (rand > 170 && rand <= 175 && ZombieAll.GetComponent<ZombieAll>().speedMax < 5)
+        {
+            Instantiate(speedMaxBonus, transform.position, Quaternion.Euler(0, 0, 0));
+            ZombieAll.GetComponent<ZombieAll>().speedMax += 1;
+        }
+        if (rand > 190 && rand <= 195 && ZombieAll.GetComponent<ZombieAll>().helthMax < 5)
+        {
+            Instantiate(helthMaxBonus, transform.position, Quaternion.Euler(0, 0, 0));
+            ZombieAll.GetComponent<ZombieAll>().helthMax += 1;
         }
 	}
 
@@ -132,6 +154,7 @@ public class ZombieMove : MonoBehaviour {
 
 	void FixedUpdate () {
         instNewWeapTime = ZombieAll.GetComponent<ZombieAll>().instNewWeapTime;
+        magic1 = ZombieAll.GetComponent<ZombieAll>().magic1;
 
 //Физика движения зомби
         //Луч вперед
@@ -140,6 +163,8 @@ public class ZombieMove : MonoBehaviour {
                 speed = speedMax;
             if (Hit.transform.tag == "Zombie")
                 speed = speedMax / 2;
+            if (magic1)
+                speed /= 2;
         }
 				//Поворот
 				Vector3 relativePos = Player.position - transform.position;
@@ -150,7 +175,7 @@ public class ZombieMove : MonoBehaviour {
 				moveDirection = new Vector3 (0, 0, 1);
 				moveDirection = transform.TransformDirection (moveDirection);
 				moveDirection *= speed;
-				moveDirection.y -= 80 * Time.deltaTime;
+				moveDirection.y -= 150 * Time.deltaTime;
 				cc.Move (moveDirection * Time.deltaTime);
 		
 				//Смерть 

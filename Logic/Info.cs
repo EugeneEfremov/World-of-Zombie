@@ -5,15 +5,20 @@ public class Info : MonoBehaviour {
 
 	private int _newNameZomb;
 	private Rect _helthRect, _accountRect, _armourRect, _infoRect, _countRect, _deathRect, _pauseButtonRect, _continueButtonRect;
+    private Rect _magic1Rect;
 
-	public float timeZombie = 1;
+    public float timeZombie = 1, timeMagic1 = 10;
 	public Texture2D goal, info, pauseT, pauseDownT, continueT;
-    public bool pause = false;
+    public Texture2D magic1;
+    public bool pause = false, bMagic1;
     public Vector2 mp;
 	public Transform Player;
-	public string actorName= "";
+	public string actorName= "", modeGame;
+    public GameObject ZombAll;
 
 	void Start () {
+        ZombAll = GameObject.Find("ZombieLogic");
+        modeGame = Application.loadedLevelName;
 		//Screen.showCursor = false;
 		Player = GameObject.Find ("Actor").transform;
 		_helthRect = new Rect (Screen.width - 40, 0, 30, 30);
@@ -24,7 +29,28 @@ public class Info : MonoBehaviour {
         _deathRect = new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200);
         _pauseButtonRect = new Rect(10, 34, 34, 33);
         _continueButtonRect = new Rect(Screen.width / 2 - 75, Screen.height - (Screen.height / 3), 300, 70);
+
+        _magic1Rect = new Rect(Screen.width - 64 - 30, Screen.height / 4, 64, 72);
 	}
+
+    void FixedUpdate()
+    {
+        //Magic
+        if (bMagic1)
+        {
+            ZombAll.GetComponent<ZombieAll>().magic1 = true;
+            timeMagic1 -= Time.deltaTime;
+            if (timeMagic1 <= 0)
+                bMagic1 = false;
+        }
+        if (!bMagic1)
+        {
+            ZombAll.GetComponent<ZombieAll>().magic1 = false;
+            if (timeMagic1 < 10)
+                timeMagic1 += Time.deltaTime;
+        }
+        //Magic END
+    }
 
 	void OnGUI (){
         Vector2 mp = Event.current.mousePosition;
@@ -35,8 +61,19 @@ public class Info : MonoBehaviour {
 		GUI.Label (_helthRect, Player.GetComponent<Actor>().helth.ToString());
 		GUI.Label (_armourRect, Player.GetComponent<Actor>().armour.ToString());
         GUI.Label(_accountRect, Player.GetComponent<Actor>().count.ToString());
+
+        //Magic
+        if (GUI.Button(_magic1Rect, magic1) && timeMagic1 >= 10)
+            bMagic1 = true;
+
+        //Magic END
+
             if (!pause)
             {
+                if (Player.GetComponent<Actor>().death == false && !pause)
+                {
+                    Time.timeScale = 1;
+                }
                 GUI.Label(_pauseButtonRect, pauseT);
                 if (mp.x < 37 && mp.y < 62 && Input.GetMouseButtonUp(0))
                 {
@@ -66,12 +103,34 @@ public class Info : MonoBehaviour {
 			case 0:
 				GUI.Label ( new Rect(20, 30, 80, 80), "Ваш счет: ");
 				GUI.Label ( new Rect(95, 30, 80, 80), Player.GetComponent<Actor>().count.ToString());
-				GUI.Label (new Rect(40, 60, 140, 30), "Введите Ваше имя");
-				actorName = GUI.TextArea (new Rect (30, 90, 140, 25), actorName, 15);
+                if (modeGame == "survival" || modeGame ==  "arena")
+                {
+                    GUI.Label(new Rect(40, 60, 140, 30), "Введите Ваше имя");
+                    actorName = GUI.TextArea(new Rect(30, 90, 140, 25), actorName, 15);
+                }
+                else
+                {
+                    actorName = PlayerPrefs.GetString("ActorNameCompany");
+                    GUI.Label(new Rect(40, 60, 140, 30), "Ваше имя");
+                    GUI.Label(new Rect(30, 90, 140, 25), actorName);
+                }
 				if(GUI.Button (new Rect(30, 155, 140, 30), "Сохранить")){
                         PlayerPrefs.SetInt("Money", Player.GetComponent<Actor>().count / 70);
-						PlayerPrefs.SetString("ActorNameSurvival", actorName);
-						PlayerPrefs.SetInt("ActorNameSurvivalScore", Player.GetComponent<Actor>().count);
+                        if (modeGame == "survival")
+                        {
+                            PlayerPrefs.SetString("ActorNameSurvival", actorName);
+                            PlayerPrefs.SetInt("ActorNameSurvivalScore", Player.GetComponent<Actor>().count);
+                        }
+                        else if (modeGame == "arena")
+                        {
+                            PlayerPrefs.SetString("ActorNameArena", actorName);
+                            PlayerPrefs.SetInt("ActorNameArenaScore", Player.GetComponent<Actor>().count);
+                        }
+                        else
+                        {
+                            PlayerPrefs.SetString("ActorNameCompany", actorName);
+                            PlayerPrefs.SetInt("ActorNameCompanyScore", Player.GetComponent<Actor>().count);
+                        }
 					Application.LoadLevel("menu");
 			}
 			break;

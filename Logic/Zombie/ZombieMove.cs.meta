@@ -16,6 +16,10 @@ MonoImporter:
   - minigun: {fileID: 400000, guid: f3f5942cda856954b90b37822da59934, type: 2}
   - rocket: {fileID: 400000, guid: 5dbcac1471281a144a53d51af9698e34, type: 2}
   - diskgun: {fileID: 400000, guid: 7067534f934441c4c9b26d521de3556f, type: 2}
+  - accuracyMaxBonus: {fileID: 400002, guid: 65b6d243146d72f4ea76557ac286416f, type: 2}
+  - strongMaxBonus: {fileID: 400002, guid: 159965662c1dfc048be02058b19e7331, type: 2}
+  - speedMaxBonus: {fileID: 400002, guid: 222102d9db8cdd04eac37abbc9aa1f56, type: 2}
+  - helthMaxBonus: {fileID: 400002, guid: 8921d50afdee2164abbb01d469e65158, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -5,9 +5,11 @@ public class ZombieAll : MonoBehaviour {
 	
 	private int _newNameZomb = 0, rand, _countTypeZombieInGame = 1, _accountZombMax = 10;
 	private Transform Player;
-	private bool _bRat = false, _bZombie, _bDog = false, _bSolders = false, _bGrenade = false, _bBigZ = false; //Можно ли создавать
+	private bool _bRat = false, _bZombie, _bDog = false, _bSolders = false, _bGrenade = false, _bBigZ = false; //Можно ли создавать зомби
+    public bool magic1;
     public Transform zombie, rat, dog, solders, grenade, bigZ, instans; //Объекты
 	public int  accountZombNew = 0; //Кол-во зомби в игре на данный момент
+    public int accuracyMax, strongMax, speedMax, helthMax; //Сколько раз вываливались бонусы способностей актера
     public float timeZombie = 0.5f, timeZombieNew = 0, timeInGame = 0, instNewWeapTime = 0; //Время до создания зомби, Новое время до создания, Время в игре, время до появления нового оружия
 
 	void Start(){
@@ -96,12 +98,10 @@ public class ZombieAll : MonoBehaviour {
 	}
 
 	private Vector3 Spawn(){
-		rand = Random.Range (0, 3);
-		if (rand == 1)//лево
-			return new Vector3 (-30, 1, Random.Range(-27, 27));
-		if (rand == 2)//право
-            return new Vector3(30, 1, Random.Range(-27, 27));
-		else
-            return new Vector3(-30, 1, Random.Range(-27, 27));
+		rand = Random.Range (0, 2);
+        if (rand == 1)//лево
+            return new Vector3(-17, 2, Random.Range(-15, 15));
+        else//право
+            return new Vector3(17, 2, Random.Range(-15, 15));
 	}
 }

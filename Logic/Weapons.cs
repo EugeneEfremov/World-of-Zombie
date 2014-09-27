@@ -4,13 +4,14 @@ using System.Collections;
 public class Weapons : MonoBehaviour {
 	private float delayShot; //Пауза выстрела
 
-	public int strongMax, accuracyMax, gunBullet = 20, gunMax = 100, grenadeBullet = 20, grenadeMax = 100, minigunBullet = 1000, minigunMax = 100, rocketBullet = 20, rocketMax = 100, diskgunBullet = 20, diskgunMax = 100; //Патроны, максимальное кол-во
+	public int strongMax, accuracyMax, gunBullet = 20, gunMax = 100, grenadeBullet = 20, grenadeMax = 100, minigunBullet = 1000, minigunMax = 100, rocketBullet = 20, rocketMax = 100, diskgunBullet = 20, diskgunMax = 100, firegunMax = 30, zeusgunMax = 30; //Патроны, максимальное кол-во
+    public float firegunBullet = 15, zeusgunBullet = 15;
     public GameObject cam, bulletSpawn;
-	public bool pistolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false; //Наличие
+	public bool pistolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false, firegunC = false, firegunActive = false, zeusgunC = false, zeusgunActive = false; //Наличие
 	public string currentW;
-	public Transform pistols, gun, grenade, boom, minigun, rocket, diskgun; //Объекты
+	public Transform pistols, gun, grenade, boom, minigun, rocket, diskgun, firegun, zeusgun; //Объекты
 	public AudioClip[] pistolsA, gunA, grenadeA; //Звуки выстрелов
-	public bool GBgun = false, GBgrenade = false, GBminigun = false, GBrocket = false, GBdiskgun = false; //Открыто ли оружие
+	public bool GBgun = false, GBgrenade = false, GBminigun = false, GBrocket = false, GBdiskgun = false, GBfiregun = false, GBzeusgun = false; //Открыто ли оружие
     public Vector3 NewPositionGoal;
 
     void Start()
@@ -23,11 +24,18 @@ public class Weapons : MonoBehaviour {
         currentW = "pistols(Clone)";
 
         //Изменение макс. кол-ва патрон
+        AlterMaxBullet(strongMax);
+    }
+
+    //Изменение макс. кол-ва патрон
+    public int AlterMaxBullet(int strongMax)
+    {
         gunMax += gunMax * strongMax;
         grenadeMax += grenadeMax * strongMax;
         minigunMax += minigunMax * strongMax;
         rocketMax += rocketMax * strongMax;
         diskgunMax += diskgunMax * strongMax;
+        return strongMax;
     }
 
     //Проверка на макс. кол-во патрон
@@ -124,10 +132,50 @@ public class Weapons : MonoBehaviour {
 			delayShot = 0.5f;
 		}
 	}
+
+    void ShotFiregun(bool down)
+    {
+        if (firegunBullet > 0 && down)
+        {
+            firegunActive = true;
+            GameObject.Find("FireZone").GetComponent<Collider>().enabled = true;
+            GameObject.Find("ParticleFireGun").particleSystem.enableEmission = true;
+        }
+        if (firegunBullet < 0 || !down)
+        {
+            firegunActive = false;
+            GameObject.Find("FireZone").GetComponent<Collider>().enabled = false;
+            GameObject.Find("ParticleFireGun").particleSystem.enableEmission = false;
+        }
+    }
+
+    void ShotZeusgun(bool down)
+    {
+        if (zeusgunBullet > 0 && down)
+        {
+            zeusgunActive = true;
+            GameObject.Find("ZeusZone").GetComponent<Collider>().enabled = true;
+        }
+        if (zeusgunBullet < 0 || !down)
+        {
+            zeusgunActive = false;
+            GameObject.Find("ZeusZone").GetComponent<Collider>().enabled = false;
+        }
+    }
 //Хор-ки оружия КОНЕЦ
 
 	void Update() {
 		delayShot -= Time.deltaTime;
+
+        if (firegunActive)
+            firegunBullet -= Time.deltaTime;
+        if (!firegunActive && firegunBullet < firegunMax)
+            firegunBullet += Time.deltaTime;
+
+        if (zeusgunActive)
+            zeusgunBullet -= Time.deltaTime;
+        if (!zeusgunActive && zeusgunBullet < zeusgunMax)
+            zeusgunBullet += Time.deltaTime;
 
 		if(Input.GetKey(KeyCode.Alpha1) && currentW != "pistols" && pistolsC){
 			SwitchWeapon(pistols);
@@ -147,6 +195,14 @@ public class Weapons : MonoBehaviour {
 		if(Input.GetKey(KeyCode.Alpha6) && currentW != "diskgun" && diskgunC){
 			SwitchWeapon(diskgun);
 		}
+        if (Input.GetKey(KeyCode.Alpha7) && currentW != "firegun" && firegunC)
+        {
+            SwitchWeapon(firegun);
+        }
+        if (Input.GetKey(KeyCode.Alpha8) && currentW != "zeusgun" && zeusgunC)
+        {
+            SwitchWeapon(zeusgun);
+        }
 
 		//Стрельба
 		if (Input.GetMouseButton (0)) {
@@ -183,6 +239,12 @@ public class Weapons : MonoBehaviour {
 												case "diskgun(Clone)":
 														ShotDiskgun();
 														break;
+                                                case "firegun(Clone)":
+                                                        ShotFiregun(true);
+                                                        break;
+                                                case "zeusgun(Clone)":
+                                                        ShotZeusgun(true);
+                                                        break;
 												default :
 														print("default");
 														break;
@@ -190,5 +252,13 @@ public class Weapons : MonoBehaviour {
 								}
 						}
 				}
+        if (Input.GetMouseButtonUp(0))
+        {
+            //Действия в зависимости от текущего оружия
+            if (currentW == "firegun(Clone)")
+                    ShotFiregun(false);
+            if (currentW == "zeusgun(Clone)")
+                ShotZeusgun(false);
+        }
 		}
 }

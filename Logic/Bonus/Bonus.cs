@@ -58,6 +58,20 @@ public class Bonus : MonoBehaviour {
 					Actor.GetComponent<Weapons>().diskgunC = true;
                     Actor.GetComponent<Weapons>().GBdiskgun = true;
 				break;
+
+                //Способности
+                case "accuracyMax":
+                    Actor.GetComponent<Weapons>().accuracyMax += 1;
+                break;
+                case "strongMax":
+                    Actor.GetComponent<Weapons>().AlterMaxBullet(Actor.GetComponent<Weapons>().strongMax + 1);
+                break;
+                case "speedMax":
+                    Actor.GetComponent<Actor>().speed += 2;
+                break;
+                case "helthMax":
+                    Actor.GetComponent<Actor>().helthMax += 40;
+                break;
 			}
 			Destroy(gameObject);
 		}
