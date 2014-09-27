@@ -18,6 +18,11 @@ public class PowerGun : MonoBehaviour {
                 GameObject.Find(other.transform.name).GetComponent<ZombieMove>().helth -= 3;
                 GameObject.Find("Actor").GetComponent<Actor>().count += 3;
             }
+            if (type == "plasmicgun")
+            {
+                GameObject.Find(other.transform.name).GetComponent<ZombieMove>().helth -= 2;
+                GameObject.Find("Actor").GetComponent<Actor>().count += 2;
+            }
         }
     }
 }

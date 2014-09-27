@@ -11,11 +11,19 @@ MonoImporter:
   - minigunBul500: {fileID: 400002, guid: ba95d812629f82a4d988af2a9d3a044f, type: 2}
   - rocketBul50: {fileID: 400002, guid: b4405f3288cb8c549a7058cfdcd7f183, type: 2}
   - diskgunBul50: {fileID: 400002, guid: 8d49b7188f9fb744c86aec182d1bd4e0, type: 2}
+  - firegunBul50: {fileID: 400000, guid: 24dd106789e85e043b8a318b37e2c9cb, type: 2}
+  - zeusgunBul50: {fileID: 400000, guid: c1e5d31d860136b42af36e9f3af2d84c, type: 2}
+  - plasmicgunBul50: {fileID: 400000, guid: 0cf6b69e816091d42ad975c82216204a, type: 2}
+  - gaussgunBul100: {fileID: 400000, guid: 106b9f7107102014e97d311768221e6d, type: 2}
   - gun: {fileID: 400000, guid: 7e0439ebd2a509e428445be12ae82d55, type: 2}
   - grenage: {fileID: 400000, guid: e073b9cce0748664eb3b2576fa5bc3fb, type: 2}
   - minigun: {fileID: 400000, guid: f3f5942cda856954b90b37822da59934, type: 2}
   - rocket: {fileID: 400000, guid: 5dbcac1471281a144a53d51af9698e34, type: 2}
   - diskgun: {fileID: 400000, guid: 7067534f934441c4c9b26d521de3556f, type: 2}
+  - firegun: {fileID: 400000, guid: e7b5ae3a4d38b1848b0c90f0ab09235b, type: 2}
+  - zeusgun: {fileID: 400000, guid: a507dc261f51b5647bade31f276d4bcf, type: 2}
+  - plasmicgun: {fileID: 400002, guid: d5b9433bce45be5458b653e68ea53330, type: 2}
+  - gaussgun: {fileID: 400002, guid: 22fee3447974abd45ab935c7c0a69ec8, type: 2}
   - accuracyMaxBonus: {fileID: 400002, guid: 65b6d243146d72f4ea76557ac286416f, type: 2}
   - strongMaxBonus: {fileID: 400002, guid: 159965662c1dfc048be02058b19e7331, type: 2}
   - speedMaxBonus: {fileID: 400002, guid: 222102d9db8cdd04eac37abbc9aa1f56, type: 2}

@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class ZombieAll : MonoBehaviour {
-	
+
 	private int _newNameZomb = 0, rand, _countTypeZombieInGame = 1, _accountZombMax = 10;
 	private Transform Player;
 	private bool _bRat = false, _bZombie, _bDog = false, _bSolders = false, _bGrenade = false, _bBigZ = false; //Можно ли создавать зомби
@@ -16,7 +16,7 @@ public class ZombieAll : MonoBehaviour {
 		Player = GameObject.FindWithTag ("Player").transform;
 	}
 
-	void Update(){
+	void FixedUpdate(){
 		timeInGame += Time.deltaTime;
         instNewWeapTime -= Time.deltaTime;
 
@@ -32,16 +32,16 @@ public class ZombieAll : MonoBehaviour {
 			_bZombie = true;
 			if(_countTypeZombieInGame == 1) _countTypeZombieInGame++;
 		}
-		if (timeInGame > 15) _accountZombMax = 14;
+		if (timeInGame > 15) _accountZombMax = 13;
 		if (timeInGame > 20) _accountZombMax = 18;
 		if (timeInGame > 60) {
-			_accountZombMax = 28;
+			_accountZombMax = 21;
 			if(timeZombie != 0.3f)timeZombie = 0.3f;
 			_bDog = true;
 			if(_countTypeZombieInGame == 2) _countTypeZombieInGame++;
 		}
 		if (timeInGame > 180) {
-			_accountZombMax = 35;
+			_accountZombMax = 25;
 			if(timeZombie != 0.2f)timeZombie = 0.2f;
 			_bSolders = true;
 			if(_countTypeZombieInGame == 3) _countTypeZombieInGame++;

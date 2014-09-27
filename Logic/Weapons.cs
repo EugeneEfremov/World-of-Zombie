@@ -4,14 +4,14 @@ using System.Collections;
 public class Weapons : MonoBehaviour {
 	private float delayShot; //Пауза выстрела
 
-	public int strongMax, accuracyMax, gunBullet = 20, gunMax = 100, grenadeBullet = 20, grenadeMax = 100, minigunBullet = 1000, minigunMax = 100, rocketBullet = 20, rocketMax = 100, diskgunBullet = 20, diskgunMax = 100, firegunMax = 30, zeusgunMax = 30; //Патроны, максимальное кол-во
-    public float firegunBullet = 15, zeusgunBullet = 15;
+	public int strongMax, accuracyMax, gunBullet = 20, gunMax = 100, grenadeBullet = 20, grenadeMax = 100, minigunBullet = 1000, minigunMax = 100, rocketBullet = 20, rocketMax = 100, diskgunBullet = 20, diskgunMax = 100, firegunMax = 50, zeusgunMax = 50, plasmicgunMax = 50, gaussgunBullet = 50, gaussgunMax = 100; //Патроны, максимальное кол-во
+    public float firegunBullet = 15, zeusgunBullet = 15, plasmicgunBullet = 15;
     public GameObject cam, bulletSpawn;
-	public bool pistolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false, firegunC = false, firegunActive = false, zeusgunC = false, zeusgunActive = false; //Наличие
+	public bool pistolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false, firegunC = false, firegunActive = false, zeusgunC = false, zeusgunActive = false, plasmicgunC = false, plasmicgunActive = false, gaussgunC = false; //Наличие
 	public string currentW;
-	public Transform pistols, gun, grenade, boom, minigun, rocket, diskgun, firegun, zeusgun; //Объекты
+	public Transform pistols, gun, grenade, boom, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun; //Объекты
 	public AudioClip[] pistolsA, gunA, grenadeA; //Звуки выстрелов
-	public bool GBgun = false, GBgrenade = false, GBminigun = false, GBrocket = false, GBdiskgun = false, GBfiregun = false, GBzeusgun = false; //Открыто ли оружие
+	public bool GBgun = false, GBgrenade = false, GBminigun = false, GBrocket = false, GBdiskgun = false, GBfiregun = false, GBzeusgun = false, GBplasmicgun = false, GBgaussgun = false; //Открыто ли оружие
     public Vector3 NewPositionGoal;
 
     void Start()
@@ -49,6 +49,8 @@ public class Weapons : MonoBehaviour {
 	void SwitchWeapon(Transform weapon){
 		Destroy (GameObject.Find(currentW));
 		Transform newWeap = Instantiate (weapon, transform.position, Quaternion.Euler(0,0,0)) as Transform;
+        newWeap.GetComponent<Bonus>().enabled = false;
+        newWeap.GetComponent<Collider>().enabled = false;
 		newWeap.parent = transform; //Присвоение к объекту актера
 		currentW = newWeap.transform.name;
 	}
@@ -135,6 +137,9 @@ public class Weapons : MonoBehaviour {
 
     void ShotFiregun(bool down)
     {
+        if (firegunBullet > firegunMax)
+            firegunBullet = firegunMax;
+
         if (firegunBullet > 0 && down)
         {
             firegunActive = true;
@@ -151,6 +156,9 @@ public class Weapons : MonoBehaviour {
 
     void ShotZeusgun(bool down)
     {
+        if (zeusgunBullet > zeusgunMax)
+            zeusgunBullet = zeusgunMax;
+
         if (zeusgunBullet > 0 && down)
         {
             zeusgunActive = true;
@@ -160,6 +168,39 @@ public class Weapons : MonoBehaviour {
         {
             zeusgunActive = false;
             GameObject.Find("ZeusZone").GetComponent<Collider>().enabled = false;
+        }
+    }
+
+    void ShotPlasmicgun(bool down)
+    {
+        if (plasmicgunBullet > plasmicgunMax)
+            plasmicgunBullet = plasmicgunMax;
+
+        if (plasmicgunBullet > 0 && down)
+        {
+            plasmicgunActive = true;
+            GameObject.Find("PlasmicZone").GetComponent<Collider>().enabled = true;
+        }
+        if (plasmicgunBullet < 0 || !down)
+        {
+            plasmicgunActive = false;
+            GameObject.Find("PlasmicZone").GetComponent<Collider>().enabled = false;
+        }
+    }
+
+    void ShotGaussgun()
+    {
+        gaussgunBullet = MaxBullet(gaussgunMax, gaussgunBullet);
+
+        if (delayShot <= 0 && hitObj.transform.tag == "Zombie" && gaussgunBullet > 0)
+        {
+            GameObject.Find(hitObj.transform.name).GetComponent<ZombieMove>().helth -= 100;
+            GameObject.Find("Actor").GetComponent<Actor>().count += 100;
+        }
+        if (delayShot <= 0)
+        {
+            gaussgunBullet--;
+            delayShot = 0.5f;
         }
     }
 //Хор-ки оружия КОНЕЦ
@@ -176,6 +217,11 @@ public class Weapons : MonoBehaviour {
             zeusgunBullet -= Time.deltaTime;
         if (!zeusgunActive && zeusgunBullet < zeusgunMax)
             zeusgunBullet += Time.deltaTime;
+
+        if (plasmicgunActive)
+            plasmicgunBullet -= Time.deltaTime;
+        if (!plasmicgunActive && plasmicgunBullet < plasmicgunMax)
+            plasmicgunBullet += Time.deltaTime;
 
 		if(Input.GetKey(KeyCode.Alpha1) && currentW != "pistols" && pistolsC){
 			SwitchWeapon(pistols);
@@ -202,6 +248,14 @@ public class Weapons : MonoBehaviour {
         if (Input.GetKey(KeyCode.Alpha8) && currentW != "zeusgun" && zeusgunC)
         {
             SwitchWeapon(zeusgun);
+        }
+        if (Input.GetKey(KeyCode.Alpha9) && currentW != "plasmicgun" && plasmicgunC)
+        {
+            SwitchWeapon(plasmicgun);
+        }
+        if (Input.GetKey(KeyCode.Alpha0) && currentW != "gaussgun" && gaussgunC)
+        {
+            SwitchWeapon(gaussgun);
         }
 
 		//Стрельба
@@ -245,6 +299,12 @@ public class Weapons : MonoBehaviour {
                                                 case "zeusgun(Clone)":
                                                         ShotZeusgun(true);
                                                         break;
+                                                case "plasmicgun(Clone)":
+                                                        ShotPlasmicgun(true);
+                                                        break;
+                                                case "gaussgun(Clone)":
+                                                        ShotGaussgun();
+                                                        break;
 												default :
 														print("default");
 														break;
@@ -256,9 +316,11 @@ public class Weapons : MonoBehaviour {
         {
             //Действия в зависимости от текущего оружия
             if (currentW == "firegun(Clone)")
-                    ShotFiregun(false);
+                ShotFiregun(false);
             if (currentW == "zeusgun(Clone)")
                 ShotZeusgun(false);
+            if (currentW == "plasmicgun(Clone)")
+                ShotPlasmicgun(false);
         }
 		}
 }

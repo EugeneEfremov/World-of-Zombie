@@ -3,11 +3,20 @@ using System.Collections;
 
 public class Info : MonoBehaviour {
 
+    public enum GameMode
+    {
+        survival,
+        arena,
+        level1
+    };
+
 	private int _newNameZomb;
 	private Rect _helthRect, _accountRect, _armourRect, _infoRect, _countRect, _deathRect, _pauseButtonRect, _continueButtonRect;
     private Rect _magic1Rect;
 
-    public float timeZombie = 1, timeMagic1 = 10;
+    public GameMode gameMode = GameMode.survival;
+
+    public float timeZombie = 1, timeMagic1;
 	public Texture2D goal, info, pauseT, pauseDownT, continueT;
     public Texture2D magic1;
     public bool pause = false, bMagic1;
@@ -36,19 +45,53 @@ public class Info : MonoBehaviour {
     void FixedUpdate()
     {
         //Magic
-        if (bMagic1)
-        {
-            ZombAll.GetComponent<ZombieAll>().magic1 = true;
-            timeMagic1 -= Time.deltaTime;
-            if (timeMagic1 <= 0)
-                bMagic1 = false;
-        }
-        if (!bMagic1)
-        {
-            ZombAll.GetComponent<ZombieAll>().magic1 = false;
-            if (timeMagic1 < 10)
-                timeMagic1 += Time.deltaTime;
-        }
+        switch(gameMode){
+            case GameMode.survival:
+                if (bMagic1)
+                {
+                 ZombAll.GetComponent<ZombieAll>().magic1 = true;
+                 timeMagic1 -= Time.deltaTime;
+                 if (timeMagic1 <= 0)
+                      bMagic1 = false;
+             }
+             if (!bMagic1)
+              {
+                 ZombAll.GetComponent<ZombieAll>().magic1 = false;
+                 if (timeMagic1 < 10)
+                      timeMagic1 += Time.deltaTime;
+               }
+             break;
+            case GameMode.arena:
+             if (bMagic1)
+             {
+                 ZombAll.GetComponent<ZombieAll>().magic1 = true;
+                 timeMagic1 -= Time.deltaTime;
+                 if (timeMagic1 <= 0)
+                     bMagic1 = false;
+             }
+             if (!bMagic1)
+             {
+                 ZombAll.GetComponent<ZombieAll>().magic1 = false;
+                 if (timeMagic1 < 10)
+                     timeMagic1 += Time.deltaTime;
+             }
+             break;
+            case GameMode.level1:
+             if (bMagic1)
+             {
+                 ZombAll.GetComponent<Level_1>().magic1 = true;
+                 timeMagic1 -= Time.deltaTime;
+                 if (timeMagic1 <= 0)
+                     bMagic1 = false;
+             }
+             if (!bMagic1)
+             {
+                 ZombAll.GetComponent<Level_1>().magic1 = false;
+                 if (timeMagic1 < 10)
+                     timeMagic1 += Time.deltaTime;
+             }
+             break;
+         }
         //Magic END
     }
 
@@ -118,6 +161,7 @@ public class Info : MonoBehaviour {
                         PlayerPrefs.SetInt("Money", Player.GetComponent<Actor>().count / 70);
                         if (modeGame == "survival")
                         {
+                            Player.GetComponent<Global>().SaveResultGame();
                             PlayerPrefs.SetString("ActorNameSurvival", actorName);
                             PlayerPrefs.SetInt("ActorNameSurvivalScore", Player.GetComponent<Actor>().count);
                         }
@@ -128,6 +172,7 @@ public class Info : MonoBehaviour {
                         }
                         else
                         {
+                            Player.GetComponent<Global>().SaveResultGame();
                             PlayerPrefs.SetString("ActorNameCompany", actorName);
                             PlayerPrefs.SetInt("ActorNameCompanyScore", Player.GetComponent<Actor>().count);
                         }

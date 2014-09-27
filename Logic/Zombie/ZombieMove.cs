@@ -12,8 +12,8 @@ public class ZombieMove : MonoBehaviour {
 	Vector3 moveDirection = Vector3.zero;
 
 	public string typeZomb;
-    public bool magic1;
-    public Transform blod, helth20, armour100, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, gun, grenage, minigun, rocket, diskgun, accuracyMaxBonus, strongMaxBonus, speedMaxBonus, helthMaxBonus;
+    public bool magic1; //Применена ли магия
+    public Transform blod, helth20, armour100, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, firegunBul50, zeusgunBul50, plasmicgunBul50, gaussgunBul100, gun, grenage, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun, accuracyMaxBonus, strongMaxBonus, speedMaxBonus, helthMaxBonus;
 	public int helth = 100, done = 2; //жизнь, урон
     public float speed = 3, speedMax = 3;
 	public AudioClip[] ratA;
@@ -74,26 +74,46 @@ public class ZombieMove : MonoBehaviour {
 				Instantiate(gun, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
 		}
-        if (timeInGame > 90 && Player.GetComponent<Weapons>().GBgrenade == false && instNewWeapTime <= 0)
+        if (timeInGame > 60 && Player.GetComponent<Weapons>().GBgrenade == false && instNewWeapTime <= 0)
         {
 				Instantiate(grenage, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
 		}
-        if (timeInGame > 140 && Player.GetComponent<Weapons>().GBminigun == false && instNewWeapTime <= 0)
+        if (timeInGame > 90 && Player.GetComponent<Weapons>().GBminigun == false && instNewWeapTime <= 0)
         {
 				Instantiate(minigun, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
 		}
-        if (timeInGame > 240 && Player.GetComponent<Weapons>().GBrocket == false && instNewWeapTime <= 0)
+        if (timeInGame > 120 && Player.GetComponent<Weapons>().GBrocket == false && instNewWeapTime <= 0)
         {
 				Instantiate(rocket, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
 		}
-        if (timeInGame > 240 && Player.GetComponent<Weapons>().GBdiskgun == false && instNewWeapTime <= 0)
+        if (timeInGame > 150 && Player.GetComponent<Weapons>().GBdiskgun == false && instNewWeapTime <= 0)
         {
 				Instantiate(diskgun, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
 		}
+        if (timeInGame > 180 && Player.GetComponent<Weapons>().GBgaussgun == false && instNewWeapTime <= 0)
+        {
+            Instantiate(gaussgun, transform.position, Quaternion.Euler(0, 0, 0));
+            ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
+        }
+        if (timeInGame > 210 && Player.GetComponent<Weapons>().GBfiregun == false && instNewWeapTime <= 0)
+        {
+            Instantiate(firegun, transform.position, Quaternion.Euler(0, 0, 0));
+            ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
+        }
+        if (timeInGame > 240 && Player.GetComponent<Weapons>().GBzeusgun == false && instNewWeapTime <= 0)
+        {
+            Instantiate(zeusgun, transform.position, Quaternion.Euler(0, 0, 0));
+            ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
+        }
+        if (timeInGame > 290 && Player.GetComponent<Weapons>().GBplasmicgun == false && instNewWeapTime <= 0)
+        {
+            Instantiate(plasmicgun, transform.position, Quaternion.Euler(0, 0, 0));
+            ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
+        }
 	}
 
 //Бонусы
@@ -121,7 +141,26 @@ public class ZombieMove : MonoBehaviour {
         {
             Instantiate(diskgunBul50, transform.position, Quaternion.Euler(0, 0, 0));
         }
+
         if (rand > 110 && rand <= 115)
+        {
+            Instantiate(gaussgunBul100, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+        if (rand > 130 && rand <= 135)
+        {
+            Instantiate(firegunBul50, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+        if (rand > 150 && rand <= 155)
+        {
+            Instantiate(zeusgunBul50, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+        if (rand > 170 && rand <= 175)
+        {
+            Instantiate(plasmicgunBul50, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+
+
+        if (rand > 190 && rand <= 195)
         {
             Instantiate(armour100, transform.position, Quaternion.Euler(0, 0, 0));
         }

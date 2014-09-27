@@ -32,6 +32,18 @@ public class Bonus : MonoBehaviour {
                 case "diskgunBul50":
                     Actor.GetComponent<Weapons>().diskgunBullet += 50;
                 break;
+                case "firegunBul50":
+                    Actor.GetComponent<Weapons>().firegunBullet += 50;
+                break;
+                case "zeusgunBul50":
+                    Actor.GetComponent<Weapons>().zeusgunBullet += 50;
+                break;
+                case "plasmicgunBul50":
+                    Actor.GetComponent<Weapons>().plasmicgunBullet += 50;
+                break;
+                case "gaussgunBul100":
+                    Actor.GetComponent<Weapons>().gaussgunBullet += 100;
+                break;
                 case "armour100":
                     Actor.GetComponent<Actor>().armour += 100;
                  break;
@@ -58,6 +70,22 @@ public class Bonus : MonoBehaviour {
 					Actor.GetComponent<Weapons>().diskgunC = true;
                     Actor.GetComponent<Weapons>().GBdiskgun = true;
 				break;
+                case "firegun":
+                    Actor.GetComponent<Weapons>().firegunC = true;
+                    Actor.GetComponent<Weapons>().GBfiregun = true;
+                break;
+                case "zeusgun":
+                    Actor.GetComponent<Weapons>().zeusgunC = true;
+                    Actor.GetComponent<Weapons>().GBzeusgun = true;
+                break;
+                case "plasmicgun":
+                    Actor.GetComponent<Weapons>().plasmicgunC = true;
+                    Actor.GetComponent<Weapons>().GBplasmicgun = true;
+                break;
+                case "gaussgun":
+                    Actor.GetComponent<Weapons>().gaussgunC = true;
+                    Actor.GetComponent<Weapons>().GBgaussgun = true;
+                break;
 
                 //Способности
                 case "accuracyMax":
@@ -71,6 +99,10 @@ public class Bonus : MonoBehaviour {
                 break;
                 case "helthMax":
                     Actor.GetComponent<Actor>().helthMax += 40;
+                break;
+
+                case "money10":
+                    Actor.GetComponent<Global>().money += 10;
                 break;
 			}
 			Destroy(gameObject);

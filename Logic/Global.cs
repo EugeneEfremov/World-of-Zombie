@@ -24,4 +24,9 @@ public class Global : MonoBehaviour {
         if (PlayerPrefs.GetInt("0x01f04") == 0) PlayerPrefs.SetInt("0x01f04", 1);
         accuracyMax = 1 / PlayerPrefs.GetInt("0x01f04");
     }
+
+    public void SaveResultGame()
+    {
+        PlayerPrefs.SetInt("0x01001", money);
+    }
 }

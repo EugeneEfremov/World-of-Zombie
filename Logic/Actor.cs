@@ -47,9 +47,8 @@ public class Actor : MonoBehaviour {
 						cc.Move (moveDirectionX * Time.deltaTime);
 				}
         if (death)
-        {
-						Time.timeScale = 0.2f;
-				}
+            Time.timeScale = 0.2f;
+
 		if (helth < 1) {
             death = true;
 			helth = 0;
