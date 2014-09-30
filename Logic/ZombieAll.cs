@@ -13,7 +13,7 @@ public class ZombieAll : MonoBehaviour {
     public float timeZombie = 0.5f, timeZombieNew = 0, timeInGame = 0, instNewWeapTime = 0; //Время до создания зомби, Новое время до создания, Время в игре, время до появления нового оружия
 
 	void Start(){
-		Player = GameObject.FindWithTag ("Player").transform;
+		Player = GameObject.Find("Actor").transform;
 	}
 
 	void FixedUpdate(){

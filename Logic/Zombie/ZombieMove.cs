@@ -13,7 +13,7 @@ public class ZombieMove : MonoBehaviour {
 
 	public string typeZomb;
     public bool magic1; //Применена ли магия
-    public Transform blod, helth20, armour100, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, firegunBul50, zeusgunBul50, plasmicgunBul50, gaussgunBul100, gun, grenage, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun, accuracyMaxBonus, strongMaxBonus, speedMaxBonus, helthMaxBonus;
+    public Transform blod, helth20, armour100, armour200, armour300, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, firegunBul50, zeusgunBul50, plasmicgunBul50, gaussgunBul100, gun, grenage, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun, accuracyMaxBonus, strongMaxBonus, speedMaxBonus, helthMaxBonus;
 	public int helth = 100, done = 2; //жизнь, урон
     public float speed = 3, speedMax = 3;
 	public AudioClip[] ratA;
@@ -118,7 +118,7 @@ public class ZombieMove : MonoBehaviour {
 
 //Бонусы
 	void BonusRandom(){
-		int rand = Random.Range (0, 300);
+		int rand = Random.Range (0, 400);
 		if (rand <= 10){
 			Instantiate(helth20, transform.position, Quaternion.Euler(0,0,0));
 		}
@@ -164,24 +164,32 @@ public class ZombieMove : MonoBehaviour {
         {
             Instantiate(armour100, transform.position, Quaternion.Euler(0, 0, 0));
         }
+        if (rand > 210 && rand <= 215)
+        {
+            Instantiate(armour200, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+        if (rand > 230 && rand <= 235)
+        {
+            Instantiate(armour300, transform.position, Quaternion.Euler(0, 0, 0));
+        }
 
         //Способности
-        if (rand > 130 && rand <= 135 && ZombieAll.GetComponent<ZombieAll>().accuracyMax < 5)
+        if (rand > 250 && rand <= 255 && ZombieAll.GetComponent<ZombieAll>().accuracyMax < 5)
         {
             Instantiate(accuracyMaxBonus, transform.position, Quaternion.Euler(0, 0, 0));
             ZombieAll.GetComponent<ZombieAll>().accuracyMax += 1;
         }
-        if (rand > 150 && rand <= 155 && ZombieAll.GetComponent<ZombieAll>().strongMax < 5)
+        if (rand > 280 && rand <= 285 && ZombieAll.GetComponent<ZombieAll>().strongMax < 5)
         {
             Instantiate(strongMaxBonus, transform.position, Quaternion.Euler(0, 0, 0));
             ZombieAll.GetComponent<ZombieAll>().strongMax += 1;
         }
-        if (rand > 170 && rand <= 175 && ZombieAll.GetComponent<ZombieAll>().speedMax < 5)
+        if (rand > 310 && rand <= 315 && ZombieAll.GetComponent<ZombieAll>().speedMax < 5)
         {
             Instantiate(speedMaxBonus, transform.position, Quaternion.Euler(0, 0, 0));
             ZombieAll.GetComponent<ZombieAll>().speedMax += 1;
         }
-        if (rand > 190 && rand <= 195 && ZombieAll.GetComponent<ZombieAll>().helthMax < 5)
+        if (rand > 340 && rand <= 345 && ZombieAll.GetComponent<ZombieAll>().helthMax < 5)
         {
             Instantiate(helthMaxBonus, transform.position, Quaternion.Euler(0, 0, 0));
             ZombieAll.GetComponent<ZombieAll>().helthMax += 1;

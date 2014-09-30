@@ -8,7 +8,7 @@ public class Actor : MonoBehaviour {
 	private int score; //Очки
 
     public bool death = false;
-	public int helth = 100, helthMax, armour = 0, armourMax, count = 0, gravity = 80;
+    public int helth = 100, helthMax, helthReset, armour = 0, armourMax, count = 0, gravity = 80, live = 0;
     public float speed = 8, speedMax;
 
 	void Start(){
@@ -17,17 +17,20 @@ public class Actor : MonoBehaviour {
         helth += GetComponent<Global>().helthMax;
         helthMax = 100 + GetComponent<Global>().helthMax;
 
-        armour = 100 * GetComponent<Global>().armour;
-        armourMax = 100 * GetComponent<Global>().armour;
+        live = GetComponent<Global>().live;
+
+        armour = GetComponent<Global>().armour;
+        armourMax = GetComponent<Global>().armourMax;
 
         speedMax = GetComponent<Global>().speedMax * speed;
         speed += speedMax / 2;
 	}
 
-	void Update () {
+	void FixedUpdate () {
         if (helth > helthMax) helth = helthMax;
         if (armour > armourMax) armour = armourMax;
         if (armour < 0) armour = 0;
+        helthReset = transform.GetComponent<Global>().helthReset;
 
         if (!death)
         {
@@ -50,8 +53,16 @@ public class Actor : MonoBehaviour {
             Time.timeScale = 0.2f;
 
 		if (helth < 1) {
-            death = true;
-			helth = 0;
+            if (helthReset > 0)
+            {
+                helth = helthMax;
+                transform.GetComponent<Global>().helthReset--;
+            }
+            else
+            {
+                death = true;
+                helth = 0;
+            }
 		}
 	}
 }

@@ -6,6 +6,8 @@ MonoImporter:
   - blod: {fileID: 400000, guid: 87f770d4a63f24243ab5a6137d698bff, type: 2}
   - helth20: {fileID: 400000, guid: b4ea94f2a74f4a940b338217a6127be6, type: 2}
   - armour100: {fileID: 400002, guid: 603d1066ac9e2e94785e4afcf6ae29e5, type: 2}
+  - armour200: {fileID: 400002, guid: af63688f4d8a49b4a97ffd6939c4bb56, type: 2}
+  - armour300: {fileID: 400002, guid: a239ef615c497464c8c3ea098f6927d9, type: 2}
   - gunBul50: {fileID: 400000, guid: a5b0ecb840c418148a2d58fa590efed9, type: 2}
   - grenadeBul50: {fileID: 400002, guid: 674c399d819922c42913ce0e757d65d2, type: 2}
   - minigunBul500: {fileID: 400002, guid: ba95d812629f82a4d988af2a9d3a044f, type: 2}

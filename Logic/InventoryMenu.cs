@@ -11,7 +11,7 @@ public class InventoryMenu : MonoBehaviour {
     private Rect _armourRect, _lanternRect, _nvdRect, _dronRect, _liveRect, _helthResetRect; //Equipment
     private Rect _countHelthMaxRect, _countStrongMaxRect, _countSpeedMaxRect, _countAccuracyMaxRect; //Specifications of Actor
     private Rect _helthMaxButtonsRect, _strongMaxButtonsRect, _speedMaxButtonsRect, _accuracyMaxButtonsRect; //Specifications of Actor Buttons
-    private Rect _pistolsRect, _gunRect, _grenadeRect, _minigunRect, _rocketRect, _diskgunRect; //Level of Weapons
+    private Rect _pistolsRect, _gunRect, _grenadeRect, _minigunRect, _rocketRect, _diskgunRect, _firegunRect, _zeusgunRect, _plasmicgunRect, _gaussgunRect; //Level of Weapons
     private Rect _pistolsBulletRect, _gunBulletRect, _grenadeBulletRect, _minigunBulletRect, _rocketBulletRect, _diskgunBulletRect; //Bullet of Weapons
 
     public bool newGame = false; //new Game?
@@ -19,7 +19,7 @@ public class InventoryMenu : MonoBehaviour {
     public int money, loadLevel;
     public int armour, lantern, nvd, dron, live, helthReset; //Equipment
     public int helthMax, strongMax, speedMax, accuracyMax, countMax; //Specifications of Actor
-    public int pistolsLvl, gunLvl, grenadeLvl, minigunLvl, rocketLvl, diskgunLvl; //Level of Weapons
+    public int pistolsLvl, gunLvl, grenadeLvl, minigunLvl, rocketLvl, diskgunLvl, firegunLvl, zeusgunLvl, plasmicgunLvl, gaussgunLvl; //Level of Weapons
     public int gunBullet, grenadeBullet, minigunBullet, rocketBullet, diskgunBullet; //Bullet of Weapons
 
     void Start()
@@ -34,6 +34,7 @@ public class InventoryMenu : MonoBehaviour {
             PlayerPrefs.SetInt("0x01001", 0);
             PlayerPrefs.SetInt("0xffaa01", 1);
             PlayerPrefs.SetInt("0x01002", 0);
+            PlayerPrefs.SetInt("0x02001", 0);
             PlayerPrefs.SetInt("0x01003", 0);
             PlayerPrefs.SetInt("0x01004", 0);
             PlayerPrefs.SetInt("0x01005", 0);
@@ -50,12 +51,15 @@ public class InventoryMenu : MonoBehaviour {
             PlayerPrefs.SetInt("fx10ab3", 0);
             PlayerPrefs.SetInt("fx10ab4", 0);
             PlayerPrefs.SetInt("fx10ab5", 0);
-            PlayerPrefs.SetInt("ax90ab0", 0);
-            PlayerPrefs.SetInt("ax90ab0", 0);
-            PlayerPrefs.SetInt("ax90ab0", 0);
-            PlayerPrefs.SetInt("ax90ab0", 0);
-            PlayerPrefs.SetInt("ax90ab0", 0);
-            PlayerPrefs.SetInt("ax90ab0", 0);
+            PlayerPrefs.SetInt("fx01e01", 0);
+            PlayerPrefs.SetInt("fx01e03", 0);
+            PlayerPrefs.SetInt("fx01e05", 0);
+            PlayerPrefs.SetInt("fx01e07", 0);
+            PlayerPrefs.SetInt("ax90ab1", 0);
+            PlayerPrefs.SetInt("ax90ab2", 0);
+            PlayerPrefs.SetInt("ax90ab3", 0);
+            PlayerPrefs.SetInt("ax90ab4", 0);
+            PlayerPrefs.SetInt("ax90ab5", 0);
         }
 
         nameActor = PlayerPrefs.GetString("ActorNameCompany").ToString();
@@ -78,7 +82,7 @@ public class InventoryMenu : MonoBehaviour {
         if (PlayerPrefs.GetInt("0x01f04") == 0) PlayerPrefs.SetInt("0x01f04", 1);
         accuracyMax = 1 / PlayerPrefs.GetInt("0x01f04");
 
-        countMax = PlayerPrefs.GetInt("0x01001");
+        countMax = PlayerPrefs.GetInt("0x910fa");
 
         pistolsLvl = PlayerPrefs.GetInt("fx10ab0");
         gunLvl = PlayerPrefs.GetInt("fx10ab1");
@@ -86,12 +90,16 @@ public class InventoryMenu : MonoBehaviour {
         minigunLvl = PlayerPrefs.GetInt("fx10ab3");
         rocketLvl = PlayerPrefs.GetInt("fx10ab4");
         diskgunLvl = PlayerPrefs.GetInt("fx10ab5");
+        firegunLvl = PlayerPrefs.GetInt("fx01e01");
+        zeusgunLvl = PlayerPrefs.GetInt("fx01e03");
+        plasmicgunLvl = PlayerPrefs.GetInt("fx01e05");
+        gaussgunLvl = PlayerPrefs.GetInt("fx01e07");
 
-        gunBullet = PlayerPrefs.GetInt("ax90ab0");
-        grenadeBullet = PlayerPrefs.GetInt("ax90ab0");
-        minigunBullet = PlayerPrefs.GetInt("ax90ab0");
-        rocketBullet = PlayerPrefs.GetInt("ax90ab0");
-        diskgunBullet = PlayerPrefs.GetInt("ax90ab0");
+        gunBullet = PlayerPrefs.GetInt("ax90ab1");
+        grenadeBullet = PlayerPrefs.GetInt("ax90ab2");
+        minigunBullet = PlayerPrefs.GetInt("ax90ab3");
+        rocketBullet = PlayerPrefs.GetInt("ax90ab4");
+        diskgunBullet = PlayerPrefs.GetInt("ax90ab5");
 
 
 //Rect
@@ -120,6 +128,10 @@ public class InventoryMenu : MonoBehaviour {
         _minigunRect = new Rect (550, 90, 70, 40);
         _rocketRect = new Rect (250, 170, 70, 40);
         _diskgunRect = new Rect(350, 170, 70, 40);
+        _firegunRect = new Rect(450, 170, 70, 40);
+        _zeusgunRect = new Rect(550, 170, 70, 40);
+        _plasmicgunRect = new Rect(250, 260, 70, 40);
+        _gaussgunRect = new Rect(350, 260, 70, 40);
 
         _pistolsBulletRect = new Rect(300, 130, 30, 20);
         _gunBulletRect = new Rect(400, 130, 30, 20);
@@ -165,6 +177,10 @@ public class InventoryMenu : MonoBehaviour {
             GUI.Label(_minigunRect, minigunLvl.ToString());
             GUI.Label(_rocketRect, rocketLvl.ToString());
             GUI.Label(_diskgunRect, diskgunLvl.ToString());
+            GUI.Label(_firegunRect, firegunLvl.ToString());
+            GUI.Label(_zeusgunRect, zeusgunLvl.ToString());
+            GUI.Label(_plasmicgunRect, plasmicgunLvl.ToString());
+            GUI.Label(_gaussgunRect, gaussgunLvl.ToString());
 
             //Bullet
             GUI.Label(_pistolsBulletRect, 999999.ToString());

@@ -17,6 +17,30 @@ public class Bonus : MonoBehaviour {
 				case "helth20":
 					Actor.GetComponent<Actor>().helth += 20;
 				break;
+                case "helthReset":
+                    Actor.GetComponent<Global>().helthReset += 1;
+                break;
+                case "armour100":
+                if (Actor.GetComponent<Actor>().armour < 100)
+                {
+                    Actor.GetComponent<Actor>().armourMax = 100;
+                    Actor.GetComponent<Actor>().armour = 100;
+                }
+                break;
+                case "armour200":
+                if (Actor.GetComponent<Actor>().armour < 200)
+                {
+                    Actor.GetComponent<Actor>().armourMax = 200;
+                    Actor.GetComponent<Actor>().armour = 200;
+                }
+                break;
+                case "armour300":
+                if (Actor.GetComponent<Actor>().armour < 300)
+                {
+                    Actor.GetComponent<Actor>().armourMax = 300;
+                    Actor.GetComponent<Actor>().armour = 300;
+                }
+                break;
 				case "gunBul50":
 					Actor.GetComponent<Weapons>().gunBullet += 50;
 				break;
@@ -44,9 +68,6 @@ public class Bonus : MonoBehaviour {
                 case "gaussgunBul100":
                     Actor.GetComponent<Weapons>().gaussgunBullet += 100;
                 break;
-                case "armour100":
-                    Actor.GetComponent<Actor>().armour += 100;
-                 break;
 
 
 				//Оружие

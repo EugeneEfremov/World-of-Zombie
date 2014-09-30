@@ -4,9 +4,9 @@ using System.Collections;
 public class Weapons : MonoBehaviour {
 	private float delayShot; //Пауза выстрела
 
-	public int strongMax, accuracyMax, gunBullet = 20, gunMax = 100, grenadeBullet = 20, grenadeMax = 100, minigunBullet = 1000, minigunMax = 100, rocketBullet = 20, rocketMax = 100, diskgunBullet = 20, diskgunMax = 100, firegunMax = 50, zeusgunMax = 50, plasmicgunMax = 50, gaussgunBullet = 50, gaussgunMax = 100; //Патроны, максимальное кол-во
-    public float firegunBullet = 15, zeusgunBullet = 15, plasmicgunBullet = 15;
-    public GameObject cam, bulletSpawn;
+	public int currentWNum, strongMax, accuracyMax, gunBullet, gunMax = 100, grenadeBullet, grenadeMax = 100, minigunBullet, minigunMax = 100, rocketBullet, rocketMax = 100, diskgunBullet, diskgunMax = 100, firegunMax = 50, zeusgunMax = 50, plasmicgunMax = 50, gaussgunBullet = 50, gaussgunMax = 100; //Патроны, максимальное кол-во
+    public float firegunBullet, zeusgunBullet, plasmicgunBullet;
+    public GameObject cam, topBody, downBody;
 	public bool pistolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false, firegunC = false, firegunActive = false, zeusgunC = false, zeusgunActive = false, plasmicgunC = false, plasmicgunActive = false, gaussgunC = false; //Наличие
 	public string currentW;
 	public Transform pistols, gun, grenade, boom, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun; //Объекты
@@ -19,9 +19,17 @@ public class Weapons : MonoBehaviour {
         strongMax = GetComponent<Global>().strongMax;
         accuracyMax = GetComponent<Global>().accuracyMax;
 
-        bulletSpawn = GameObject.Find("BulletSpawn");
+        topBody = GameObject.Find("topBody");
+        downBody = GameObject.Find("downBody");
         cam = GameObject.Find("Camera");
         currentW = "pistols(Clone)";
+        currentWNum = 1;
+
+        gunBullet = PlayerPrefs.GetInt("ax90ab1");
+        grenadeBullet = PlayerPrefs.GetInt("ax90ab2");
+        minigunBullet = PlayerPrefs.GetInt("ax90ab3");
+        rocketBullet = PlayerPrefs.GetInt("ax90ab4");
+        diskgunBullet = PlayerPrefs.GetInt("ax90ab5");
 
         //Изменение макс. кол-ва патрон
         AlterMaxBullet(strongMax);
@@ -43,6 +51,8 @@ public class Weapons : MonoBehaviour {
     {
         if (bullet > max)
             return max;
+        if (bullet < 0)
+            return 0;
         return bullet;
     }
 
@@ -223,56 +233,113 @@ public class Weapons : MonoBehaviour {
         if (!plasmicgunActive && plasmicgunBullet < plasmicgunMax)
             plasmicgunBullet += Time.deltaTime;
 
-		if(Input.GetKey(KeyCode.Alpha1) && currentW != "pistols" && pistolsC){
-			SwitchWeapon(pistols);
-		}
-		if(Input.GetKey(KeyCode.Alpha2) && currentW != "gun" && gunC){
-			SwitchWeapon(gun);
-		}
-		if(Input.GetKey(KeyCode.Alpha3) && currentW != "grenade" && grenadeC){
-			SwitchWeapon(grenade);
-		}
-		if(Input.GetKey(KeyCode.Alpha4) && currentW != "minigun" && minigunC){
-			SwitchWeapon(minigun);
-		}
-		if(Input.GetKey(KeyCode.Alpha5) && currentW != "rocket" && rocketC){
-			SwitchWeapon(rocket);
-		}
-		if(Input.GetKey(KeyCode.Alpha6) && currentW != "diskgun" && diskgunC){
-			SwitchWeapon(diskgun);
-		}
-        if (Input.GetKey(KeyCode.Alpha7) && currentW != "firegun" && firegunC)
+        if (currentWNum < 1)
+            currentWNum = 1;
+
+        if (currentWNum == 1)
         {
-            SwitchWeapon(firegun);
+            if (currentW != "pistols" && pistolsC)
+			    SwitchWeapon(pistols);
+		}
+        if (currentWNum == 2)
+        {
+            if (currentW != "gun" && gunC)
+                SwitchWeapon(gun);
+            if (!gunC)
+                currentWNum--;
+		}
+        if (currentWNum == 3)
+        {
+            if (currentW != "grenade" && grenadeC)
+			    SwitchWeapon(grenade);
+            if (!grenadeC)
+                currentWNum--;
+		}
+        if (currentWNum == 4)
+        {
+            if (currentW != "minigun" && minigunC)
+			    SwitchWeapon(minigun);
+            if (!minigunC)
+                currentWNum--;
+		}
+        if (currentWNum == 5)
+        {
+            if (currentW != "rocket" && rocketC)
+			    SwitchWeapon(rocket);
+            if (!rocketC)
+                currentWNum--;
+		}
+        if (currentWNum == 6)
+        {
+            if (currentW != "diskgun" && diskgunC)
+			    SwitchWeapon(diskgun);
+            if (!diskgunC)
+                currentWNum--;
+		}
+        if (currentWNum == 7)
+        {
+            if (currentW != "firegun" && firegunC)
+                SwitchWeapon(firegun);
+            if (!firegunC)
+                currentWNum--;
         }
-        if (Input.GetKey(KeyCode.Alpha8) && currentW != "zeusgun" && zeusgunC)
+        if (currentWNum == 8)
         {
-            SwitchWeapon(zeusgun);
+            if (currentW != "zeusgun" && zeusgunC)
+                SwitchWeapon(zeusgun);
+            if (!zeusgunC)
+                currentWNum--;
         }
-        if (Input.GetKey(KeyCode.Alpha9) && currentW != "plasmicgun" && plasmicgunC)
+        if (currentWNum == 9)
         {
-            SwitchWeapon(plasmicgun);
+            if (currentW != "plasmicgun" && plasmicgunC)
+                SwitchWeapon(plasmicgun);
+            if (!plasmicgunC)
+                currentWNum--;
         }
-        if (Input.GetKey(KeyCode.Alpha0) && currentW != "gaussgun" && gaussgunC)
+        if (currentWNum == 10)
         {
-            SwitchWeapon(gaussgun);
+            if (currentW != "gaussgun" && gaussgunC)
+                SwitchWeapon(gaussgun);
+            if (!gaussgunC)
+                currentWNum--;
         }
 
-		//Стрельба
-		if (Input.GetMouseButton (0)) {
-						camRay = cam.camera.ScreenPointToRay (Input.mousePosition); //Позиция прицела
-						if (Physics.Raycast (cam.transform.position, camRay.direction, out goal, 100f)) {//Куда смотрит прицел
-								Debug.DrawLine (cam.transform.position, goal.point, Color.red);
-			
-                                //Вращение точки спавна патрон за прицелом
-								Vector3 relativePos = goal.point - bulletSpawn.transform.position;
-								Quaternion rotation = Quaternion.LookRotation (relativePos);
-								bulletSpawn.transform.rotation = rotation;
 
-                                NewPositionGoal = new Vector3(bulletSpawn.transform.position.x + Random.Range(-0.1f - accuracyMax, 0.1f + accuracyMax), bulletSpawn.transform.position.y + Random.Range(-0.01f - accuracyMax / 10, 0.01f + accuracyMax / 10), bulletSpawn.transform.position.z);
-                                if (Physics.Raycast(NewPositionGoal, bulletSpawn.transform.forward, out hitObj, 100f))
+				camRay = cam.camera.ScreenPointToRay (Input.mousePosition); //Позиция прицела
+				if (Physics.Raycast (cam.transform.position, camRay.direction, out goal, 100f)) {//Куда смотрит прицел
+						//Debug.DrawLine (cam.transform.position, goal.point, Color.red);
+
+                        //Вращение верхней части тела за прицелом
+                         Vector3 relativePos = goal.point - topBody.transform.position;
+                         Quaternion rotation = Quaternion.LookRotation(relativePos);
+                         topBody.transform.rotation = rotation;
+
+                    //Поворот нижней части тела
+                         print(topBody.transform.eulerAngles.y);
+                         if (topBody.transform.eulerAngles.y >= 0 && topBody.transform.eulerAngles.y < 45)
+                             downBody.transform.rotation = Quaternion.Euler(0, 0, 0);
+                         if (topBody.transform.eulerAngles.y >= 45 && topBody.transform.eulerAngles.y <= 90)
+                             downBody.transform.rotation = Quaternion.Euler(0, 45, 0);
+                         if (topBody.transform.eulerAngles.y >= 90 && topBody.transform.rotation.y < 135)
+                             downBody.transform.rotation = Quaternion.Euler(0, 90, 0);
+                         if (topBody.transform.eulerAngles.y >= 135 && topBody.transform.rotation.y < 180)
+                             downBody.transform.rotation = Quaternion.Euler(0, 135, 0);
+                         if (topBody.transform.eulerAngles.y >= 180 && topBody.transform.rotation.y < 225)
+                             downBody.transform.rotation = Quaternion.Euler(0, 180, 0);
+                         if (topBody.transform.eulerAngles.y >= 225 && topBody.transform.rotation.y < 270)
+                             downBody.transform.rotation = Quaternion.Euler(0, 225, 0);
+                         if (topBody.transform.eulerAngles.y >= 270 && topBody.transform.rotation.y < 315)
+                             downBody.transform.rotation = Quaternion.Euler(0, 270, 0);
+                         if (topBody.transform.eulerAngles.y >= 315 && topBody.transform.rotation.y < 360)
+                             downBody.transform.rotation = Quaternion.Euler(0, 315, 0);
+                         //Стрельба
+                         if (Input.GetMouseButton(0))
+                            {
+                                NewPositionGoal = new Vector3(topBody.transform.position.x + Random.Range(-0.1f - accuracyMax, 0.1f + accuracyMax), topBody.transform.position.y + Random.Range(-0.01f - accuracyMax / 10, 0.01f + accuracyMax / 10), topBody.transform.position.z);
+                                if (Physics.Raycast(NewPositionGoal, topBody.transform.forward, out hitObj, 100f))
                                 {
-										Debug.DrawLine (bulletSpawn.transform.position, bulletSpawn.transform.forward + (goal.normal * 0.5f), Color.yellow);
+                                    Debug.DrawLine(topBody.transform.position, topBody.transform.forward + (goal.normal * 0.5f), Color.yellow);
 												//Действия в зависимости от текущего оружия
 												switch (currentW) {
 												case "pistols(Clone)":
