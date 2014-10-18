@@ -5,19 +5,23 @@ public class Survival : MonoBehaviour {
 
     public GameObject Street_light1;
     public GameObject Street_light2;
+    public GameObject Actor;
+    float DLight1;
 
     void Start(){
-        GameObject.Find("Directional light1").GetComponent<Light>().intensity = LightIntens();
-        GameObject.Find("Directional light2").GetComponent<Light>().intensity = GameObject.Find("Directional light1").GetComponent<Light>().intensity;
+        Actor = GameObject.Find("Actor");
 
-        //Фонарь
-        if (GameObject.Find("Directional light1").GetComponent<Light>().light.intensity < 0.3f)
+        DLight1 = GameObject.Find("DirectionalLight1").GetComponent<Light>().intensity = LightIntens();
+        GameObject.Find("DirectionalLight2").GetComponent<Light>().intensity = GameObject.Find("DirectionalLight1").GetComponent<Light>().intensity;
+
+        if (DLight1 < 0.2f)
         {
-            Street_light1.GetComponent<Light>().light.enabled = true;
-            Street_light2.GetComponent<Light>().light.enabled = true;
-
-            if (GameObject.Find("Actor").GetComponent<Global>().lantern == 1)
-                GameObject.Find("Lantern").GetComponent<Light>().light.enabled = true;
+            if (Actor.GetComponent<Global>().lantern == 1)
+            {
+                GameObject.Find("Lantern").light.enabled = true;
+            }
+            else if (Actor.GetComponent<Global>().lantern == 0)
+                GameObject.Find("Lantern").light.enabled = false;
         }
     }
         public float LightIntens(){

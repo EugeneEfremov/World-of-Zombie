@@ -11,18 +11,21 @@ public class ZombieMove : MonoBehaviour {
 
 	Vector3 moveDirection = Vector3.zero;
 
-	public string typeZomb;
-    public bool magic1; //Применена ли магия
+	public string typeZomb, gameMode;
+    public bool shoting = false, magic1; //Применена ли магия
     public Transform blod, helth20, armour100, armour200, armour300, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, firegunBul50, zeusgunBul50, plasmicgunBul50, gaussgunBul100, gun, grenage, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun, accuracyMaxBonus, strongMaxBonus, speedMaxBonus, helthMaxBonus;
-	public int helth = 100, done = 2; //жизнь, урон
+    public Transform SoldersBullet, GrenadeBullet, bZombBullet;
+    public int helth = 100, done = 2; //жизнь, урон
     public float speed = 3, speedMax = 3;
 	public AudioClip[] ratA;
 
 	void Start () {
+
 		Player = GameObject.FindWithTag ("Player").transform;
 		cc = GetComponent<CharacterController> ();
-		timeInGame = GameObject.Find("ZombieLogic").GetComponent<ZombieAll> ().timeInGame;
         ZombieAll = GameObject.Find("ZombieLogic");
+        gameMode = Player.GetComponent<Info>().gameMode.ToString();
+		timeInGame = GameObject.Find("ZombieLogic").GetComponent<ZombieAll> ().timeInGame;
 
 		if (typeZomb == "Zombie") {
             speed = 2;
@@ -30,6 +33,7 @@ public class ZombieMove : MonoBehaviour {
 			helth = 70;
 			done = 6;
             bloodY = 0.9f;
+            shoting = false;
 		}
 		if (typeZomb == "Rat") {
 			speed = 6;
@@ -37,6 +41,7 @@ public class ZombieMove : MonoBehaviour {
 			helth = 30;
 			done = 2;
             bloodY = 0.1f;
+            shoting = false;
 		}
 		if (typeZomb == "Dog") {
 			speed = 7;
@@ -44,6 +49,7 @@ public class ZombieMove : MonoBehaviour {
 			helth = 70;
 			done = 10;
             bloodY = 0.1f;
+            shoting = false;
 		}
 		if (typeZomb == "Solders") {
 			speed = 5.5f;
@@ -51,6 +57,7 @@ public class ZombieMove : MonoBehaviour {
 			helth = 150;
 			done = 15;
             bloodY = 0.9f;
+            shoting = true;
 		}
 		if (typeZomb == "Grenade") {
 			speed = 3;
@@ -58,6 +65,7 @@ public class ZombieMove : MonoBehaviour {
 			helth = 300;
 			done = 20;
             bloodY = 0.9f;
+            shoting = true;
 		}
 		if (typeZomb == "bZomb") {
 			speed = 4;
@@ -65,6 +73,7 @@ public class ZombieMove : MonoBehaviour {
 			helth = 350;
 			done = 30;
             bloodY = 0.9f;
+            shoting = true;
 		}
 	}
 
@@ -227,8 +236,11 @@ public class ZombieMove : MonoBehaviour {
 		
 				//Смерть 
 				if (helth < 1) {
-						BonusRandom();
-						GunBonus();
+                    if (gameMode != "arena")
+                    {
+                        BonusRandom();
+                        GunBonus();
+                    }
                         Instantiate(blod, new Vector3(transform.position.x, transform.position.y - bloodY, transform.position.z), Quaternion.Euler(new Vector3(0, 0, 0)));
 						Destroy (gameObject);
 						ZombieAll.GetComponent<ZombieAll>().accountZombNew--;
@@ -237,20 +249,52 @@ public class ZombieMove : MonoBehaviour {
 				RaycastHit zombHit;
 				//Урон
 				timeDamage -= Time.deltaTime;
-				if (Physics.Raycast (gameObject.transform.position, transform.forward, out zombHit, 1.5f)) {
-						if (zombHit.transform.tag == "Player") {
-							if(timeDamage <= 0){
-                                if (Player.GetComponent<Actor>().armour > 0)
-                                {
-                                    Player.GetComponent<Actor>().helth -= (int)(done / 2f);
-                                    Player.GetComponent<Actor>().armour -= (int)(done / 2f);
-                                }
-                                if (Player.GetComponent<Actor>().armour <= 0)
-                                    Player.GetComponent<Actor>().helth -= done;
 
-								timeDamage = 1.2f;
-							}
-						}
+                //Стрельба
+                if (shoting && timeDamage <= 0)
+                {
+                    switch (typeZomb)
+                    {
+                        case "Solders":
+                            Instantiate(SoldersBullet, new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z + 1), transform.rotation);
+                            timeDamage = 1f;
+                        break;
+                        case "Grenade":
+                            Instantiate(GrenadeBullet, new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z + 2), transform.rotation);
+                            timeDamage = 2f;
+                        break;
+                        case "bZomb":
+                            Instantiate(bZombBullet, new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z + 2), transform.rotation);
+                            timeDamage = 2f;
+                        break;
+                    }
+                }
+
+                if (Physics.Raycast(gameObject.transform.position, transform.forward, out zombHit, 1.5f))
+                {
+                    if (zombHit.transform.tag == "OtherHelth")
+                    {
+                        if (timeDamage <= 0)
+                        {
+                            zombHit.transform.GetComponent<OtherHelth>().helth -= done;
+                            timeDamage = 1.2f;
+                        }
+                    }
+                    if (zombHit.transform.tag == "Player")
+                    {
+                        if (timeDamage <= 0)
+                        {
+                            if (Player.GetComponent<Actor>().armour > 0)
+                            {
+                                Player.GetComponent<Actor>().helth -= (int)(done / 2f);
+                                Player.GetComponent<Actor>().armour -= (int)(done / 2f);
+                            }
+                            if (Player.GetComponent<Actor>().armour <= 0)
+                                Player.GetComponent<Actor>().helth -= done;
+
+                            timeDamage = 1.2f;
+                        }
+                    }
+                }
 				}
-		}
 }

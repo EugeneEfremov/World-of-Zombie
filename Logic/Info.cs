@@ -18,9 +18,9 @@ public class Info : MonoBehaviour {
     public GameMode gameMode = GameMode.survival;
 
     public float timeZombie = 1, timeMagic1;
-    public Texture2D goal, leftInfo, rightInfo, pauseT, pauseDownT, arrowWeapons, nvdT, helthResetT;
+    public Texture2D goal, leftInfo, rightInfo, pauseT, pauseDownT, arrowWeapons, nvdT, nvdCam, helthResetT;
     public Texture2D magic1, magic2, magic3, magic4;
-    public bool pause = false, bMagic1, bMagic2, bMagic3, bMagic4, exit = false, helthResetB;
+    public bool pause = false, bMagic1, bMagic2, bMagic3, bMagic4, exit = false, helthResetB, nvdEnabled = false;
     public Vector2 mp;
 	public Transform Player;
 	public string actorName= "", modeGame, currentW;
@@ -40,8 +40,7 @@ public class Info : MonoBehaviour {
         _pauseButtonRect = new Rect(5, 55, 34, 33);
         _pauseRect = new Rect(Screen.width / 2 - 150, Screen.height / 2 - 150, 300, 200);
 
-        if (Player.GetComponent<Global>().nvd > 0)
-            _nvdRect = new Rect(10, 100, 25, 20);
+        _nvdRect = new Rect(10, 100, 25, 20);
 
         _liveActorRect = new Rect(50, 85, 30, 30);
         _helthResetRect = new Rect(60, 60, 30, 25);
@@ -51,11 +50,24 @@ public class Info : MonoBehaviour {
         _weaponsRect = new Rect(Screen.width - 90, 40, 90, 30);
         _weaponsBulletRect = new Rect(Screen.width - 70, 65, 40, 30);
 
-        _magic1Rect = new Rect(Screen.width - 80, 135, 50, 50);
-        _magic2Rect = new Rect(Screen.width - 80, 195, 50, 50);
-        _magic3Rect = new Rect(Screen.width - 80, 255, 50, 50);
-        _magic4Rect = new Rect(Screen.width - 80, 315, 50, 50);
         _exitRect = new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 200, 100);
+
+        if (gameMode == GameMode.arena)
+        {
+
+            _magic1Rect = new Rect(Screen.width - 80, 50, 50, 50);
+            _magic2Rect = new Rect(Screen.width - 80, 110, 50, 50);
+            _magic3Rect = new Rect(Screen.width - 80, 170, 50, 50);
+            _magic4Rect = new Rect(Screen.width - 80, 230, 50, 50);
+
+        }
+        else
+        {
+            _magic1Rect = new Rect(Screen.width - 80, 135, 50, 50);
+            _magic2Rect = new Rect(Screen.width - 80, 195, 50, 50);
+            _magic3Rect = new Rect(Screen.width - 80, 255, 50, 50);
+            _magic4Rect = new Rect(Screen.width - 80, 315, 50, 50);
+        }
 
         if (!pause)
                 Time.timeScale = 1;
@@ -63,8 +75,8 @@ public class Info : MonoBehaviour {
 
     void FixedUpdate()
     {
-        //Magic
-        switch(gameMode){
+        #region Magic
+        switch (gameMode){
             case GameMode.survival:
                 if (bMagic1)
                 {
@@ -110,10 +122,11 @@ public class Info : MonoBehaviour {
                      timeMagic1 += Time.deltaTime;
              }
              break;
-         }
-        //Magic END
+        }
+        #endregion
 
-        currentW = Player.GetComponent<Weapons>().currentW;
+        if (gameMode != GameMode.arena)
+            currentW = Player.GetComponent<Weapons>().currentW;
 
         if (pause)
             Time.timeScale = 0;
@@ -136,7 +149,15 @@ public class Info : MonoBehaviour {
         GUI.Label (_accountRect, Player.GetComponent<Actor>().count.ToString());
         GUI.Label(_liveActorRect, Player.GetComponent<Actor>().live.ToString());
 
-        GUI.Label (_nvdRect, nvdT);
+        if (GUI.Button(_nvdRect, nvdT))
+        {
+            if (!nvdEnabled && Player.GetComponent<Actor>().nvd > 0)
+            {
+                GUI.Label(new Rect(0, 0, Screen.width, Screen.height), nvdCam);
+                nvdEnabled = true;
+            }
+        }
+
         if (helthResetB)
             GUI.Label (_helthResetRect, helthResetT);
 
@@ -168,58 +189,66 @@ public class Info : MonoBehaviour {
 
 		if (Player.GetComponent<Actor> ().death) {
             GUI.Window(0, _deathRect, WindowFunction, "Вы погибли");
-		}
-
-        switch (currentW)
-        {
-            case "pistols(Clone)":
-                GUI.Label(_weaponsRect, "pistols");
-                GUI.Label(_weaponsBulletRect, "~~~~");
-            break;
-            case "gun(Clone)":
-                 GUI.Label(_weaponsRect, "gun");
-                GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().gunBullet.ToString());
-            break;
-            case "grenade(Clone)":
-                GUI.Label(_weaponsRect, "grenade");
-                GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().grenadeBullet.ToString());
-            break;
-            case "minigun(Clone)":
-                GUI.Label(_weaponsRect, "minigun");
-                GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().minigunBullet.ToString());
-            break;
-            case "rocket(Clone)":
-                GUI.Label(_weaponsRect, "rocket");
-                GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().rocketBullet.ToString());
-            break;
-            case "diskgun(Clone)":
-                GUI.Label(_weaponsRect, "diskgun");
-                GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().diskgunBullet.ToString());
-            break;
-            case "firegun(Clone)":
-                GUI.Label(_weaponsRect, "firegun");
-                GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().firegunBullet.ToString());
-            break;
-            case "zeusgun(Clone)":
-                GUI.Label(_weaponsRect, "zeusgun");
-                GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().zeusgunBullet.ToString());
-            break;
-            case "plasmicgun(Clone)":
-                GUI.Label(_weaponsRect, "plasmicgun");
-                GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().plasmicgunBullet.ToString());
-            break;
-            case "gaussgun(Clone)":
-                GUI.Label(_weaponsRect, "gaussgun");
-                GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().gaussgunBullet.ToString());
-            break;
         }
+
+#region Swith Weapons Views
+
+        if (gameMode != GameMode.arena)
+        {
+            switch (currentW)
+            {
+                case "pistols(Clone)":
+                    GUI.Label(_weaponsRect, "pistols");
+                    GUI.Label(_weaponsBulletRect, "~~~~");
+                    break;
+                case "gun(Clone)":
+                    GUI.Label(_weaponsRect, "gun");
+                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().gunBullet.ToString());
+                    break;
+                case "grenade(Clone)":
+                    GUI.Label(_weaponsRect, "grenade");
+                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().grenadeBullet.ToString());
+                    break;
+                case "minigun(Clone)":
+                    GUI.Label(_weaponsRect, "minigun");
+                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().minigunBullet.ToString());
+                    break;
+                case "rocket(Clone)":
+                    GUI.Label(_weaponsRect, "rocket");
+                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().rocketBullet.ToString());
+                    break;
+                case "diskgun(Clone)":
+                    GUI.Label(_weaponsRect, "diskgun");
+                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().diskgunBullet.ToString());
+                    break;
+                case "firegun(Clone)":
+                    GUI.Label(_weaponsRect, "firegun");
+                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().firegunBullet.ToString());
+                    break;
+                case "zeusgun(Clone)":
+                    GUI.Label(_weaponsRect, "zeusgun");
+                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().zeusgunBullet.ToString());
+                    break;
+                case "plasmicgun(Clone)":
+                    GUI.Label(_weaponsRect, "plasmicgun");
+                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().plasmicgunBullet.ToString());
+                    break;
+                case "gaussgun(Clone)":
+                    GUI.Label(_weaponsRect, "gaussgun");
+                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().gaussgunBullet.ToString());
+                    break;
+            }
 
         //Смена оружия
         if (GUI.Button(_arrowLeftWeaponsRect, arrowWeapons))
             Player.GetComponent<Weapons>().currentWNum--;
         if(GUI.Button(_arrowRightWeaponsRect, arrowWeapons))
             Player.GetComponent<Weapons>().currentWNum++;
-	}
+        }
+
+#endregion
+
+    }
 
 	void WindowFunction(int id){
 		switch (id) {

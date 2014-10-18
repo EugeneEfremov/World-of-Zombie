@@ -2,7 +2,8 @@ fileFormatVersion: 2
 guid: ee93dda349b61ea4089f22c6fa0f30e6
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - boomA: {fileID: 8300000, guid: 6e52bd75b9c624c48880468ac4b80c4a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

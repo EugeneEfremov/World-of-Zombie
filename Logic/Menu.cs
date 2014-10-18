@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Menu : MonoBehaviour {
 
-	private Rect _newGameRect, _continueGameRect, _settingsRect, _recordsRect, _authorsRect, _exitRect;
-	private bool _newGame, _newNameActor, _newGameClear, _continue, _settings, _records, _authors;
+	private Rect _newGameRect, _continueGameRect, _inventoryRect, _settingsRect, _recordsRect, _authorsRect, _exitRect;
+	private bool _newGame, _newNameActor, _newGameClear, _settings, _records, _authors, _switchLevel;
     private GameObject MenuObj;
 	public Texture2D background;
     public string actorName = "";
@@ -15,10 +15,11 @@ public class Menu : MonoBehaviour {
 		GetComponent<AudioSource> ().PlayOneShot (Audio);
 		Screen.showCursor = true;
 		_newGameRect = new Rect (Screen.width - 190, Screen.height - 300, 170, 35);
-		_continueGameRect = new Rect (Screen.width - 190, Screen.height - 260, 170, 35);
-		_settingsRect = new Rect (Screen.width - 190, Screen.height - 220, 170, 35);
-		_recordsRect = new Rect (Screen.width - 190, Screen.height - 180, 170, 35);
-		_authorsRect = new Rect (Screen.width - 190, Screen.height - 140, 170, 35);
+        _continueGameRect = new Rect(Screen.width - 190, Screen.height - 260, 170, 35);
+        _inventoryRect = new Rect(Screen.width - 190, Screen.height - 220, 170, 35);
+		_settingsRect = new Rect (Screen.width - 190, Screen.height - 180, 170, 35);
+		_recordsRect = new Rect (Screen.width - 190, Screen.height - 140, 170, 35);
+		_authorsRect = new Rect (Screen.width - 190, Screen.height - 100, 170, 35);
 		_exitRect = new Rect (40, Screen.height - 80, 90, 35);
 	}
 
@@ -32,7 +33,7 @@ public class Menu : MonoBehaviour {
                     _newGame = false;
                 }
 				if (GUI.Button(new Rect (15, 60, 150, 30), "Выживание")) Application.LoadLevel("survival");
-				GUI.Button(new Rect (15, 100, 150, 30), "Тир");
+                if (GUI.Button(new Rect(15, 100, 150, 30), "Арена")) Application.LoadLevel("arena");
 				if (GUI.Button(new Rect (20, 170, 145, 30), "Закрыть"))_newGame = false;
 			break;
             //New game confirmation clear
@@ -76,8 +77,8 @@ public class Menu : MonoBehaviour {
 				GUI.Label (new Rect (20, 95, 105, 30), PlayerPrefs.GetString("ActorNameSurvival").ToString());
 				GUI.Label (new Rect (125, 95, 105, 30), PlayerPrefs.GetInt("ActorNameSurvivalScore").ToString());
 				GUI.Label (new Rect (110, 120, 105, 30), "Тир");
-				GUI.Label (new Rect (20, 145, 105, 30), PlayerPrefs.GetString("ActorNameTir").ToString());
-				GUI.Label (new Rect (125, 145, 105, 30), PlayerPrefs.GetInt("ActorNameTirScore").ToString());
+				GUI.Label (new Rect (20, 145, 105, 30), PlayerPrefs.GetString("ActorNameArena").ToString());
+				GUI.Label (new Rect (125, 145, 105, 30), PlayerPrefs.GetInt("ActorNameArenaScore").ToString());
 				if (GUI.Button (new Rect (45, 190, 145, 30), "Закрыть")) _records = false;
 			break;
 		}
@@ -86,7 +87,12 @@ public class Menu : MonoBehaviour {
 	void OnGUI(){
 		GUI.DrawTexture( new Rect (0, 0, Screen.width, Screen.height), background);
 		if (GUI.Button (_newGameRect, "Новая игра")) _newGame = true;
-        if (GUI.Button(_continueGameRect, "Продолжить игру"))
+        if (GUI.Button(_continueGameRect, "Продолжить"))
+        {
+            MenuObj.GetComponent<Menu>().enabled = false;
+            MenuObj.GetComponent<SwitchLevel>().enabled = true;
+        }
+        if (GUI.Button(_inventoryRect, "Инвентарь"))
         {
             MenuObj.GetComponent<Menu>().enabled = false;
             MenuObj.GetComponent<InventoryMenu>().enabled = true;

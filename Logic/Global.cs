@@ -55,7 +55,7 @@ public class Global : MonoBehaviour {
 
     public void SaveResultGame(string gameMode)
     {
-        PlayerPrefs.SetInt("0x01001", Player.GetComponent<Actor>().count / 70);
+        PlayerPrefs.SetInt("0x01001", money + Player.GetComponent<Actor>().count / 70);
 
         PlayerPrefs.SetInt("0x01002", Player.GetComponent<Actor>().armour);
         PlayerPrefs.SetInt("0x02001", Player.GetComponent<Actor>().armourMax);
@@ -76,11 +76,15 @@ public class Global : MonoBehaviour {
         PlayerPrefs.SetInt("fx01e05", plasmicgunLvl);
         PlayerPrefs.SetInt("fx01e07", gaussgunLvl);
 
-        PlayerPrefs.SetInt("ax90ab1", Player.GetComponent<Weapons>().gunBullet);
-        PlayerPrefs.SetInt("ax90ab2", Player.GetComponent<Weapons>().grenadeBullet);
-        PlayerPrefs.SetInt("ax90ab3", Player.GetComponent<Weapons>().minigunBullet);
-        PlayerPrefs.SetInt("ax90ab4", Player.GetComponent<Weapons>().rocketBullet);
-        PlayerPrefs.SetInt("ax90ab5", Player.GetComponent<Weapons>().diskgunBullet);
+        if (gameMode != "arena")
+        {
+
+            PlayerPrefs.SetInt("ax90ab1", Player.GetComponent<Weapons>().gunBullet);
+            PlayerPrefs.SetInt("ax90ab2", Player.GetComponent<Weapons>().grenadeBullet);
+            PlayerPrefs.SetInt("ax90ab3", Player.GetComponent<Weapons>().minigunBullet);
+            PlayerPrefs.SetInt("ax90ab4", Player.GetComponent<Weapons>().rocketBullet);
+            PlayerPrefs.SetInt("ax90ab5", Player.GetComponent<Weapons>().diskgunBullet);
+        }
 
         if (gameMode == "company")
         {

@@ -6,6 +6,7 @@ public class ZombieAll : MonoBehaviour {
 	private int _newNameZomb = 0, rand, _countTypeZombieInGame = 1, _accountZombMax = 10;
 	private Transform Player;
 	private bool _bRat = false, _bZombie, _bDog = false, _bSolders = false, _bGrenade = false, _bBigZ = false; //Можно ли создавать зомби
+    private string gameMode;
     public bool magic1;
     public Transform zombie, rat, dog, solders, grenade, bigZ, instans; //Объекты
 	public int  accountZombNew = 0; //Кол-во зомби в игре на данный момент
@@ -14,6 +15,7 @@ public class ZombieAll : MonoBehaviour {
 
 	void Start(){
 		Player = GameObject.Find("Actor").transform;
+        gameMode = Player.GetComponent<Info>().gameMode.ToString();
 	}
 
 	void FixedUpdate(){
@@ -98,10 +100,25 @@ public class ZombieAll : MonoBehaviour {
 	}
 
 	private Vector3 Spawn(){
-		rand = Random.Range (0, 2);
-        if (rand == 1)//лево
-            return new Vector3(-17, 2, Random.Range(-15, 15));
-        else//право
-            return new Vector3(17, 2, Random.Range(-15, 15));
-	}
+        if (gameMode == "survival"){
+		    rand = Random.Range (0, 2);
+            if (rand == 1)//left
+                return new Vector3(-17, 2, Random.Range(-15, 15));
+            else//right
+                return new Vector3(17, 2, Random.Range(-15, 15));
+	    }
+        if (gameMode == "arena")
+        {
+            rand = Random.Range(0,4);
+            if (rand == 1) //top
+                return new Vector3(Random.Range(-44,44), 2, 35);
+            if (rand == 2)//down
+                return new Vector3(Random.Range(-44,44), 2, -12);
+            if (rand == 3) //left
+                return new Vector3(-44, 2, Random.Range(-12, 35));
+            else //right
+                return new Vector3(44, 2, Random.Range(-12, 35));
+        }
+        return new Vector3(); //default
+    }
 }

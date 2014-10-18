@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Weapons : MonoBehaviour {
+public class Weapons : MonoBehaviour{
 	private float delayShot; //Пауза выстрела
 
 	public int currentWNum, strongMax, accuracyMax, gunBullet, gunMax = 100, grenadeBullet, grenadeMax = 100, minigunBullet, minigunMax = 100, rocketBullet, rocketMax = 100, diskgunBullet, diskgunMax = 100, firegunMax = 50, zeusgunMax = 50, plasmicgunMax = 50, gaussgunBullet = 50, gaussgunMax = 100; //Патроны, максимальное кол-во
@@ -236,6 +236,8 @@ public class Weapons : MonoBehaviour {
         if (currentWNum < 1)
             currentWNum = 1;
 
+#region swithWeapon key
+
         if (currentWNum == 1)
         {
             if (currentW != "pistols" && pistolsC)
@@ -303,6 +305,9 @@ public class Weapons : MonoBehaviour {
                 SwitchWeapon(gaussgun);
             if (!gaussgunC)
                 currentWNum--;
+
+#endregion
+
         }
 
 
@@ -316,7 +321,7 @@ public class Weapons : MonoBehaviour {
                          topBody.transform.rotation = rotation;
 
                     //Поворот нижней части тела
-                         print(topBody.transform.eulerAngles.y);
+                         //print(topBody.transform.eulerAngles.y);
                          if (topBody.transform.eulerAngles.y >= 0 && topBody.transform.eulerAngles.y < 45)
                              downBody.transform.rotation = Quaternion.Euler(0, 0, 0);
                          if (topBody.transform.eulerAngles.y >= 45 && topBody.transform.eulerAngles.y <= 90)
@@ -339,7 +344,7 @@ public class Weapons : MonoBehaviour {
                                 NewPositionGoal = new Vector3(topBody.transform.position.x + Random.Range(-0.1f - accuracyMax, 0.1f + accuracyMax), topBody.transform.position.y + Random.Range(-0.01f - accuracyMax / 10, 0.01f + accuracyMax / 10), topBody.transform.position.z);
                                 if (Physics.Raycast(NewPositionGoal, topBody.transform.forward, out hitObj, 100f))
                                 {
-                                    Debug.DrawLine(topBody.transform.position, topBody.transform.forward + (goal.normal * 0.5f), Color.yellow);
+                                    //Debug.DrawLine(topBody.transform.position, topBody.transform.forward + (goal.normal * 0.5f), Color.yellow);
 												//Действия в зависимости от текущего оружия
 												switch (currentW) {
 												case "pistols(Clone)":
