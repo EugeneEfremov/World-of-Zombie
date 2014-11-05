@@ -10,40 +10,53 @@ public class Info : MonoBehaviour {
         level1
     };
 
-	private int _newNameZomb;
+    private int _newNameZomb, _magic4Helth, _magic4Armour;
     private Rect _helthRect, _accountRect, _armourRect, _leftInfoRect, _rightInfoRect, _deathRect, _pauseButtonRect, _pauseRect, _exitRect, _nvdRect, _helthResetRect, _liveActorRect;
     private Rect _magic1Rect, _magic2Rect, _magic3Rect, _magic4Rect;
     private Rect _arrowLeftWeaponsRect, _arrowRightWeaponsRect, _weaponsRect, _weaponsBulletRect;
+    private Transform magic2ParticleNew, magic3Particle, magic4ParticleNew;
 
     public GameMode gameMode = GameMode.survival;
 
-    public float timeZombie = 1, timeMagic1;
+    public int magic1b, magic2b, magic3b, magic4b;
+    public float timeZombie = 1, timeMagic1, timeMagic2, timeMagic3, timeMagic4;
     public Texture2D goal, leftInfo, rightInfo, pauseT, pauseDownT, arrowWeapons, nvdT, nvdCam, helthResetT;
     public Texture2D magic1, magic2, magic3, magic4;
-    public bool pause = false, bMagic1, bMagic2, bMagic3, bMagic4, exit = false, helthResetB, nvdEnabled = false;
+    public bool pause = false, bMagic1, bMagic2, bMagic3, bMagic2Play, bMagic3Play, bMagic4Play, bMagic4, exit = false, helthResetB, nvdEnabled = false;
     public Vector2 mp;
-	public Transform Player;
+    public Transform Player, magic2Particle, magic3Zone, magic4Particle;
 	public string actorName= "", modeGame, currentW;
     public GameObject ZombAll;
+
+    //Beta версия, вывод FPS
+    private float time, timeOneS = 0;
+    private int frames = 0;
+    private float fps;
 
 	void Start () {
         ZombAll = GameObject.Find("ZombieLogic");
         modeGame = Application.loadedLevelName;
 		//Screen.showCursor = false;
 		Player = GameObject.Find ("Actor").transform;
+
+        magic1b = PlayerPrefs.GetInt("fx106f1");
+        magic2b = PlayerPrefs.GetInt("fx106f2");
+        magic3b = PlayerPrefs.GetInt("fx106f3");
+        magic4b = PlayerPrefs.GetInt("fx106f4");
+
 		_helthRect = new Rect (10, 0, 100, 30);
-        _armourRect = new Rect(10, 20, 100, 30);
+        _armourRect = new Rect(10, 30, 100, 30);
         _accountRect = new Rect(Screen.width - 100, 0, 100, 30);
-		_leftInfoRect = new Rect (0, 0, 100, 98);
-		_rightInfoRect = new Rect (Screen.width - 120, 0, 120, 30);
+		_leftInfoRect = new Rect (0, 0, 125, 123);
+		_rightInfoRect = new Rect (Screen.width - 150, 0, 150, 37);
         _deathRect = new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200);
-        _pauseButtonRect = new Rect(5, 55, 34, 33);
-        _pauseRect = new Rect(Screen.width / 2 - 150, Screen.height / 2 - 150, 300, 200);
+        _pauseButtonRect = new Rect(5, 70, 44, 43);
+        _pauseRect = new Rect(Screen.width / 2 - 150, Screen.height / 2 - 75, 300, 150);
 
-        _nvdRect = new Rect(10, 100, 25, 20);
+        _nvdRect = new Rect(10, 130, 25, 20);
 
-        _liveActorRect = new Rect(50, 85, 30, 30);
-        _helthResetRect = new Rect(60, 60, 30, 25);
+        _liveActorRect = new Rect(60, 105, 30, 30);
+        _helthResetRect = new Rect(70, 80, 30, 25);
 
         _arrowRightWeaponsRect = new Rect(Screen.width - 40, 80, 30, 30);
         _arrowLeftWeaponsRect = new Rect(Screen.width - 100, 80, 30, 30);
@@ -73,41 +86,209 @@ public class Info : MonoBehaviour {
                 Time.timeScale = 1;
 	}
 
+    //Beta версия, вывод FPS, помещать в Update()
+    public float Fps()
+    {
+        timeOneS += Time.deltaTime;
+        if (timeOneS <= 1)
+        {
+            time += Time.deltaTime;
+            frames++;
+            fps = frames / time;
+        }
+        else
+        {
+            time = 0;
+            frames = 0;
+            fps = 0;
+            timeOneS = 0;
+        }
+        return fps;
+    }
+
+    GUIStyle fpsGS = new GUIStyle();
+
+    void Update()
+    {
+        if (Fps() > 55)
+            fpsGS.normal.textColor = Color.green;
+        if (Fps () < 54 && Fps() > 31)
+            fpsGS.normal.textColor = Color.yellow;
+        if (Fps() < 30)
+            fpsGS.normal.textColor = Color.red;
+    }
+
+
     void FixedUpdate()
     {
+
         #region Magic
-        switch (gameMode){
+        switch (gameMode)
+        {
+            #region survival
             case GameMode.survival:
+                //Magic1
                 if (bMagic1)
                 {
                  ZombAll.GetComponent<ZombieAll>().magic1 = true;
-                 timeMagic1 -= Time.deltaTime;
+                 timeMagic1 -= Time.deltaTime * 3;
                  if (timeMagic1 <= 0)
                       bMagic1 = false;
              }
              if (!bMagic1)
               {
                  ZombAll.GetComponent<ZombieAll>().magic1 = false;
-                 if (timeMagic1 < 10)
+                 if (timeMagic1 < 30)
                       timeMagic1 += Time.deltaTime;
                }
+
+               //Magic2
+                if (bMagic2)
+                {
+                    if (!bMagic2Play)
+                    {
+                        magic2ParticleNew = Instantiate(magic2Particle, transform.position, Quaternion.Euler(90, 0, 0)) as Transform;
+                        magic2ParticleNew.parent = transform; //Присвоение к актеру
+                        Destroy(GameObject.Find("magic2(Clone)"), 2.5f);
+                        bMagic2Play = true;
+                    }
+                 ZombAll.GetComponent<ZombieAll>().magic2 = true;
+                 timeMagic2 -= Time.deltaTime * 20;
+                 if (timeMagic2 <= 0)
+                 {
+                     bMagic2Play = false;
+                     ZombAll.GetComponent<ZombieAll>().magic2kill = true;
+                     bMagic2 = false;
+                 }
+             }
+             if (!bMagic2)
+              {
+                 ZombAll.GetComponent<ZombieAll>().magic2 = false;
+                 if (timeMagic2 < 40)
+                     timeMagic2 += Time.deltaTime;
+                 if (timeMagic2 > 1)
+                    ZombAll.GetComponent<ZombieAll>().magic2kill = false;
+               }
+
+             //Magic3
+             if (bMagic3)
+             {
+                 timeMagic3 -= Time.deltaTime * 30;
+                 if (!bMagic3Play)
+                 {
+                     magic3Particle = Instantiate(magic3Zone, transform.position, Quaternion.Euler(0, 0, 0)) as Transform;
+                     magic3Particle.parent = transform; //Присвоение к актеру
+                     bMagic3Play = true;
+                 }
+                 if (timeMagic3 <= 0)
+                 {
+                     bMagic3 = false;
+                     bMagic3Play = false;
+                 }
+             }
+             if (!bMagic3)
+             {
+                 if (timeMagic3 < 50)
+                     timeMagic3 += Time.deltaTime;
+             }
+
+             //Magic4
+             if (bMagic4)
+             {
+                 if (!bMagic4Play)
+                 {
+                     magic4ParticleNew = Instantiate(magic4Particle, new Vector3(transform.position.x, transform.position.y, transform.position.z + 1.275401f), Quaternion.Euler(0, 0, 0)) as Transform;
+                     magic4ParticleNew.parent = transform; //Присвоение к актеру
+                     bMagic4Play = true;
+                 }
+                 Player.GetComponent<Actor>().helth = _magic4Helth;
+                 Player.GetComponent<Actor>().armour = _magic4Armour;
+                 timeMagic4 -= Time.deltaTime * 6;
+                 if (timeMagic4 <= 0)
+                 {
+                     bMagic4Play = false;
+                     Destroy(GameObject.Find("magic4(Clone)"));
+                     bMagic4 = false;
+                 }
+             }
+             if (!bMagic4)
+             {
+                 if (timeMagic4 < 70)
+                     timeMagic4 += Time.deltaTime;
+             }
              break;
+            #endregion
+            #region arena
             case GameMode.arena:
+             //Magic1
              if (bMagic1)
              {
                  ZombAll.GetComponent<ZombieAll>().magic1 = true;
-                 timeMagic1 -= Time.deltaTime;
+                 timeMagic1 -= Time.deltaTime * 3;
                  if (timeMagic1 <= 0)
                      bMagic1 = false;
              }
              if (!bMagic1)
              {
                  ZombAll.GetComponent<ZombieAll>().magic1 = false;
-                 if (timeMagic1 < 10)
+                 if (timeMagic1 < 30)
                      timeMagic1 += Time.deltaTime;
              }
+
+             //Magic2
+             if (bMagic2)
+             {
+                 if (!bMagic2Play)
+                 {
+                     magic2ParticleNew = Instantiate(magic2Particle, new Vector3(transform.position.x, transform.position.y - 3.5f, transform.position.z), Quaternion.Euler(90, 0, 0)) as Transform;
+                     magic2ParticleNew.parent = transform; //Присвоение к актеру
+                     Destroy(GameObject.Find("magic2(Clone)"), 2.5f);
+                     bMagic2Play = true;
+                 }
+                 ZombAll.GetComponent<ZombieAll>().magic2 = true;
+                 timeMagic2 -= Time.deltaTime * 20;
+                 if (timeMagic2 <= 0)
+                 {
+                     bMagic2Play = false;
+                     ZombAll.GetComponent<ZombieAll>().magic2kill = true;
+                     bMagic2 = false;
+                 }
+             }
+             if (!bMagic2)
+             {
+                 ZombAll.GetComponent<ZombieAll>().magic2 = false;
+                 if (timeMagic2 < 40)
+                     timeMagic2 += Time.deltaTime;
+                 if (timeMagic2 > 1)
+                     ZombAll.GetComponent<ZombieAll>().magic2kill = false;
+             }
+
+             //Magic3
+             if (bMagic3)
+             {
+                 timeMagic3 -= Time.deltaTime * 30;
+                 if (!bMagic3Play)
+                 {
+                     magic3Particle = Instantiate(magic3Zone, new Vector3(transform.position.x, transform.position.y - 3.5f, transform.position.z), Quaternion.Euler(0, 0, 0)) as Transform;
+                     magic3Particle.parent = transform; //Присвоение к актеру
+                     bMagic3Play = true;
+                 }
+                 if (timeMagic3 <= 0)
+                 {
+                     bMagic3 = false;
+                     bMagic3Play = false;
+                 }
+             }
+             if (!bMagic3)
+             {
+                 if (timeMagic3 < 50)
+                     timeMagic3 += Time.deltaTime;
+             }
              break;
+            #endregion
+            #region level1
             case GameMode.level1:
+             //Magic1
              if (bMagic1)
              {
                  ZombAll.GetComponent<Level_1>().magic1 = true;
@@ -118,10 +299,60 @@ public class Info : MonoBehaviour {
              if (!bMagic1)
              {
                  ZombAll.GetComponent<Level_1>().magic1 = false;
-                 if (timeMagic1 < 10)
-                     timeMagic1 += Time.deltaTime;
+                 if (timeMagic1 < 30)
+                     timeMagic1 += Time.deltaTime * 3;
+             }
+
+             //Magic2
+             if (bMagic2)
+             {
+                 ZombAll.GetComponent<Level_1>().magic2 = true;
+                 timeMagic2 -= Time.deltaTime * 20;
+                 if (timeMagic2 <= 0)
+                 {
+                     ZombAll.GetComponent<Level_1>().magic2kill = true;
+                     bMagic2 = false;
+                 }
+             }
+             if (!bMagic2)
+             {
+                 ZombAll.GetComponent<Level_1>().magic2 = false;
+                 if (timeMagic2 < 40)
+                     timeMagic2 += Time.deltaTime;
+                 if (timeMagic2 > 1)
+                     ZombAll.GetComponent<Level_1>().magic2kill = false;
+             }
+
+             //Magic3
+             if (bMagic3)
+             {
+                 timeMagic3 -= Time.deltaTime * 30;
+                 Instantiate(magic3Zone, transform.position, Quaternion.Euler(0, 0, 0));
+                 if (timeMagic3 <= 0)
+                     bMagic3 = false;
+             }
+             if (!bMagic3)
+             {
+                 if (timeMagic3 < 50)
+                     timeMagic3 += Time.deltaTime;
+             }
+
+             //Magic4
+             if (bMagic4)
+             {
+                 Player.GetComponent<Actor>().helth = _magic4Helth;
+                 Player.GetComponent<Actor>().armour = _magic4Armour;
+                 timeMagic4 -= Time.deltaTime * 6;
+                 if (timeMagic4 <= 0)
+                     bMagic4 = false;
+             }
+             if (!bMagic4)
+             {
+                 if (timeMagic4 < 70)
+                     timeMagic4 += Time.deltaTime;
              }
              break;
+            #endregion
         }
         #endregion
 
@@ -139,6 +370,14 @@ public class Info : MonoBehaviour {
     }
 
 	void OnGUI (){
+        //Beta версия, вывод FPS
+        GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height - 50, 100, 30), "fps " + fps.ToString(), fpsGS);
+        if (gameMode != GameMode.level1)
+        {
+            GUI.Label(new Rect(Screen.width / 2 - 150, Screen.height - 50, 100, 30), "time: " + ZombAll.GetComponent<ZombieAll>().timeInGame.ToString());
+            GUI.Label(new Rect(Screen.width / 2 - 210, Screen.height - 50, 100, 30), "zomb: " + ZombAll.GetComponent<ZombieAll>().accountZombNew.ToString());
+        }
+
         //Vector2 mp = Event.current.mousePosition;
 		GUI.depth = 1;
 		GUI.DrawTexture (_leftInfoRect, leftInfo);
@@ -173,17 +412,23 @@ public class Info : MonoBehaviour {
             GUI.Window(11, _exitRect, WindowFunction, "Вы хотите выйти?");
 
         //Magic
-        if (GUI.Button(_magic1Rect, magic1) && timeMagic1 >= 10)
-            bMagic1 = true;
+        if (magic1b == 1 && timeMagic1 >= 30)
+        {
+            if (GUI.Button(_magic1Rect, magic1))
+                bMagic1 = true;
+        }
 
+        if (magic2b == 1 && timeMagic2 >= 40)
+        {
+            if (GUI.Button(_magic2Rect, magic2))
+                bMagic2 = true;
+        }
 
-        GUI.Button(_magic1Rect, magic1);
-
-        GUI.Button(_magic2Rect, magic2);
-
-        GUI.Button(_magic3Rect, magic3);
-
-        GUI.Button(_magic4Rect, magic4);
+        if (magic3b == 1 && timeMagic3 >= 50)
+        {
+            if (GUI.Button(_magic3Rect, magic3))
+                bMagic3 = true;
+        }
 
         //Magic END        
 
@@ -240,10 +485,16 @@ public class Info : MonoBehaviour {
             }
 
         //Смена оружия
-        if (GUI.Button(_arrowLeftWeaponsRect, arrowWeapons))
-            Player.GetComponent<Weapons>().currentWNum--;
-        if(GUI.Button(_arrowRightWeaponsRect, arrowWeapons))
-            Player.GetComponent<Weapons>().currentWNum++;
+            if (GUI.Button(_arrowLeftWeaponsRect, arrowWeapons))
+            {
+                Player.GetComponent<Weapons>().currentWNum--;
+                Player.GetComponent<Weapons>().buttonSwitchOn = true;
+            }
+            if (GUI.Button(_arrowRightWeaponsRect, arrowWeapons))
+            {
+                Player.GetComponent<Weapons>().currentWNum++;
+                Player.GetComponent<Weapons>().buttonSwitchOn = true;
+            }
         }
 
 #endregion
@@ -270,20 +521,29 @@ public class Info : MonoBehaviour {
                         if (modeGame == "survival")
                         {
                             Player.GetComponent<Global>().SaveResultGame("sirvival");
-                            PlayerPrefs.SetString("ActorNameSurvival", actorName);
-                            PlayerPrefs.SetInt("ActorNameSurvivalScore", Player.GetComponent<Actor>().count);
+                            if (PlayerPrefs.GetInt("ActorNameSurvivalScore") <= Player.GetComponent<Actor>().count)
+                            {
+                                PlayerPrefs.SetString("ActorNameSurvival", actorName);
+                                PlayerPrefs.SetInt("ActorNameSurvivalScore", Player.GetComponent<Actor>().count);
+                            }
                         }
                         else if (modeGame == "arena")
                         {
                             Player.GetComponent<Global>().SaveResultGame("arena");
-                            PlayerPrefs.SetString("ActorNameArena", actorName);
-                            PlayerPrefs.SetInt("ActorNameArenaScore", Player.GetComponent<Actor>().count);
+                            if (PlayerPrefs.GetInt("ActorNameArenaScore") <= Player.GetComponent<Actor>().count)
+                            {
+                                PlayerPrefs.SetString("ActorNameArena", actorName);
+                                PlayerPrefs.SetInt("ActorNameArenaScore", Player.GetComponent<Actor>().count);
+                            }
                         }
                         else
                         {
                             Player.GetComponent<Global>().SaveResultGame("company");
-                            PlayerPrefs.SetString("ActorNameCompany", actorName);
-                            PlayerPrefs.SetInt("ActorNameCompanyScore", Player.GetComponent<Actor>().count);
+                            if (PlayerPrefs.GetInt("ActorNameCompanyScore") <= Player.GetComponent<Actor>().count)
+                            {
+                                PlayerPrefs.SetString("ActorNameCompany", actorName);
+                                PlayerPrefs.SetInt("ActorNameCompanyScore", Player.GetComponent<Actor>().count);
+                            }
                         }
 					Application.LoadLevel("menu");
 			}
@@ -291,17 +551,12 @@ public class Info : MonoBehaviour {
             case 1:
             GUI.Label(new Rect(50, 30, 200, 30), "Громкость звука");
             AudioListener.volume = GUI.HorizontalSlider(new Rect(50, 60, 200, 20), AudioListener.volume, 0, 1);
-            if (GUI.Button(new Rect(75, 90, 150, 30), "Продолжить"))
+            if (GUI.Button(new Rect(30, 90, 100, 30), "Продолжить"))
             {
                 pause = false;
                 Time.timeScale = 1;
             }
-            if (GUI.Button(new Rect(30, 140, 100, 30), "Настройки"))
-            {
-                pause = false;
-                Time.timeScale = 1;
-            }
-            if (GUI.Button(new Rect(170, 140, 100, 30), "Выход"))
+            if (GUI.Button(new Rect(170, 90, 100, 30), "Выход"))
                 exit = true;
             break;
             case 11:

@@ -6,11 +6,12 @@ public class InventoryMenu : MonoBehaviour {
 
     private GameObject MenuObj;
 
+    private Rect _magic1Rect, _magic2Rect, _magic3Rect, _magic4Rect; //Buttons of Magic
     private Rect _windowRect, _gameMenuRect, _settingsRect, _continueRect; //Buttons of navigations
     private Rect _nameActorRect, _actorCompanyScore, _moneyRect, _helthRect, _strongRect, _speedRect, _accuracyRect; //Value
     private Rect _armourRect1, _armourRect2, _armourRect3, _lanternRect, _nvdRect, _dronRect, _liveRect, _helthResetRect; //Equipment
     private Rect _countHelthMaxRect, _countStrongMaxRect, _countSpeedMaxRect, _countAccuracyMaxRect; //Specifications of Actor
-    private Rect _helthMaxButtonsRect, _strongMaxButtonsRect, _speedMaxButtonsRect, _accuracyMaxButtonsRect; //Specifications of Actor Buttons
+    private Rect _helthMaxButtonsRect, _strongMaxButtonsRect, _speedMaxButtonsRect, _accuracyMaxButtonsRect, _magicMaxButtonsRect; //Specifications of Actor Buttons
     private Rect _pistolsRect, _gunRect, _grenadeRect, _minigunRect, _rocketRect, _diskgunRect, _firegunRect, _zeusgunRect, _plasmicgunRect, _gaussgunRect; //Level of Weapons
     private Rect _pistolsBulletRect, _gunBulletRect, _grenadeBulletRect, _minigunBulletRect, _rocketBulletRect, _diskgunBulletRect; //Bullet of Weapons
 
@@ -18,7 +19,7 @@ public class InventoryMenu : MonoBehaviour {
     public string nameActor;
     public int money, actorCompanyScore, loadLevel;
     public int armour, lantern, nvd, dron, live, helthReset; //Equipment
-    public int helthMax, strongMax, speedMax, accuracyMax, countMax; //Specifications of Actor
+    public int helthMax, strongMax, speedMax, accuracyMax, magicMax, countMax; //Specifications of Actor
     public int pistolsLvl, gunLvl, grenadeLvl, minigunLvl, rocketLvl, diskgunLvl, firegunLvl, zeusgunLvl, plasmicgunLvl, gaussgunLvl; //Level of Weapons
     public int gunBullet, grenadeBullet, minigunBullet, rocketBullet, diskgunBullet; //Bullet of Weapons
 
@@ -45,21 +46,25 @@ public class InventoryMenu : MonoBehaviour {
             PlayerPrefs.SetInt("0x01f03", 1);
             PlayerPrefs.SetInt("0x01f04", 1);
             PlayerPrefs.SetInt("fx10ab0", 1);
-            PlayerPrefs.SetInt("fx10ab1", 0);
-            PlayerPrefs.SetInt("fx10ab2", 0);
-            PlayerPrefs.SetInt("fx10ab3", 0);
-            PlayerPrefs.SetInt("fx10ab4", 0);
-            PlayerPrefs.SetInt("fx10ab5", 0);
-            PlayerPrefs.SetInt("fx01e01", 0);
-            PlayerPrefs.SetInt("fx01e03", 0);
-            PlayerPrefs.SetInt("fx01e05", 0);
-            PlayerPrefs.SetInt("fx01e07", 0);
+            PlayerPrefs.SetInt("fx10ab1", 1);
+            PlayerPrefs.SetInt("fx10ab2", 1);
+            PlayerPrefs.SetInt("fx10ab3", 1);
+            PlayerPrefs.SetInt("fx10ab4", 1);
+            PlayerPrefs.SetInt("fx10ab5", 1);
+            PlayerPrefs.SetInt("fx01e01", 1);
+            PlayerPrefs.SetInt("fx01e03", 1);
+            PlayerPrefs.SetInt("fx01e05", 1);
+            PlayerPrefs.SetInt("fx01e07", 1);
             PlayerPrefs.SetInt("ax90ab1", 0);
             PlayerPrefs.SetInt("ax90ab2", 0);
             PlayerPrefs.SetInt("ax90ab3", 0);
             PlayerPrefs.SetInt("ax90ab4", 0);
             PlayerPrefs.SetInt("ax90ab5", 0);
             PlayerPrefs.SetInt("0x910fa", 0);
+            PlayerPrefs.SetInt("fx106f1", 0);
+            PlayerPrefs.SetInt("fx106f2", 0);
+            PlayerPrefs.SetInt("fx106f3", 0);
+            PlayerPrefs.SetInt("fx106f4", 0);
         }
 
         nameActor = PlayerPrefs.GetString("ActorNameCompany").ToString();
@@ -147,6 +152,12 @@ public class InventoryMenu : MonoBehaviour {
         _rocketBulletRect = new Rect (300, 280, 50, 20);
         _diskgunBulletRect = new Rect(380, 280, 50, 20);
 
+        _magic1Rect = new Rect(470, 280, 90, 70);
+        _magic2Rect = new Rect(580, 280, 90, 70);
+        _magic3Rect = new Rect(470, 360, 90, 70);
+        _magic4Rect = new Rect(580, 360, 90, 70);
+
+
         _gameMenuRect = new Rect(70, 450, 150, 40);
         _settingsRect = new Rect(270, 450, 150, 40);
         _continueRect = new Rect(470, 450, 150, 40);
@@ -175,9 +186,9 @@ public class InventoryMenu : MonoBehaviour {
                 if (PlayerPrefs.GetInt("0x01f01") < 10)
                 {
                     countMax--;
-                    helthMax++;
+                    helthMax += 40;
                     PlayerPrefs.SetInt("0x910fa", countMax);
-                    PlayerPrefs.SetInt("0x01f01", helthMax);
+                    PlayerPrefs.SetInt("0x01f01", helthMax / 40);
                 }
             }
 
@@ -186,9 +197,9 @@ public class InventoryMenu : MonoBehaviour {
                 if (PlayerPrefs.GetInt("0x01f02") < 10)
                 {
                     countMax--;
-                    strongMax++;
+                    strongMax = (PlayerPrefs.GetInt("0x01f02") + 1) / 2;
                     PlayerPrefs.SetInt("0x910fa", countMax);
-                    PlayerPrefs.SetInt("0x01f02", strongMax);
+                    PlayerPrefs.SetInt("0x01f02", PlayerPrefs.GetInt("0x01f02") + 1);
                 }
             }
 
@@ -197,9 +208,9 @@ public class InventoryMenu : MonoBehaviour {
                 if (PlayerPrefs.GetInt("0x01f03") < 10)
                 {
                     countMax--;
-                    speedMax++;
+                    speedMax = (PlayerPrefs.GetInt("0x01f03") + 1) / 10;
                     PlayerPrefs.SetInt("0x910fa", countMax);
-                    PlayerPrefs.SetInt("0x01f03", speedMax);
+                    PlayerPrefs.SetInt("0x01f03", PlayerPrefs.GetInt("0x01f03") + 1);
                 }
             }
 
@@ -208,9 +219,9 @@ public class InventoryMenu : MonoBehaviour {
                 if (PlayerPrefs.GetInt("0x01f04") < 10)
                 {
                     countMax--;
-                    accuracyMax++;
+                    accuracyMax = 1 / PlayerPrefs.GetInt("0x01f04") + 1;
                     PlayerPrefs.SetInt("0x910fa", countMax);
-                    PlayerPrefs.SetInt("0x01f04", accuracyMax);
+                    PlayerPrefs.SetInt("0x01f04", PlayerPrefs.GetInt("0x01f04") + 1);
                 }
             }
 
@@ -300,16 +311,195 @@ public class InventoryMenu : MonoBehaviour {
             }
 
             //Weapons
-            GUI.Label(_pistolsRect, pistolsLvl.ToString());
-            GUI.Label(_gunRect, gunLvl.ToString());
-            GUI.Label(_grenadeRect, grenadeLvl.ToString());
-            GUI.Label(_minigunRect, minigunLvl.ToString());
-            GUI.Label(_rocketRect, rocketLvl.ToString());
-            GUI.Label(_diskgunRect, diskgunLvl.ToString());
-            GUI.Label(_firegunRect, firegunLvl.ToString());
-            GUI.Label(_zeusgunRect, zeusgunLvl.ToString());
-            GUI.Label(_plasmicgunRect, plasmicgunLvl.ToString());
-            GUI.Label(_gaussgunRect, gaussgunLvl.ToString());
+            if (GUI.Button(_pistolsRect, pistolsLvl.ToString()))
+            {
+                if (pistolsLvl == 2 && money >= 400)
+                {
+                    money -= 400;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    pistolsLvl = 3;
+                    PlayerPrefs.SetInt("fx10ab0", pistolsLvl);
+                }
+
+                if (pistolsLvl == 1 && money >= 200)
+                {
+                    money -= 200;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    pistolsLvl = 2;
+                    PlayerPrefs.SetInt("fx10ab0", pistolsLvl);
+                }
+            }
+
+            if (GUI.Button(_gunRect, gunLvl.ToString()))
+            {
+                if (gunLvl == 2 && money >= 800)
+                {
+                    money -= 800;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    gunLvl = 3;
+                    PlayerPrefs.SetInt("fx10ab1", gunLvl);
+                }
+
+                if (gunLvl == 1 && money >= 400)
+                {
+                    money -= 400;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    gunLvl = 2;
+                    PlayerPrefs.SetInt("fx10ab1", gunLvl);
+                }
+            }
+
+            if (GUI.Button(_grenadeRect, grenadeLvl.ToString()))
+            {
+                if (grenadeLvl == 2 && money >= 1800)
+                {
+                    money -= 1800;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    grenadeLvl = 3;
+                    PlayerPrefs.SetInt("fx10ab2", grenadeLvl);
+                }
+
+                if (grenadeLvl == 1 && money >= 900)
+                {
+                    money -= 900;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    grenadeLvl = 2;
+                    PlayerPrefs.SetInt("fx10ab2", grenadeLvl);
+                }
+            }
+
+            if (GUI.Button(_minigunRect, minigunLvl.ToString()))
+            {
+                if (minigunLvl == 2 && money >= 3600)
+                {
+                    money -= 3600;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    minigunLvl = 3;
+                    PlayerPrefs.SetInt("fx10ab3", minigunLvl);
+                }
+
+                if (minigunLvl == 1 && money >= 1800)
+                {
+                    money -= 1800;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    minigunLvl = 2;
+                    PlayerPrefs.SetInt("fx10ab3", minigunLvl);
+                }
+            }
+
+            if (GUI.Button(_rocketRect, rocketLvl.ToString()))
+            {
+                if (rocketLvl == 2 && money >= 7200)
+                {
+                    money -= 7200;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    rocketLvl = 3;
+                    PlayerPrefs.SetInt("fx10ab4", rocketLvl);
+                }
+
+                if (rocketLvl == 1 && money >= 3600)
+                {
+                    money -= 3600;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    rocketLvl = 2;
+                    PlayerPrefs.SetInt("fx10ab4", rocketLvl);
+                }
+            }
+
+            if (GUI.Button(_diskgunRect, diskgunLvl.ToString()))
+            {
+                if (diskgunLvl == 2 && money >= 14400)
+                {
+                    money -= 14400;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    diskgunLvl = 3;
+                    PlayerPrefs.SetInt("fx10ab5", rocketLvl);
+                }
+
+                if (diskgunLvl == 1 && money >= 7200)
+                {
+                    money -= 7200;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    diskgunLvl = 2;
+                    PlayerPrefs.SetInt("fx10ab5", diskgunLvl);
+                }
+            }
+
+            if (GUI.Button(_firegunRect, firegunLvl.ToString()))
+            {
+                if (firegunLvl == 2 && money >= 28800)
+                {
+                    money -= 28800;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    firegunLvl = 3;
+                    PlayerPrefs.SetInt("fx01e01", firegunLvl);
+                }
+
+                if (firegunLvl == 1 && money >= 14400)
+                {
+                    money -= 14400;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    firegunLvl = 2;
+                    PlayerPrefs.SetInt("fx01e01", firegunLvl);
+                }
+            }
+            //Полная версия
+            if (GUI.Button(_zeusgunRect, zeusgunLvl.ToString()))
+            {
+                if (zeusgunLvl == 2 && money >= 1000)
+                {
+                    money -= 1000;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    zeusgunLvl = 3;
+                    PlayerPrefs.SetInt("fx01e03", zeusgunLvl);
+                }
+
+                if (zeusgunLvl == 1 && money >= 500)
+                {
+                    money -= 500;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    zeusgunLvl = 2;
+                    PlayerPrefs.SetInt("fx01e03", zeusgunLvl);
+                }
+            }
+            //Полная версия
+            if (GUI.Button(_plasmicgunRect, plasmicgunLvl.ToString()))
+            {
+                if (plasmicgunLvl == 2 && money >= 1000)
+                {
+                    money -= 1000;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    plasmicgunLvl = 3;
+                    PlayerPrefs.SetInt("fx01e05", plasmicgunLvl);
+                }
+
+                if (plasmicgunLvl == 1 && money >= 500)
+                {
+                    money -= 500;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    plasmicgunLvl = 2;
+                    PlayerPrefs.SetInt("fx01e05", plasmicgunLvl);
+                }
+            }
+            //Полная версия
+            if (GUI.Button(_gaussgunRect, gaussgunLvl.ToString()))
+            {
+                if (gaussgunLvl == 2 && money >= 1000)
+                {
+                    money -= 1000;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    gaussgunLvl = 3;
+                    PlayerPrefs.SetInt("fx01e07", gaussgunLvl);
+                }
+
+                if (gaussgunLvl == 1 && money >= 500)
+                {
+                    money -= 500;
+                    PlayerPrefs.SetInt("0x01001", money);
+                    gaussgunLvl = 2;
+                    PlayerPrefs.SetInt("fx01e07", gaussgunLvl);
+                }
+            }
 
             //Bullet
             GUI.Label(_pistolsBulletRect, 999999.ToString());
@@ -375,6 +565,44 @@ public class InventoryMenu : MonoBehaviour {
                         diskgunBullet = 100 + diskgunBullet * strongMax;
                     PlayerPrefs.SetInt("0x01001", money);
                     PlayerPrefs.SetInt("ax90ab5", diskgunBullet);
+                }
+            }
+
+            //Buttons of Magic
+
+            if (GUI.Button(_magic1Rect, "magic1 500$") && PlayerPrefs.GetInt("fx106f1") != 1)
+            {
+                if (money >= 500)
+                {
+                    money -= 500;
+                    PlayerPrefs.SetInt("fx106f1", 1);
+                }
+            }
+
+            if (GUI.Button(_magic2Rect, "magic2 1000$") && PlayerPrefs.GetInt("fx106f2") != 1)
+            {
+                if (money >= 1000)
+                {
+                    money -= 1000;
+                    PlayerPrefs.SetInt("fx106f2", 1);
+                }
+            }
+
+            if (GUI.Button(_magic3Rect, "magic3 2000$") && PlayerPrefs.GetInt("fx106f3") != 1)
+            {
+                if (money >= 2000)
+                {
+                    money -= 2000;
+                    PlayerPrefs.SetInt("fx106f3", 1);
+                }
+            }
+
+            if (GUI.Button(_magic4Rect, "magic4 4000$") && PlayerPrefs.GetInt("fx106f4") != 1)
+            {
+                if (money >= 4000)
+                {
+                    money -= 4000;
+                    PlayerPrefs.SetInt("fx106f4", 1);
                 }
             }
 

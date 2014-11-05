@@ -3,9 +3,10 @@ using System.Collections;
 
 public class Global : MonoBehaviour {
 
+    public int magic1b, magic2b, magic3b, magic4b;
     public int money, loadLevel;
     public int armour, armourMax, lantern, nvd, dron, live, helthReset; //Equipment
-    public int helthMax, strongMax, speedMax, accuracyMax, countMax; //Specifications of Actor
+    public int helthMax, strongMax, speedMax, accuracyMax, countMax, magicMax; //Specifications of Actor
     public int pistolsLvl, gunLvl, grenadeLvl, minigunLvl, rocketLvl, diskgunLvl, firegunLvl, zeusgunLvl, plasmicgunLvl, gaussgunLvl; //Level of Weapons
     public int gunBullet, grenadeBullet, minigunBullet, rocketBullet, diskgunBullet; //Bullet of Weapons
     public GameObject Player;
@@ -32,6 +33,7 @@ public class Global : MonoBehaviour {
         //Исключение ошибки деления на нуль
         if (PlayerPrefs.GetInt("0x01f04") == 0) PlayerPrefs.SetInt("0x01f04", 1);
         accuracyMax = 1 / PlayerPrefs.GetInt("0x01f04");
+        magicMax = PlayerPrefs.GetInt("0x01f05") / 5;
 
         countMax = PlayerPrefs.GetInt("0x910fa");
 
@@ -45,6 +47,11 @@ public class Global : MonoBehaviour {
         zeusgunLvl = PlayerPrefs.GetInt("fx01e03");
         plasmicgunLvl = PlayerPrefs.GetInt("fx01e05");
         gaussgunLvl = PlayerPrefs.GetInt("fx01e07");
+
+        magic1b = PlayerPrefs.GetInt("fx106f1");
+        magic2b = PlayerPrefs.GetInt("fx106f2");
+        magic3b = PlayerPrefs.GetInt("fx106f3");
+        magic4b = PlayerPrefs.GetInt("fx106f4");
 
         gunBullet = PlayerPrefs.GetInt("ax90ab1");
         grenadeBullet = PlayerPrefs.GetInt("ax90ab2");
@@ -94,6 +101,7 @@ public class Global : MonoBehaviour {
             PlayerPrefs.SetInt("0x01f02", strongMax * 2);
             PlayerPrefs.SetInt("0x01f03", speedMax * 10);
             PlayerPrefs.SetInt("0x01f04", accuracyMax);
+            PlayerPrefs.SetInt("0x01f05", magicMax * 5);
         }
     }
 }

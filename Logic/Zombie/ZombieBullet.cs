@@ -4,7 +4,7 @@ using System.Collections;
 public class ZombieBullet : MonoBehaviour {
 
     public string type;
-    public Transform Boom;
+    public Transform GrenadeBoom;
     float timeToDestroy;
 
 	void Start () {
@@ -28,14 +28,26 @@ public class ZombieBullet : MonoBehaviour {
                 case "bZomb":
                     other.transform.GetComponent<Actor>().helth -= 15;
                 break;
+                case "Grenade":
+                    Instantiate(GrenadeBoom, transform.position, Quaternion.Euler(0, 0, 0));
+                break;
+            }
+        }
+
+        if (other.transform.name == "bmp")
+        {
+            switch (type)
+            {
+                case "Solders":
+                    GameObject.Find("Actor").transform.GetComponent<Actor>().helth -= 5;
+                    break;
+                case "bZomb":
+                    GameObject.Find("Actor").transform.GetComponent<Actor>().helth -= 15;
+                    break;
             }
         }
         if (other.collider.enabled)
-        {
-            if (type == "Grenade")
-                Instantiate(Boom, transform.position, Quaternion.Euler(0,0,0));
             Destroy(gameObject);
-        }
     }
 
     void FixedUpdate()

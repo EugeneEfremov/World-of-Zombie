@@ -7,7 +7,7 @@ public class ZombieAll : MonoBehaviour {
 	private Transform Player;
 	private bool _bRat = false, _bZombie, _bDog = false, _bSolders = false, _bGrenade = false, _bBigZ = false; //Можно ли создавать зомби
     private string gameMode;
-    public bool magic1;
+    public bool magic1 = false, magic2 = false, magic2kill = false;
     public Transform zombie, rat, dog, solders, grenade, bigZ, instans; //Объекты
 	public int  accountZombNew = 0; //Кол-во зомби в игре на данный момент
     public int accuracyMax, strongMax, speedMax, helthMax; //Сколько раз вываливались бонусы способностей актера
@@ -24,37 +24,57 @@ public class ZombieAll : MonoBehaviour {
 
 		//Каких зомби создавать
 		if (timeInGame > 0) {
-			_accountZombMax = 5;
-			if(timeZombie != 0.5f)timeZombie = 0.5f;
-			_bRat = true;
+            _bRat = true;
+			_accountZombMax = 4;
+			if(timeZombie != 0.5f)
+                timeZombie = 0.5f;
 				}
+
 		if (timeInGame > 10) {
-			_accountZombMax = 9;
-			if(timeZombie != 0.4f)timeZombie = 0.4f;
-			_bZombie = true;
-			if(_countTypeZombieInGame == 1) _countTypeZombieInGame++;
+            _bZombie = true;
+			_accountZombMax = 8;
+			if(timeZombie != 0.4f)
+                timeZombie = 0.4f;
+			if(_countTypeZombieInGame == 1) 
+                _countTypeZombieInGame++;
 		}
-		if (timeInGame > 15) _accountZombMax = 13;
-		if (timeInGame > 20) _accountZombMax = 18;
+
+		if (timeInGame > 15) 
+            _accountZombMax = 11;
+
+		if (timeInGame > 20)
+            _accountZombMax = 15;
+
 		if (timeInGame > 60) {
-			_accountZombMax = 21;
-			if(timeZombie != 0.3f)timeZombie = 0.3f;
-			_bDog = true;
-			if(_countTypeZombieInGame == 2) _countTypeZombieInGame++;
+            _bDog = true;
+			_accountZombMax = 18;
+			if(timeZombie != 0.3f)
+                timeZombie = 0.3f;
+			if(_countTypeZombieInGame == 2)
+                _countTypeZombieInGame++;
 		}
+
 		if (timeInGame > 180) {
-			_accountZombMax = 25;
-			if(timeZombie != 0.2f)timeZombie = 0.2f;
-			_bSolders = true;
-			if(_countTypeZombieInGame == 3) _countTypeZombieInGame++;
+            _bSolders = true;
+			_accountZombMax = 20;
+			if(timeZombie != 0.2f)
+                timeZombie = 0.2f;
+			if(_countTypeZombieInGame == 3)
+                _countTypeZombieInGame++;
 		}
+
 		if (timeInGame > 240) {
-			_bGrenade = true;
-			if(_countTypeZombieInGame == 4) _countTypeZombieInGame++;
+            _bGrenade = true;
+            _accountZombMax = 19;
+			if(_countTypeZombieInGame == 4)
+                _countTypeZombieInGame++;
 		}
+
 		if (timeInGame > 300) {
-			_bBigZ = true;
-			if(_countTypeZombieInGame == 5) _countTypeZombieInGame++;
+            _bBigZ = true;
+            _accountZombMax = 16;
+			if(_countTypeZombieInGame == 5) 
+                _countTypeZombieInGame++;
 		}
 
 		timeZombieNew -= Time.deltaTime;
@@ -101,23 +121,27 @@ public class ZombieAll : MonoBehaviour {
 
 	private Vector3 Spawn(){
         if (gameMode == "survival"){
-		    rand = Random.Range (0, 2);
-            if (rand == 1)//left
-                return new Vector3(-17, 2, Random.Range(-15, 15));
-            else//right
-                return new Vector3(17, 2, Random.Range(-15, 15));
+            rand = Random.Range(0, 4);
+            if (rand == 1) //top
+                return new Vector3(Random.Range(-30, 22), 2.5f, 35);
+            if (rand == 2)//down
+                return new Vector3(Random.Range(-30, 22), 2.5f, -35);
+            if (rand == 3) //left
+                return new Vector3(-40, 2.5f, Random.Range(-25, 25));
+            else //right
+                return new Vector3(40, 2.5f, Random.Range(-25, 25));
 	    }
         if (gameMode == "arena")
         {
             rand = Random.Range(0,4);
             if (rand == 1) //top
-                return new Vector3(Random.Range(-44,44), 2, 35);
+                return new Vector3(Random.Range(-34,34), 2, 40);
             if (rand == 2)//down
-                return new Vector3(Random.Range(-44,44), 2, -12);
+                return new Vector3(Random.Range(-34,34), 2, -20);
             if (rand == 3) //left
-                return new Vector3(-44, 2, Random.Range(-12, 35));
+                return new Vector3(-34, 2, Random.Range(-20, 40));
             else //right
-                return new Vector3(44, 2, Random.Range(-12, 35));
+                return new Vector3(34, 2, Random.Range(-20, 40));
         }
         return new Vector3(); //default
     }

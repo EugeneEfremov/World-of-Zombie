@@ -12,7 +12,7 @@ public class ZombieMove : MonoBehaviour {
 	Vector3 moveDirection = Vector3.zero;
 
 	public string typeZomb, gameMode;
-    public bool shoting = false, magic1; //Применена ли магия
+    public bool shoting = false, magic1, magic1enabled, magic2, magic2kill; //Применена ли магия
     public Transform blod, helth20, armour100, armour200, armour300, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, firegunBul50, zeusgunBul50, plasmicgunBul50, gaussgunBul100, gun, grenage, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun, accuracyMaxBonus, strongMaxBonus, speedMaxBonus, helthMaxBonus;
     public Transform SoldersBullet, GrenadeBullet, bZombBullet;
     public int helth = 100, done = 2; //жизнь, урон
@@ -20,7 +20,7 @@ public class ZombieMove : MonoBehaviour {
 	public AudioClip[] ratA;
 
 	void Start () {
-
+        magic1enabled = false;
 		Player = GameObject.FindWithTag ("Player").transform;
 		cc = GetComponent<CharacterController> ();
         ZombieAll = GameObject.Find("ZombieLogic");
@@ -28,7 +28,7 @@ public class ZombieMove : MonoBehaviour {
 		timeInGame = GameObject.Find("ZombieLogic").GetComponent<ZombieAll> ().timeInGame;
 
 		if (typeZomb == "Zombie") {
-            speed = 2;
+            speed = 2.5f;
             speedMax = 2.5f;
 			helth = 70;
 			done = 6;
@@ -211,21 +211,42 @@ public class ZombieMove : MonoBehaviour {
 	void FixedUpdate () {
         instNewWeapTime = ZombieAll.GetComponent<ZombieAll>().instNewWeapTime;
         magic1 = ZombieAll.GetComponent<ZombieAll>().magic1;
+        magic2 = ZombieAll.GetComponent<ZombieAll>().magic2;
+        magic2kill = ZombieAll.GetComponent<ZombieAll>().magic2kill;
 
 //Физика движения зомби
         //Луч вперед
         if (Physics.Raycast(gameObject.transform.position, gameObject.transform.forward, out Hit, 100f)){
-            if (Hit.transform.tag == "Player") 
+            if (Hit.transform.tag == "Limiter")
+                Physics.IgnoreCollision(transform.collider, Hit.transform.collider);
+            if (Hit.transform.tag == "Player" && !magic1 && !magic2) 
                 speed = speedMax;
             if (Hit.transform.tag == "Zombie")
                 speed = speedMax / 2;
-            if (magic1)
+
+            if (magic1 && !magic1enabled)
+            {
                 speed /= 2;
+                magic1enabled = true;
+            }
+            if (!magic1 && magic1enabled)
+            {
+                speed = speedMax;
+                magic1enabled = false;
+            }
+
+            if (magic2)
+                speed = 0;
+            if (magic2kill)
+                helth = 0;
         }
-				//Поворот
-				Vector3 relativePos = Player.position - transform.position;
-				Quaternion rotation = Quaternion.LookRotation (relativePos);
-				transform.rotation = rotation;
+
+            //Поворот
+            Vector3 relativePos = Player.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(relativePos);
+
+            if (!magic2)
+                transform.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, rotation.eulerAngles.z);
 		 
 				//Перемещение
 				moveDirection = new Vector3 (0, 0, 1);
@@ -241,7 +262,7 @@ public class ZombieMove : MonoBehaviour {
                         BonusRandom();
                         GunBonus();
                     }
-                        Instantiate(blod, new Vector3(transform.position.x, transform.position.y - bloodY, transform.position.z), Quaternion.Euler(new Vector3(0, 0, 0)));
+                    Instantiate(blod, new Vector3(transform.position.x, transform.position.y - bloodY, transform.position.z), Quaternion.Euler(0, transform.rotation.y, transform.rotation.z));
 						Destroy (gameObject);
 						ZombieAll.GetComponent<ZombieAll>().accountZombNew--;
 				}

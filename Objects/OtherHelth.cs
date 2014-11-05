@@ -17,7 +17,7 @@ public class OtherHelth : MonoBehaviour {
         if (helth < 170 && !inst1)
         {
             instans = Instantiate(block1, transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
-            instans.transform.localScale = new Vector3(70,70,70);
+            instans.transform.localScale = new Vector3(1,1,1);
             instans.transform.eulerAngles = new Vector3(270, transform.eulerAngles.y, 0);
             inst1 = true;
             transform.renderer.enabled = false;
@@ -26,7 +26,7 @@ public class OtherHelth : MonoBehaviour {
         {
             instans.renderer.enabled = false;
             instans = Instantiate(block2, transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
-            instans.transform.localScale = new Vector3(70, 70, 70);
+            instans.transform.localScale = new Vector3(1, 1, 1);
             instans.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
             inst2 = true;
             transform.collider.enabled = false;

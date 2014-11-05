@@ -4,21 +4,43 @@ using System.Collections;
 public class Boom : MonoBehaviour {
 
 	public AudioClip boomA;
+    public GameObject Particle;
+    public bool damageOfZombie = true;
+    public float timeDestroyParticle = 2.9f, timeDeactivateObject = 0.7f, timeDestrooyObject = 3.1f;
+    public Quaternion rotationParticle = Quaternion.Euler(270, 0, 0);
+
+    void Start()
+    {
+        GetComponent<AudioSource>().PlayOneShot(boomA);
+        Particle = Instantiate(Particle, transform.position, rotationParticle) as GameObject;
+    }
+
+    void FixedUpdate()
+    {
+        timeDestroyParticle -= Time.deltaTime;
+        timeDeactivateObject -= Time.deltaTime;
+        timeDestrooyObject -= Time.deltaTime;
+
+        if (timeDeactivateObject <= 0)
+            damageOfZombie = false;
+
+        if (timeDestroyParticle <= 0)
+            Destroy(Particle);
+
+        if (timeDestrooyObject <= 0)
+            Destroy(gameObject);
+    }
 
 	void OnTriggerStay (Collider other){
-		if (other.transform.tag == "Zombie")
+        if (other.transform.tag == "Zombie" && damageOfZombie)
         {
-			other.GetComponent<ZombieMove>().helth -= 250;
-			GameObject.Find ("Actor").GetComponent<Actor> ().count += 110;
-		}
-        if (other.transform.tag == "Player")
-        {
-            other.GetComponent<Actor>().helth -= 20;
+            GameObject.Find(other.transform.name).GetComponent<ZombieMove>().helth -= 70;
+            GameObject.Find("Actor").GetComponent<Actor>().count += 50;
         }
-	}
-
-	void Start() {
-		GetComponent<AudioSource> ().PlayOneShot (boomA);
-		Destroy (gameObject, 0.7f);
+        if (other.transform.tag == "Barel")
+        {
+            other.transform.GetComponent<Barel>().helth -= 70;
+            GameObject.Find("Actor").GetComponent<Actor>().count += 30;
+        }
 	}
 }
