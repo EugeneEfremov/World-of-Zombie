@@ -104,9 +104,12 @@ public class Menu : MonoBehaviour {
                 GUI.Label(new Rect(357, 75, 100, 30), qualityGraphics);
 
                 //Режим управления
-                GUI.Button(new Rect (25, 100, 450, 85), "mode 1");
-                GUI.Button(new Rect (25, 195, 450, 85), "mode 2");
-                GUI.Button(new Rect (25, 290 , 450, 85), "mode 3");
+                if (GUI.Button(new Rect(25, 100, 450, 85), "Передвижение и поворот"))
+                    PlayerPrefs.SetInt("Controllers", 1);
+                if (GUI.Button(new Rect (25, 195, 450, 85), "Передвижение"))
+                    PlayerPrefs.SetInt("Controllers", 2);
+                if (GUI.Button(new Rect (25, 290 , 450, 85), "Передвижение/поворот и стрельба"))
+                    PlayerPrefs.SetInt("Controllers", 3);
 
                 if (GUI.Button(new Rect(380, 390, 100, 30), "Закрыть")) _settings = false;
             break;

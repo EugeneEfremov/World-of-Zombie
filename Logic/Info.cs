@@ -486,15 +486,10 @@ public class Info : MonoBehaviour {
 
         //Смена оружия
             if (GUI.Button(_arrowLeftWeaponsRect, arrowWeapons))
-            {
                 Player.GetComponent<Weapons>().currentWNum--;
-                Player.GetComponent<Weapons>().buttonSwitchOn = true;
-            }
+
             if (GUI.Button(_arrowRightWeaponsRect, arrowWeapons))
-            {
                 Player.GetComponent<Weapons>().currentWNum++;
-                Player.GetComponent<Weapons>().buttonSwitchOn = true;
-            }
         }
 
 #endregion

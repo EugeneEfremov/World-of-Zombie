@@ -291,7 +291,7 @@ public class ZombieMove : MonoBehaviour {
                     }
                 }
 
-                if (Physics.Raycast(gameObject.transform.position, transform.forward, out zombHit, 1.5f))
+                if (Physics.Raycast(gameObject.transform.position, transform.forward, out zombHit, 2.5f))
                 {
                     if (zombHit.transform.tag == "OtherHelth")
                     {
