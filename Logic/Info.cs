@@ -200,6 +200,8 @@ public class Info : MonoBehaviour {
                      magic4ParticleNew = Instantiate(magic4Particle, new Vector3(transform.position.x, transform.position.y, transform.position.z + 1.275401f), Quaternion.Euler(0, 0, 0)) as Transform;
                      magic4ParticleNew.parent = transform; //Присвоение к актеру
                      bMagic4Play = true;
+                     _magic4Helth = Player.GetComponent<Actor>().helth;
+                     _magic4Armour =Player.GetComponent<Actor>().armour;
                  }
                  Player.GetComponent<Actor>().helth = _magic4Helth;
                  Player.GetComponent<Actor>().armour = _magic4Armour;
@@ -340,11 +342,23 @@ public class Info : MonoBehaviour {
              //Magic4
              if (bMagic4)
              {
+                 if (!bMagic4Play)
+                 {
+                     magic4ParticleNew = Instantiate(magic4Particle, new Vector3(transform.position.x, transform.position.y, transform.position.z + 1.275401f), Quaternion.Euler(0, 0, 0)) as Transform;
+                     magic4ParticleNew.parent = transform; //Присвоение к актеру
+                     bMagic4Play = true;
+                     _magic4Helth = Player.GetComponent<Actor>().helth;
+                     _magic4Armour = Player.GetComponent<Actor>().armour;
+                 }
                  Player.GetComponent<Actor>().helth = _magic4Helth;
                  Player.GetComponent<Actor>().armour = _magic4Armour;
                  timeMagic4 -= Time.deltaTime * 6;
                  if (timeMagic4 <= 0)
+                 {
+                     bMagic4Play = false;
+                     Destroy(GameObject.Find("magic4(Clone)"));
                      bMagic4 = false;
+                 }
              }
              if (!bMagic4)
              {

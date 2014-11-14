@@ -2,13 +2,17 @@
 using System.Collections;
 
 public class Bonus : MonoBehaviour {
+    private Weapons weapons;
+
 	public string typeBonus = ""; //helth20, gunBul50 и т.д.
-	public GameObject Actor;
+	public GameObject Actor, ZombAll;
 
 	void Start(){
 		Actor = GameObject.Find ("Actor");
-        //if (gameObject.transform.tag != "Weapons")
+        ZombAll = GameObject.Find("ZombieLogic");
         Destroy(gameObject, 15);
+
+        weapons = new Weapons();
 	}
 
 	void OnTriggerEnter(Collider other){
@@ -72,40 +76,40 @@ public class Bonus : MonoBehaviour {
 
 				//Оружие
 				case "gun":
-					Actor.GetComponent<Weapons>().gunC = true;
-                    Actor.GetComponent<Weapons>().GBgun = true;
+                    ZombAll.GetComponent<Survival>().gunBonus = true;
+                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "gun",  weapons.gun, new Vector3(0, 0, 0)));
 				break;
 				case "grenade":
-					Actor.GetComponent<Weapons>().grenadeC = true;
-                    Actor.GetComponent<Weapons>().GBgrenade = true;
+                    ZombAll.GetComponent<Survival>().grenadeBonus = true;
+                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "grenade", weapons.grenade, new Vector3(0, 0, 0)));
 				break;
 				case "minigun":
-					Actor.GetComponent<Weapons>().minigunC = true;
-                    Actor.GetComponent<Weapons>().GBminigun = true;
+                    ZombAll.GetComponent<Survival>().minigunBonus = true;
+                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "minigun", weapons.minigun, new Vector3(0, 0, 0)));
 				break;
 				case "rocket":
-					Actor.GetComponent<Weapons>().rocketC = true;
-                    Actor.GetComponent<Weapons>().GBrocket = true;
+                    ZombAll.GetComponent<Survival>().rocketBonus = true;
+                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "rocket", weapons.rocket, new Vector3(0, 0, 0)));
 				break;
 				case "diskgun":
-					Actor.GetComponent<Weapons>().diskgunC = true;
-                    Actor.GetComponent<Weapons>().GBdiskgun = true;
+                    ZombAll.GetComponent<Survival>().diskgunBonus = true;
+                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "diskgun", weapons.diskgun, new Vector3(0, 0, 0)));
 				break;
                 case "firegun":
-                    Actor.GetComponent<Weapons>().firegunC = true;
-                    Actor.GetComponent<Weapons>().GBfiregun = true;
+                    ZombAll.GetComponent<Survival>().firegunBonus = true;
+                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "firegun", weapons.firegun, new Vector3(0, 0, 0)));
                 break;
                 case "zeusgun":
-                    Actor.GetComponent<Weapons>().zeusgunC = true;
-                    Actor.GetComponent<Weapons>().GBzeusgun = true;
+                    ZombAll.GetComponent<Survival>().zeusgunBonus = true;
+                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "zeusgun", weapons.zeusgun, new Vector3(0, 0, 0)));
                 break;
                 case "plasmicgun":
-                    Actor.GetComponent<Weapons>().plasmicgunC = true;
-                    Actor.GetComponent<Weapons>().GBplasmicgun = true;
+                    ZombAll.GetComponent<Survival>().plasmicgunBonus = true;
+                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "plasmicgun", weapons.plasmicgun, new Vector3(0, 0, 0)));
                 break;
                 case "gaussgun":
-                    Actor.GetComponent<Weapons>().gaussgunC = true;
-                    Actor.GetComponent<Weapons>().GBgaussgun = true;
+                    ZombAll.GetComponent<Survival>().gaussgunBonus = true;
+                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "gaussgun", weapons.gaussgun, new Vector3(0, 0, 0)));
                 break;
 
                 //Способности

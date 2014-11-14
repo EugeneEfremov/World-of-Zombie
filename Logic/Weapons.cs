@@ -3,80 +3,76 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
+
+//В каком виде хранить информацию о доступном оружии в листе
 public class Weapon
 {
-    public Weapon(int index, Transform currentW, Vector3 position)
+    public Weapon(int index, string currentW,Transform currentWeapObj, Vector3 position)
     {
         this.index = index;
         this.currentW = currentW;
+        this.currentWeapObj = currentWeapObj;
         this.position = position;
     }
 
     public int index;
-    public Transform currentW;
+    public string currentW;
+    public Transform currentWeapObj;
     public Vector3 position;
 }
 
 public class Weapons : MonoBehaviour{
-    public enum ControllersMode
-    {
-        moveAndRotation,
-        move,
-        moveAndShot
-    };
-    public ControllersMode controllMode = ControllersMode.moveAndRotation;
-
+    //Список оружия
     public List<Weapon> weapons = new List<Weapon>();
 
-    private string _controllers;
-    private int _shot, _swithWeapCheckCurent;
-	private float delayShot, _rotationCC; //Пауза выстрела
-    private Transform newShellBullet, newBullet, bulletSpawn, gunSpawn;
-
-	public int indexW ,currentWNum, strongMax, accuracyMax, gunBullet, gunMax = 100, grenadeBullet, grenadeMax = 100, minigunBullet, minigunMax = 100, rocketBullet, rocketMax = 100, diskgunBullet, diskgunMax = 100, firegunMax = 50, zeusgunMax = 50, plasmicgunMax = 50, gaussgunBullet = 50, gaussgunMax = 100; //Патроны, максимальное кол-во
-    public int pistolsLvl, gunLvl, grenadeLvl, minigunLvl, rocketLvl, diskgunLvl, firegunLvl, zeusgunLvl, plasmicgunLvl, gaussgunLvl; //Level of Weapons
+    private int _shot, _swithWeapCheckCurent; //Есть ли выстрел, проверка текущего оружия
+    private float delayShot; //Пауза выстрела
+    private Transform newShellBullet, newBullet, shellSpawn, bulletSpawn, gunSpawn; //новая гильза, новая пуля, спавн гильз, спавн пуль, спавн оружия
+    
+    //Кол-во доступного оружия, номер текущего оружия
+	public int indexW, currentWNum;
+    //Сила (кол-во переносимых патрон), точность
+    public int strongMax, accuracyMax;
+    //Текущее кол-во пуль и максимальное кол-во пуль
+    public int gunBullet, gunMax = 100, grenadeBullet, grenadeMax = 100, minigunBullet, minigunMax = 100, rocketBullet, rocketMax = 100, diskgunBullet, diskgunMax = 100, firegunMax = 50, zeusgunMax = 50, plasmicgunMax = 50, gaussgunBullet = 50, gaussgunMax = 100;
+    //Уровни оружия
+    public int pistolsLvl, gunLvl, grenadeLvl, minigunLvl, rocketLvl, diskgunLvl, firegunLvl, zeusgunLvl, plasmicgunLvl, gaussgunLvl;
+    //"Пули" время использования уникального оружия
     public float firegunBullet, zeusgunBullet, plasmicgunBullet;
-    public GameObject cam, topBody, downBody;
-	public bool pistolsC = true, gunC = false, grenadeC = false, minigunC = false, rocketC = false, diskgunC = false, firegunC = false, firegunActive = false, zeusgunC = false, zeusgunActive = false, plasmicgunC = false, plasmicgunActive = false, gaussgunC = false; //Наличие
+    //Название объекта текущего оружия
     public string currentW;
-	public Transform shellBullet, bullet, bulletGun, bulletGrenade, bulletRocket, bulletDiskgun, pistols, gun, grenade, boom, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun; //Объекты
-	public AudioClip[] pistolsA, gunA, grenadeA; //Звуки выстрелов
-	public bool GBgun = false, GBgrenade = false, GBminigun = false, GBrocket = false, GBdiskgun = false, GBfiregun = false, GBzeusgun = false, GBplasmicgun = false, GBgaussgun = false; //Открыто ли оружие
-    public Vector3 NewPositionGoal;
+    //Активно ли уникально оружие?
+    public bool firegunActive = false, zeusgunActive = false, plasmicgunActive = false;
+
+    //Объекты (прицел, гильзы, пули, оружие)
+    public Transform goal, shellBullet, bullet, bulletGun, bulletGrenade, bulletRocket, bulletDiskgun, bulletGauss, pistols, gun, grenade, boom, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun;
+    //Камера, верх тела, низ тела
+    public GameObject cam, topBody, downBody;
+    //Звуки выстрелов
+    public AudioClip[] pistolsA, gunA, grenadeA;
+    //"Скос" для НЕ точности
+    public Vector3 NewPositionBulletSpawn;
 
     void Start()
     {
-        //Выбор режима управления
-        _controllers = PlayerPrefs.GetInt("Controllers").ToString();
-
-        switch (_controllers)
-        {
-            case "1":
-                controllMode = ControllersMode.moveAndRotation;
-                break;
-            case "2":
-                controllMode = ControllersMode.move;
-                break;
-            case "3":
-                controllMode = ControllersMode.moveAndShot;
-                break;
-        }
-
         strongMax = GetComponent<Global>().strongMax;
         accuracyMax = GetComponent<Global>().accuracyMax;
 
-        topBody = GameObject.Find("topBody");
-        downBody = GameObject.Find("downBody");
         cam = GameObject.Find("Camera");
         gunSpawn = GameObject.Find("gunSpawn").transform;
+        topBody = GameObject.Find("topBody");
+        downBody = GameObject.Find("downBody");
 
         #region available Weapons
+
         currentW = "pistols(Clone)";
         currentWNum = 1;
         indexW = 1;
 
-        weapons.Add(new Weapon(indexW++, pistols, new Vector3 (0, 0, 0)));
+        //Первое оружие всегда пистолет
+        weapons.Add(new Weapon(indexW++, "pistols", pistols, new Vector3 (0, 0, 0)));
 
+        //Уровни оружия
         pistolsLvl = PlayerPrefs.GetInt("fx10ab0");
         gunLvl = PlayerPrefs.GetInt("fx10ab1");
         grenadeLvl = PlayerPrefs.GetInt("fx10ab2");
@@ -88,6 +84,7 @@ public class Weapons : MonoBehaviour{
         plasmicgunLvl = PlayerPrefs.GetInt("fx01e05");
         gaussgunLvl = PlayerPrefs.GetInt("fx01e07");
 
+        //Патроны для оружия
         gunBullet = PlayerPrefs.GetInt("ax90ab1");
         grenadeBullet = PlayerPrefs.GetInt("ax90ab2");
         minigunBullet = PlayerPrefs.GetInt("ax90ab3");
@@ -96,56 +93,35 @@ public class Weapons : MonoBehaviour{
 
         //Поставить условие, если режим не выживание
         if (gunLvl > 1)
-        {
-            gunC = true;
-            weapons.Add(new Weapon(indexW++, gun, new Vector3(0, 0, 0)));
-        }
+            weapons.Add(new Weapon(indexW++, "gun", gun, new Vector3(0, 0, 0)));
+
         if (grenadeLvl > 1)
-        {
-            grenadeC = true;
-            weapons.Add(new Weapon(indexW++, grenade, new Vector3(0, 0, 0)));
-        }
+            weapons.Add(new Weapon(indexW++, "grenade", grenade, new Vector3(0, 0, 0)));
+
         if (minigunLvl > 1)
-        {
-            minigunC = true;
-            weapons.Add(new Weapon(indexW++, minigun, new Vector3(0, 0,0)));
-        }
+            weapons.Add(new Weapon(indexW++, "minigun", minigun, new Vector3(0, 0,0)));
+
         if (rocketLvl > 1)
-        {
-            rocketC = true;
-            weapons.Add(new Weapon(indexW++, rocket, new Vector3(0, 0, 0)));
-        }
+            weapons.Add(new Weapon(indexW++, "rocket", rocket, new Vector3(0, 0, 0)));
+
         if (diskgunLvl > 1)
-        {
-            diskgunC = true;
-            weapons.Add(new Weapon(indexW++, diskgun, new Vector3(2, 2, 5)));
-        }
+            weapons.Add(new Weapon(indexW++, "diskgun", diskgun, new Vector3(0, 0, 0)));
+
         if (firegunLvl > 1)
-        {
-            firegunC = true;
-            weapons.Add(new Weapon(indexW++, firegun, new Vector3(2, 2, 5)));
-        }
+            weapons.Add(new Weapon(indexW++, "firegun", firegun, new Vector3(0, 0, 0)));
+
         if (zeusgunLvl > 1)
-        {
-            zeusgunC = true;
-            weapons.Add(new Weapon(indexW++, zeusgun, new Vector3(2, 2, 5)));
-        }
+            weapons.Add(new Weapon(indexW++, "zeusgun", zeusgun, new Vector3(0, 0, 0)));
+
         if (plasmicgunLvl > 1)
-        {
-            plasmicgunC = true;
-            weapons.Add(new Weapon(indexW++, plasmicgun, new Vector3(2, 2, 5)));
-        }
+            weapons.Add(new Weapon(indexW++, "plasmicgun", plasmicgun, new Vector3(0, 0, 0)));
+
         if (gaussgunLvl > 1)
-        {
-            gaussgunC = true;
-            weapons.Add(new Weapon(indexW++, gaussgun, new Vector3(2, 2, 5)));
-        }
+            weapons.Add(new Weapon(indexW++, "gaussgun", gaussgun, new Vector3(0, 0, 0)));
         #endregion
 
         //Изменение макс. кол-ва патрон
         AlterMaxBullet(strongMax);
-
-        bulletSpawn = GameObject.Find("BulletSpawn").transform;
     }
 
     //Изменение макс. кол-ва патрон
@@ -169,23 +145,41 @@ public class Weapons : MonoBehaviour{
         return bullet;
     }
 
+    //Смена оружия
     void SelectGun(int currentWNum){
         foreach (Weapon weapon in weapons)
         {
             if (weapon.index == currentWNum)
             {
+                SwitchWeapon(weapon.currentWeapObj, weapon.position);
                 _swithWeapCheckCurent = currentWNum;
-                SwitchWeapon(weapon.currentW, weapon.position);
             }
         }
+    }
+
+    //Смена оружия ОБЪЕКТ
+    void SwitchWeapon(Transform weapon, Vector3 position)
+    {
+        Destroy(GameObject.Find(currentW));
+        Transform newWeap = Instantiate(weapon, new Vector3(gunSpawn.position.x + position.x, gunSpawn.position.y + position.y, gunSpawn.position.z + position.z), Quaternion.Euler(270, topBody.transform.eulerAngles.y + 90, 0)) as Transform;
+       
+        //Присвоение к объекту актера
+        newWeap.parent = topBody.transform;
+
+        //Новое имя текущего оружия
+        currentW = newWeap.transform.name;
+
+        //Новая точка спавна патрон
+        bulletSpawn = GameObject.Find("bulletSpawn").transform;
+
+        //Новая точка спавна гильз
+        shellSpawn = GameObject.Find("shellSpawn").transform;
     }
 
     //При выстреле передает событие текущему оружию
     void ShotSwitch()
     {
-        NewPositionGoal = new Vector3(topBody.transform.position.x + Random.Range(-0.1f - accuracyMax, 0.1f + accuracyMax), topBody.transform.position.y + Random.Range(-0.01f - accuracyMax / 10, 0.01f + accuracyMax / 10), topBody.transform.position.z);
-        if (Physics.Raycast(NewPositionGoal, topBody.transform.forward, out hitObj, 100f))
-        {
+        NewPositionBulletSpawn = new Vector3(bulletSpawn.transform.position.x + Random.Range(-0.1f - accuracyMax, 0.1f + accuracyMax), bulletSpawn.transform.position.y + Random.Range(-0.01f - accuracyMax / 10, 0.01f + accuracyMax / 10), bulletSpawn.transform.position.z);
             switch (currentW)
             {
                 case "pistols(Clone)":
@@ -222,42 +216,18 @@ public class Weapons : MonoBehaviour{
                     print("default");
                     break;
             }
-        }
     }
 
-    //Смена оружия
-	void SwitchWeapon(Transform weapon, Vector3 position){
-		Destroy (GameObject.Find(currentW));
-        Transform newWeap = Instantiate(weapon, new Vector3(gunSpawn.position.x + position.x, gunSpawn.position.y + position.y, gunSpawn.position.z + position.z), Quaternion.Euler(270, 0, 0)) as Transform;
-        newWeap.GetComponent<Bonus>().enabled = false;
-        newWeap.GetComponent<Collider>().enabled = false;
-		newWeap.parent = topBody.transform; //Присвоение к объекту актера
-        currentW = newWeap.transform.name;
-        newWeap.transform.localScale = new Vector3(1, 1, 1);
-        newWeap.transform.rotation = Quaternion.Euler(270, 90, 0);
-	}
-    
-	RaycastHit hitObj; //Куда попал патрон
-	Ray camRay; //Луч выпускаемый из прицела
-	RaycastHit goal; //Куда смотрит прицел
-
-//Хор-ки оружия (СОБЫТИЕ ВО ВРЕМЯ ВЫСТРЕЛА)
-	void ShotPistols(){
+    //Хор-ки оружия (СОБЫТИЕ ВО ВРЕМЯ ВЫСТРЕЛА)
+    #region sepecifications shot weapons
+    void ShotPistols(){
 		if (delayShot <= 0) {
-            newBullet = Instantiate(bullet, bulletSpawn.position, Quaternion.Euler(0,0,0)) as Transform;
-            newBullet.rigidbody.AddForce(bulletSpawn.forward * 1000);
-            newShellBullet = Instantiate(shellBullet, new Vector3(bulletSpawn.position.x + 0.5f, bulletSpawn.position.y, bulletSpawn.position.z), Quaternion.Euler(0, 0, 0)) as Transform;
-            newShellBullet.rigidbody.AddForce(transform.right * 5);
-                    if (hitObj.transform.tag == "Zombie")
-                    {
-                        GameObject.Find(hitObj.transform.name).GetComponent<ZombieMove>().helth -= 30;
-                        transform.GetComponent<Actor>().count += 30;
-                    }
-                    if (hitObj.transform.tag == "Barel")
-                    {
-                        hitObj.transform.GetComponent<Barel>().helth -= 100;
-                        transform.GetComponent<Actor>().count += 30;
-                    }
+            //Создание патрона
+            newBullet = Instantiate(bullet, NewPositionBulletSpawn, Quaternion.Euler(0, 0, 0)) as Transform;
+            newBullet.rigidbody.AddForce( -newBullet.right * 1000);
+            //Создание гильзы
+            newShellBullet = Instantiate(shellBullet, shellSpawn.position, Quaternion.Euler(0, 0, 0)) as Transform;
+            newShellBullet.rigidbody.AddForce( transform.forward * 5);
 				}
 				if (delayShot <= 0) {
 						delayShot = 0.3f;
@@ -270,18 +240,12 @@ public class Weapons : MonoBehaviour{
 
         if (delayShot <= 0 && gunBullet > 0)
         {
-            newBullet = Instantiate(bulletGun, bulletSpawn.position, Quaternion.Euler(0,0,0)) as Transform;
-            newBullet.rigidbody.AddForce(bulletSpawn.forward * 1000);
-            if (hitObj.transform.tag == "Zombie")
-            {
-                GameObject.Find(hitObj.transform.name).GetComponent<ZombieMove>().helth -= 60;
-                transform.GetComponent<Actor>().count += 60;
-            }
-            if (hitObj.transform.tag == "Barel")
-            {
-                hitObj.transform.GetComponent<Barel>().helth -= 100;
-                transform.GetComponent<Actor>().count += 30;
-            }
+            //Создание патрона
+            newBullet = Instantiate(bulletGun, NewPositionBulletSpawn, Quaternion.Euler(0, 0, 0)) as Transform;
+            newBullet.rigidbody.AddForce(newBullet.forward * 1000);
+            //Создание гильзы
+            newShellBullet = Instantiate(shellBullet, shellSpawn.position, Quaternion.Euler(0, 0, 0)) as Transform;
+            newShellBullet.rigidbody.AddForce(transform.right * 5);
 		}
 		if (delayShot <= 0) {
 				gunBullet--;
@@ -293,11 +257,13 @@ public class Weapons : MonoBehaviour{
         grenadeBullet = MaxBullet(grenadeMax, grenadeBullet);
 
 		if (delayShot <= 0 && grenadeBullet > 0) {
-            newBullet = Instantiate(bulletGrenade, bulletSpawn.position, Quaternion.Euler(0,0,0)) as Transform;
-            newBullet.rigidbody.AddForce(bulletSpawn.forward * 1000);
-            newBullet.GetComponent<Bullet>().position = hitObj.point;
+            //Создание патрона
+            newBullet = Instantiate(bulletGrenade, NewPositionBulletSpawn, Quaternion.Euler(0,0,0)) as Transform;
+            newBullet.rigidbody.AddForce(newBullet.forward * 1000);
             newBullet.GetComponent<Bullet>().type = "Grenade";
-			//Instantiate(boom, hitObj.point, Quaternion.Euler(0,0,0));
+            //Создание гильзы
+            newShellBullet = Instantiate(shellBullet, shellSpawn.position, Quaternion.Euler(0, 0, 0)) as Transform;
+            newShellBullet.rigidbody.AddForce(transform.right * 5);
         }
 		if (delayShot <= 0) {
 				grenadeBullet--;
@@ -311,18 +277,12 @@ public class Weapons : MonoBehaviour{
 
         if (delayShot <= 0 && minigunBullet > 0)
         {
-            newBullet = Instantiate(bullet, bulletSpawn.position, Quaternion.Euler(0,0,0)) as Transform;
-            newBullet.rigidbody.AddForce(bulletSpawn.forward * 1000);
-            if (hitObj.transform.tag == "Zombie")
-            {
-			    GameObject.Find (hitObj.transform.name).GetComponent<ZombieMove> ().helth -= 30;
-			    transform.GetComponent<Actor> ().count += 25;
-            }
-            if (hitObj.transform.tag == "Barel")
-            {
-                hitObj.transform.GetComponent<Barel>().helth -= 100;
-                transform.GetComponent<Actor>().count += 30;
-            }
+            //Создание патрона
+            newBullet = Instantiate(bullet, NewPositionBulletSpawn, Quaternion.Euler(0,0,0)) as Transform;
+            newBullet.rigidbody.AddForce(newBullet.forward * 1000);
+            //Создание гильзы
+            newShellBullet = Instantiate(shellBullet, shellSpawn.position, Quaternion.Euler(0, 0, 0)) as Transform;
+            newShellBullet.rigidbody.AddForce(transform.right * 5);
 		}
 		if (delayShot <= 0) {
 				minigunBullet--;
@@ -335,11 +295,13 @@ public class Weapons : MonoBehaviour{
 
         if (delayShot <= 0 && rocketBullet > 0)
         {
-            newBullet = Instantiate(bulletRocket, bulletSpawn.position, Quaternion.Euler(0,0,0)) as Transform;
-            newBullet.rigidbody.AddForce(bulletSpawn.forward * 1000);
-            newBullet.GetComponent<Bullet>().position = hitObj.point;
+            //Создание патрона
+            newBullet = Instantiate(bulletRocket, NewPositionBulletSpawn, Quaternion.Euler(0, 0, 0)) as Transform;
+            newBullet.rigidbody.AddForce(newBullet.forward * 1000);
             newBullet.GetComponent<Bullet>().type = "Rocket";
-			//Instantiate(boom, hitObj.point, Quaternion.Euler(0,0,0));
+            //Создание гильзы
+            newShellBullet = Instantiate(shellBullet, shellSpawn.position, Quaternion.Euler(0, 0, 0)) as Transform;
+            newShellBullet.rigidbody.AddForce(transform.right * 5);
 		}
 		if (delayShot <= 0) {
 			rocketBullet--;
@@ -352,18 +314,9 @@ public class Weapons : MonoBehaviour{
 
         if (delayShot <= 0 && diskgunBullet > 0)
         {
-            newBullet = Instantiate(bulletDiskgun, bulletSpawn.position, Quaternion.Euler(0, 0, 0)) as Transform;
-            newBullet.rigidbody.AddForce(bulletSpawn.forward * 1000);
-            if (hitObj.transform.tag == "Zombie")
-            {
-                GameObject.Find(hitObj.transform.name).GetComponent<ZombieMove>().helth -= 150;
-                transform.GetComponent<Actor>().count += 150;
-            }
-            if (hitObj.transform.tag == "Barel")
-            {
-                hitObj.transform.GetComponent<Barel>().helth -= 100;
-                transform.GetComponent<Actor>().count += 30;
-            }
+            //Создание патрона
+            newBullet = Instantiate(bulletDiskgun, NewPositionBulletSpawn, Quaternion.Euler(0, 0, 0)) as Transform;
+            newBullet.rigidbody.AddForce(newBullet.forward * 1000);
 		}
 		if (delayShot <= 0) {
 			diskgunBullet--;
@@ -432,15 +385,15 @@ public class Weapons : MonoBehaviour{
     {
         gaussgunBullet = MaxBullet(gaussgunMax, gaussgunBullet);
 
-        if (delayShot <= 0 && hitObj.transform.tag == "Zombie" && gaussgunBullet > 0)
+        if (delayShot <= 0 && gaussgunBullet > 0)
         {
-            GameObject.Find(hitObj.transform.name).GetComponent<ZombieMove>().helth -= 100;
-            transform.GetComponent<Actor>().count += 100;
-        }
-        if (hitObj.transform.tag == "Barel")
-        {
-            hitObj.transform.GetComponent<Barel>().helth -= 100;
-            transform.GetComponent<Actor>().count += 30;
+            //Создание патрона
+            newBullet = Instantiate(bulletGauss, NewPositionBulletSpawn, Quaternion.Euler(0, 0, 0)) as Transform;
+            newBullet.rigidbody.AddForce(newBullet.forward * 1000);
+            newBullet.GetComponent<Bullet>().type = "Gauss";
+            //Создание гильзы
+            newShellBullet = Instantiate(shellBullet, shellSpawn.position, Quaternion.Euler(0, 0, 0)) as Transform;
+            newShellBullet.rigidbody.AddForce(transform.right * 5);
         }
         if (delayShot <= 0)
         {
@@ -448,12 +401,13 @@ public class Weapons : MonoBehaviour{
             delayShot = 0.5f;
         }
     }
-//Хор-ки оружия КОНЕЦ
+    #endregion
+    //Хор-ки оружия КОНЕЦ
 
     void FixedUpdate()
     {
+        //Есть ли выстрел
         _shot = transform.GetComponent<Controllers>().shot;
-        _rotationCC = transform.GetComponent<Controllers>().rotationCC;
 
         //Смена оружия
         if (_swithWeapCheckCurent != currentWNum)
@@ -464,79 +418,44 @@ public class Weapons : MonoBehaviour{
             currentWNum = 1;
         //КОНЕЦ Смена оружия
 
+        //Стрельба
+        if (_shot == 1)
+            ShotSwitch();
+
+        //Пауза выстрела
         delayShot -= Time.deltaTime;
 
+        //Использование уникального оружия
+        #region unique weapons
+        //Использование огнемета
         if (firegunActive)
             firegunBullet -= Time.deltaTime;
         if (!firegunActive && firegunBullet < firegunMax)
             firegunBullet += Time.deltaTime;
 
+        //Использование пушки зевса
         if (zeusgunActive)
             zeusgunBullet -= Time.deltaTime;
         if (!zeusgunActive && zeusgunBullet < zeusgunMax)
             zeusgunBullet += Time.deltaTime;
 
+        //Использование плазменной пушки
         if (plasmicgunActive)
             plasmicgunBullet -= Time.deltaTime;
         if (!plasmicgunActive && plasmicgunBullet < plasmicgunMax)
             plasmicgunBullet += Time.deltaTime;
 
-        if (controllMode != ControllersMode.move)
-        {
-            topBody.transform.eulerAngles = new Vector3(0, _rotationCC, 0);
-            if (_shot == 1)
-                ShotSwitch();
-        }
-
-        if (controllMode == ControllersMode.move)
-        {
-            #region MOVE
-            camRay = cam.camera.ScreenPointToRay(Input.mousePosition); //Позиция прицела
-            if (Physics.Raycast(cam.transform.position, camRay.direction, out goal, 100f))
-            {//Куда смотрит прицел
-                //Debug.DrawLine (cam.transform.position, goal.point, Color.red);
-
-                if (_shot == 1)
-                {
-                //Вращение верхней части тела за прицелом
-                Vector3 relativePos = goal.point - topBody.transform.position;
-                Quaternion rotation = Quaternion.LookRotation(relativePos);
-                topBody.transform.eulerAngles = new Vector3(0, rotation.eulerAngles.y, 0);
-
-                    //Поворот нижней части тела
-                    //print(topBody.transform.eulerAngles.y);
-                    if (topBody.transform.eulerAngles.y >= 0 && topBody.transform.eulerAngles.y < 45)
-                        downBody.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    if (topBody.transform.eulerAngles.y >= 45 && topBody.transform.eulerAngles.y <= 90)
-                        downBody.transform.rotation = Quaternion.Euler(0, 45, 0);
-                    if (topBody.transform.eulerAngles.y >= 90 && topBody.transform.rotation.y < 135)
-                        downBody.transform.rotation = Quaternion.Euler(0, 90, 0);
-                    if (topBody.transform.eulerAngles.y >= 135 && topBody.transform.rotation.y < 180)
-                        downBody.transform.rotation = Quaternion.Euler(0, 135, 0);
-                    if (topBody.transform.eulerAngles.y >= 180 && topBody.transform.rotation.y < 225)
-                        downBody.transform.rotation = Quaternion.Euler(0, 180, 0);
-                    if (topBody.transform.eulerAngles.y >= 225 && topBody.transform.rotation.y < 270)
-                        downBody.transform.rotation = Quaternion.Euler(0, 225, 0);
-                    if (topBody.transform.eulerAngles.y >= 270 && topBody.transform.rotation.y < 315)
-                        downBody.transform.rotation = Quaternion.Euler(0, 270, 0);
-                    if (topBody.transform.eulerAngles.y >= 315 && topBody.transform.rotation.y < 360)
-                        downBody.transform.rotation = Quaternion.Euler(0, 315, 0);
-
-                    //Стрельба
-                    ShotSwitch();
-                }
-            }
-            if (_shot == 0)
-            {
-                //Действия в зависимости от текущего оружия
-                if (currentW == "firegun(Clone)")
-                    ShotFiregun(false);
-                if (currentW == "zeusgun(Clone)")
-                    ShotZeusgun(false);
-                if (currentW == "plasmicgun(Clone)")
-                    ShotPlasmicgun(false);
-            }
-            #endregion
-        }
+        //Если не ипользуем уникальное оружие
+         if (_shot == 0)
+          {
+             //Действия в зависимости от текущего оружия
+             if (currentW == "firegun(Clone)")
+                 ShotFiregun(false);
+             if (currentW == "zeusgun(Clone)")
+                 ShotZeusgun(false);
+             if (currentW == "plasmicgun(Clone)")
+                 ShotPlasmicgun(false);
+          }
+        #endregion
     }
 }

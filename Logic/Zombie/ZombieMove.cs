@@ -6,7 +6,7 @@ public class ZombieMove : MonoBehaviour {
 	private Transform Player;
 	private CharacterController cc;
     private GameObject ZombieAll;
-    private float timeInGame, instNewWeapTime, timeDamage = 1.2f, bloodY = 1f; //время в игре, время до созжания нового оружия, переодичность нанесения урона, смещение текстуры
+    private float timeInGame, instNewWeapTime, timeDamage = 1.2f, bloodY = 1f; //время в игре, время до создания нового оружия, переодичность нанесения урона, смещение текстуры
    // public bool InstNewWeap = false;
 
 	Vector3 moveDirection = Vector3.zero;
@@ -78,47 +78,48 @@ public class ZombieMove : MonoBehaviour {
 	}
 
 //Оружие в бонус
+    //Кидать на оружие колайдер и скрипт бонуса и анимацию
 	void GunBonus(){
-		if (timeInGame > 30 && Player.GetComponent<Weapons>().GBgun == false && instNewWeapTime <= 0) {
+		if (timeInGame > 30 && Player.GetComponent<Survival>().gunBonus == false && instNewWeapTime <= 0) {
 				Instantiate(gun, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
 		}
-        if (timeInGame > 60 && Player.GetComponent<Weapons>().GBgrenade == false && instNewWeapTime <= 0)
+        if (timeInGame > 60 && Player.GetComponent<Survival>().grenadeBonus == false && instNewWeapTime <= 0)
         {
 				Instantiate(grenage, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
 		}
-        if (timeInGame > 90 && Player.GetComponent<Weapons>().GBminigun == false && instNewWeapTime <= 0)
+        if (timeInGame > 90 && Player.GetComponent<Survival>().minigunBonus == false && instNewWeapTime <= 0)
         {
 				Instantiate(minigun, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
 		}
-        if (timeInGame > 120 && Player.GetComponent<Weapons>().GBrocket == false && instNewWeapTime <= 0)
+        if (timeInGame > 120 && Player.GetComponent<Survival>().rocketBonus == false && instNewWeapTime <= 0)
         {
 				Instantiate(rocket, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
 		}
-        if (timeInGame > 150 && Player.GetComponent<Weapons>().GBdiskgun == false && instNewWeapTime <= 0)
+        if (timeInGame > 150 && Player.GetComponent<Survival>().diskgunBonus == false && instNewWeapTime <= 0)
         {
 				Instantiate(diskgun, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
 		}
-        if (timeInGame > 180 && Player.GetComponent<Weapons>().GBgaussgun == false && instNewWeapTime <= 0)
+        if (timeInGame > 180 && Player.GetComponent<Survival>().gaussgunBonus == false && instNewWeapTime <= 0)
         {
             Instantiate(gaussgun, transform.position, Quaternion.Euler(0, 0, 0));
             ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
         }
-        if (timeInGame > 210 && Player.GetComponent<Weapons>().GBfiregun == false && instNewWeapTime <= 0)
+        if (timeInGame > 210 && Player.GetComponent<Survival>().firegunBonus == false && instNewWeapTime <= 0)
         {
             Instantiate(firegun, transform.position, Quaternion.Euler(0, 0, 0));
             ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
         }
-        if (timeInGame > 240 && Player.GetComponent<Weapons>().GBzeusgun == false && instNewWeapTime <= 0)
+        if (timeInGame > 240 && Player.GetComponent<Survival>().zeusgunBonus == false && instNewWeapTime <= 0)
         {
             Instantiate(zeusgun, transform.position, Quaternion.Euler(0, 0, 0));
             ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
         }
-        if (timeInGame > 290 && Player.GetComponent<Weapons>().GBplasmicgun == false && instNewWeapTime <= 0)
+        if (timeInGame > 290 && Player.GetComponent<Survival>().plasmicgunBonus == false && instNewWeapTime <= 0)
         {
             Instantiate(plasmicgun, transform.position, Quaternion.Euler(0, 0, 0));
             ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;

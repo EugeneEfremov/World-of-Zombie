@@ -78,7 +78,7 @@ public class Arena : MonoBehaviour {
                             }
                             //Свойства новой ракеты
                             newBullet.rigidbody.AddForce(newBullet.up * 3000);
-                            newBullet.GetComponent<Bullet>().position = new Vector3(goal.point.x, 0, goal.point.z);
+                            //newBullet.GetComponent<Bullet>().position = new Vector3(goal.point.x, 0, goal.point.z);
                             //newBullet.GetComponent<Bullet>().type = "ArenaBullet";
                             
                             //Свойства новой гильзы

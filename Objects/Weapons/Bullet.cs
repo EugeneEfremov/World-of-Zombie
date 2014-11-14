@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
 
-    public Vector3 position;
     public GameObject boom, boomArena, boomTexture;
     public string type;
 
@@ -15,11 +14,12 @@ public class Bullet : MonoBehaviour {
     {
         if (other.transform.name != "Actor")
         {
-            if (type == "ArenaBullet")
+            //Направлять патрон по формвард и взрывать при коллизии
+            /*if (type == "ArenaBullet")
                 Instantiate(boomArena, position, Quaternion.Euler(0, 0, 0));
 
             if (type == "Grenade" || type == "Rocket")
-                Instantiate(boom, position, Quaternion.Euler(0, 0, 0));
+                Instantiate(boom, position, Quaternion.Euler(0, 0, 0));*/
 
             Destroy(gameObject);
         }

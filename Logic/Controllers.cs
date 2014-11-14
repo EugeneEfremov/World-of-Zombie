@@ -13,10 +13,9 @@ public class Controllers : MonoBehaviour
     public ControllersMode controllMode = ControllersMode.moveAndRotation;
 
     private int _controllers;
-    Transform Actor;
-    Rect textureRectLeft, textureRectRight;
-    Touch[] touches;
-    Vector2 startPosLeft, endPosLeft, homePosLeft, startPosRight, endPosRight, homePosRight;
+    private Rect textureRectLeft, textureRectRight;
+    private Touch[] touches;
+    private Vector2 endPosLeft, homePosLeft, endPosRight, homePosRight;
 
     public Texture jost;
     public float rotationCC, forwardCC, rightCC;
@@ -24,8 +23,6 @@ public class Controllers : MonoBehaviour
 
     void Start()
     {
-        Actor = GameObject.Find("Actor").transform;
-
         //Выбор режима управления
         _controllers = PlayerPrefs.GetInt("Controllers");
 
@@ -83,7 +80,6 @@ public class Controllers : MonoBehaviour
                 case TouchPhase.Began:
                     if (t.position.x > Screen.width - 151 && t.position.y < 151)
                         shot = 1;
-                    startPosRight = t.position;
                     break;
                 case TouchPhase.Moved:
                     if (t.position.x > Screen.width - 151 && t.position.y < 151)
@@ -116,9 +112,6 @@ public class Controllers : MonoBehaviour
         {
             switch (t.phase)
             {
-                case TouchPhase.Began:
-                    startPosLeft = t.position;
-                    break;
                 case TouchPhase.Moved:
                     if (t.position.x < 151 && t.position.y < 151)
                     {
@@ -189,9 +182,6 @@ public class Controllers : MonoBehaviour
             {
                 switch (t.phase)
                 {
-                    case TouchPhase.Began:
-                        startPosLeft = t.position;
-                        break;
                     case TouchPhase.Moved:
                         if (t.position.x < 151 && t.position.y < 151)
                         {
