@@ -5,20 +5,20 @@ public class Survival : MonoBehaviour {
 
     public GameObject Actor;
     //Было ли получено оружие в бонус?
-    public bool gunBonus = false, grenadeBonus = false, minigunBonus = false, rocketBonus = false, diskgunBonus = false, gaussgunBonus = false, firegunBonus = false, zeusgunBonus = false, plasmicgunBonus = false;
+    public bool day, gunBonus = false, grenadeBonus = false, minigunBonus = false, rocketBonus = false, diskgunBonus = false, gaussgunBonus = false, firegunBonus = false, zeusgunBonus = false, plasmicgunBonus = false;
     float DLight1;
 
     //Рандом для день/ночь
     public float LightIntens()
     {
         if (Random.Range(0, 3) == 1)
-            return 0f;
+            return 0.05f;
         else
             return 0.5f;
     }
 
     void Start(){
-
+        day = true;
         Actor = GameObject.Find("Actor");
 
         //Рандомный день/ночь
@@ -28,14 +28,12 @@ public class Survival : MonoBehaviour {
         //Включение фонарика, если он есть
         if (DLight1 < 0.2f)
         {
+            day = false;
             if (Actor.GetComponent<Global>().lantern == 1)
-            {
                 GameObject.Find("Lantern").light.enabled = true;
-            }
+
             else if (Actor.GetComponent<Global>().lantern == 0)
                 GameObject.Find("Lantern").light.enabled = false;
         }
     }
-
-
 }

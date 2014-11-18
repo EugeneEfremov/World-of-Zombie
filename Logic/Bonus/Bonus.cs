@@ -2,21 +2,35 @@
 using System.Collections;
 
 public class Bonus : MonoBehaviour {
-    private Weapons weapons;
+    private Weapons weaponsClass;
+    private GameObject topBody;
+    private Animation anim;
 
 	public string typeBonus = ""; //helth20, gunBul50 и т.д.
 	public GameObject Actor, ZombAll;
+    public Material arm100, arm200, arm300;
 
 	void Start(){
-		Actor = GameObject.Find ("Actor");
-        ZombAll = GameObject.Find("ZombieLogic");
-        Destroy(gameObject, 15);
+        if (transform.tag != "Weapon")
+            anim = transform.GetComponent<Animation>();
 
-        weapons = new Weapons();
+		Actor = GameObject.Find ("Actor");
+        topBody = GameObject.Find("topBodyAnim");
+        ZombAll = GameObject.Find("ZombieLogic");
+
+        weaponsClass = Actor.GetComponent<Weapons>();
 	}
+
+    void FixedUpdate()
+    {
+        if (transform.tag != "Weapon")
+            anim.Play();
+    }
 
 	void OnTriggerEnter(Collider other){
 		if (other.transform.tag == "Player") {
+            Actor.GetComponent<Info>().logBonusString += "\n" + typeBonus;
+
 			switch (typeBonus){
 				case "helth20":
 					Actor.GetComponent<Actor>().helth += 20;
@@ -29,6 +43,7 @@ public class Bonus : MonoBehaviour {
                 {
                     Actor.GetComponent<Actor>().armourMax = 100;
                     Actor.GetComponent<Actor>().armour = 100;
+                    topBody.renderer.material = arm100;
                 }
                 break;
                 case "armour200":
@@ -36,6 +51,7 @@ public class Bonus : MonoBehaviour {
                 {
                     Actor.GetComponent<Actor>().armourMax = 200;
                     Actor.GetComponent<Actor>().armour = 200;
+                    topBody.renderer.material = arm200;
                 }
                 break;
                 case "armour300":
@@ -43,6 +59,7 @@ public class Bonus : MonoBehaviour {
                 {
                     Actor.GetComponent<Actor>().armourMax = 300;
                     Actor.GetComponent<Actor>().armour = 300;
+                    topBody.renderer.material = arm300;
                 }
                 break;
 				case "gunBul50":
@@ -77,39 +94,39 @@ public class Bonus : MonoBehaviour {
 				//Оружие
 				case "gun":
                     ZombAll.GetComponent<Survival>().gunBonus = true;
-                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "gun",  weapons.gun, new Vector3(0, 0, 0)));
+                    weaponsClass.AvailableWeapons("gun");
 				break;
 				case "grenade":
                     ZombAll.GetComponent<Survival>().grenadeBonus = true;
-                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "grenade", weapons.grenade, new Vector3(0, 0, 0)));
+                    weaponsClass.AvailableWeapons("grenade");
 				break;
 				case "minigun":
                     ZombAll.GetComponent<Survival>().minigunBonus = true;
-                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "minigun", weapons.minigun, new Vector3(0, 0, 0)));
+                    weaponsClass.AvailableWeapons("minigun");
 				break;
 				case "rocket":
                     ZombAll.GetComponent<Survival>().rocketBonus = true;
-                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "rocket", weapons.rocket, new Vector3(0, 0, 0)));
+                    weaponsClass.AvailableWeapons("rocket");
 				break;
 				case "diskgun":
                     ZombAll.GetComponent<Survival>().diskgunBonus = true;
-                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "diskgun", weapons.diskgun, new Vector3(0, 0, 0)));
+                    weaponsClass.AvailableWeapons("diskgun");
 				break;
                 case "firegun":
                     ZombAll.GetComponent<Survival>().firegunBonus = true;
-                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "firegun", weapons.firegun, new Vector3(0, 0, 0)));
+                    weaponsClass.AvailableWeapons("firegun");
                 break;
                 case "zeusgun":
                     ZombAll.GetComponent<Survival>().zeusgunBonus = true;
-                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "zeusgun", weapons.zeusgun, new Vector3(0, 0, 0)));
+                    weaponsClass.AvailableWeapons("zeusgun");
                 break;
                 case "plasmicgun":
                     ZombAll.GetComponent<Survival>().plasmicgunBonus = true;
-                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "plasmicgun", weapons.plasmicgun, new Vector3(0, 0, 0)));
+                    weaponsClass.AvailableWeapons("plasmicgun");
                 break;
                 case "gaussgun":
                     ZombAll.GetComponent<Survival>().gaussgunBonus = true;
-                    Actor.GetComponent<Weapons>().weapons.Add(new Weapon(weapons.indexW++, "gaussgun", weapons.gaussgun, new Vector3(0, 0, 0)));
+                    weaponsClass.AvailableWeapons("gaussgun");
                 break;
 
                 //Способности
@@ -130,7 +147,7 @@ public class Bonus : MonoBehaviour {
                     Actor.GetComponent<Global>().money += 10;
                 break;
 			}
-			Destroy(gameObject);
+            transform.parent.GetComponent<Destroying>().destroy = true;
 		}
 	}
 }

@@ -2,7 +2,12 @@ fileFormatVersion: 2
 guid: 50626be0abf5c95469bc6297af706c84
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Actor: {instanceID: 0}
+  - ZombAll: {instanceID: 0}
+  - arm100: {fileID: 2100000, guid: b53d2b7f24efd484ca0e9b94fab88fb3, type: 2}
+  - arm200: {fileID: 2100000, guid: 35312b36cdad2384ca88e7519107c188, type: 2}
+  - arm300: {fileID: 2100000, guid: 0cea1848e64942142810135fab63bdaf, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

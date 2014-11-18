@@ -6,14 +6,16 @@ public class Actor : MonoBehaviour {
 	private CharacterController cc;
 	private Vector3 moveDirectionZ, moveDirectionX = Vector3.zero;// Перед назад, лево право
 	private int score; //Очки
-    private float _forwardCC, _rightCC;
+    private Transform topBody, downBody, myCam;
+
+    public float forwardCC;
     public bool death = false;
     public int helth = 100, helthMax, helthReset, armour = 0, armourMax, count = 0, gravity = 80, live = 0, nvd = 0;
     public float speed = 8, speedMax;
     public string gameMode;
     public Animation animTop, animDown;
     public AnimationClip TopSteps, TopRepose, TopRight, TopLeft, DownForward, DownRepose, DownRightLeft, DownBackward;
-    public float TopStepsSpeed = 1f, TopReposeSpeed = 1f, TopRightSpeed = 1f, TopLeftSpeed = 1f, DownForwardSpeed = 1f, DownReposeSpeed = 1f, DownRightLeftSpeed = 1f, DownBackwardSpeed = 1f;
+    public float TopStepsSpeed = 2f, TopReposeSpeed = 2f, TopRightSpeed = 2f, TopLeftSpeed = 2f, DownForwardSpeed = 2f, DownReposeSpeed = 2f, DownRightLeftSpeed = 2f, DownBackwardSpeed = 2f;
 
 	void Start(){
         cc = GetComponent<CharacterController>();
@@ -25,6 +27,11 @@ public class Actor : MonoBehaviour {
         armour = GetComponent<Global>().armour;
         armourMax = GetComponent<Global>().armourMax;
         speedMax = GetComponent<Global>().speedMax * speed;
+
+        myCam = GameObject.Find("Camera").transform;
+        topBody = GameObject.Find("topBody").transform;
+        downBody = GameObject.Find("downBody").transform;
+
         speed += speedMax / 2;
 
         if (gameMode == "arena")
@@ -63,69 +70,71 @@ public class Actor : MonoBehaviour {
         if (armour < 0) armour = 0;
         helthReset = transform.GetComponent<Global>().helthReset;
 
+        //Слежка камеры
+        myCam.transform.position = new Vector3(transform.position.x + 9, transform.position.y + 15, transform.position.z + 4);
+
         if (!death && gameMode != "arena")
         {
-            //Move
-            _forwardCC = transform.GetComponent<Controllers>().forwardCC;
-            _rightCC = transform.GetComponent<Controllers>().rightCC;
-
-            //Если не двигаемся - покой
-            if (_forwardCC == 0 && _rightCC == 0)
+            //Если не идем - отключить шаги
+            if (forwardCC == 0)
             {
+                animTop.Stop("TopSteps");
+                animTop.Stop("TopRight");
+                animTop.Stop("TopLeft");
+
+                animDown.Stop("DownForward");
+                animDown.Stop("DownBackward");
+                animDown.Stop("DownRightLeft");
+
                 animTop.CrossFade("TopRepose");
                 animDown.CrossFade("DownRepose");
             }
 
-            //Если не идем - отключить шаги
-            if (_forwardCC == 0)
-            {
-                animTop.Stop("TopSteps");
-                animDown.Stop("DownForward");
-                animDown.Stop("DownBackward");
-            }
+            //Если идем
+                if (topBody.transform.localEulerAngles.y > 315 || topBody.transform.localEulerAngles.y < 45)
+                {
+                    downBody.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+                    if (forwardCC > 0)
+                    {
+                        animTop.CrossFade("TopSteps");
+                        animDown.CrossFade("DownForward");
+                    }
+                }
 
-            //Если идем - включить шаги
-            if (_forwardCC == 1)
-            {
-                animTop.CrossFade("TopSteps");
-                animDown.CrossFade("DownForward");
-            }
+                if (topBody.transform.localEulerAngles.y >= 45 && topBody.transform.localEulerAngles.y <= 135)
+                {
+                    downBody.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y + 90, 0);
+                    if (forwardCC > 0)
+                    {
+                        animTop.CrossFade("TopLeft");
+                        animDown.CrossFade("DownRightLeft");
+                    }
+                }
 
-            //Если идем назад - включить шаги
-            if (_forwardCC == -1)
-            {
-                animTop.CrossFade("TopSteps");
-                animDown.CrossFade("DownBackward");
-            }
+                if (topBody.transform.localEulerAngles.y <= 225 && topBody.transform.localEulerAngles.y > 135)
+                {
+                    downBody.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y + 180, 0);
+                    if (forwardCC > 0)
+                    {
+                        animTop.CrossFade("TopSteps");
+                        animDown.CrossFade("DownBackward");
+                    }
+                }
 
-            //Если не идем в стороны
-            if (_rightCC == 0)
-            {
-                animTop.Stop("TopRight");
-                animTop.Stop("TopsLeft");
-                animDown.Stop("DownRightLeft");
-            }
+                if (topBody.transform.localEulerAngles.y > 225 && topBody.transform.localEulerAngles.y <= 315)
+                {
+                    downBody.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y - 90, 0);
+                    if (forwardCC > 0)
+                    {
+                        animTop.CrossFade("TopRight");
+                        animDown.CrossFade("DownRightLeft");
+                    }
+                }
 
-            if (_rightCC == 1)
-            {
-                animTop.CrossFade("TopRight");
-                animDown.CrossFade("DownRightLeft");
-            }
-
-            if (_rightCC == -1)
-            {
-                animTop.CrossFade("TopLeft");
-                animDown.CrossFade("DownRightLeft");
-            }
 						//Вперед
-            moveDirectionZ = new Vector3( -_forwardCC, 0, 0);
+                        moveDirectionZ = new Vector3( -forwardCC, 0, 0);
 						moveDirectionZ = transform.TransformDirection (moveDirectionZ);
 						moveDirectionZ *= speed;
-
-						//В сторны
-						moveDirectionX = new Vector3 (0, 0, _rightCC);
-						moveDirectionX = transform.TransformDirection (moveDirectionX);
-						moveDirectionX *= speed;
 
 						moveDirectionZ.y -= gravity * speed * Time.deltaTime;
 
@@ -143,6 +152,7 @@ public class Actor : MonoBehaviour {
             }
             else
             {
+                transform.GetComponent<Controllers>().deathActor = true;
                 death = true;
                 helth = 0;
             }

@@ -65,6 +65,9 @@ public class InventoryMenu : MonoBehaviour {
             PlayerPrefs.SetInt("fx106f2", 0);
             PlayerPrefs.SetInt("fx106f3", 0);
             PlayerPrefs.SetInt("fx106f4", 0);
+            PlayerPrefs.SetInt("shellBullet", 0);
+            PlayerPrefs.SetInt("blood", 1);
+            PlayerPrefs.SetFloat("invertingMove", 0);
         }
 
         nameActor = PlayerPrefs.GetString("ActorNameCompany").ToString();
@@ -266,7 +269,7 @@ public class InventoryMenu : MonoBehaviour {
 
             if (GUI.Button(_lanternRect, "Ф") && lantern != 1)
             {
-                if (money >= 200)
+                if (money >= 20)
                 {
                     money -= 200;
                     lantern = 1;

@@ -10,10 +10,12 @@ public class Info : MonoBehaviour {
         level1
     };
 
+    private float _timeLogBonus;
     private int _newNameZomb, _magic4Helth, _magic4Armour;
     private Rect _helthRect, _accountRect, _armourRect, _leftInfoRect, _rightInfoRect, _deathRect, _pauseButtonRect, _pauseRect, _exitRect, _nvdRect, _helthResetRect, _liveActorRect;
     private Rect _magic1Rect, _magic2Rect, _magic3Rect, _magic4Rect;
     private Rect _arrowLeftWeaponsRect, _arrowRightWeaponsRect, _weaponsRect, _weaponsBulletRect;
+    private Rect _logBonus;
     private Transform magic2ParticleNew, magic3Particle, magic4ParticleNew;
 
     public GameMode gameMode = GameMode.survival;
@@ -25,7 +27,7 @@ public class Info : MonoBehaviour {
     public bool pause = false, bMagic1, bMagic2, bMagic3, bMagic2Play, bMagic3Play, bMagic4Play, bMagic4, exit = false, helthResetB, nvdEnabled = false;
     public Vector2 mp;
     public Transform Player, magic2Particle, magic3Zone, magic4Particle;
-	public string actorName= "", modeGame, currentW;
+	public string actorName= "", modeGame, currentW, logBonusString;
     public GameObject ZombAll;
 
     //Beta версия, вывод FPS
@@ -36,32 +38,33 @@ public class Info : MonoBehaviour {
 	void Start () {
         ZombAll = GameObject.Find("ZombieLogic");
         modeGame = Application.loadedLevelName;
-		//Screen.showCursor = false;
 		Player = GameObject.Find ("Actor").transform;
 
-        magic1b = PlayerPrefs.GetInt("fx106f1");
-        magic2b = PlayerPrefs.GetInt("fx106f2");
-        magic3b = PlayerPrefs.GetInt("fx106f3");
-        magic4b = PlayerPrefs.GetInt("fx106f4");
+        magic1b = PlayerPrefs.GetInt("fx106f1")+1;
+        magic2b = PlayerPrefs.GetInt("fx106f2")+1;
+        magic3b = PlayerPrefs.GetInt("fx106f3")+1;
+        magic4b = PlayerPrefs.GetInt("fx106f4")+1;
 
-		_helthRect = new Rect (10, 0, 100, 30);
-        _armourRect = new Rect(10, 30, 100, 30);
-        _accountRect = new Rect(Screen.width - 100, 0, 100, 30);
-		_leftInfoRect = new Rect (0, 0, 125, 123);
-		_rightInfoRect = new Rect (Screen.width - 150, 0, 150, 37);
+		_helthRect = new Rect (10, 0, 190, 50);
+        _armourRect = new Rect(10, 40, 190, 50);
+        _accountRect = new Rect(Screen.width - 160, 0, 180, 30);
+		_leftInfoRect = new Rect (0, 0, 195, 193);
+		_rightInfoRect = new Rect (Screen.width - 188, 0, 188, 48);
         _deathRect = new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200);
-        _pauseButtonRect = new Rect(5, 70, 44, 43);
+        _pauseButtonRect = new Rect(10, 100, 70, 72);
         _pauseRect = new Rect(Screen.width / 2 - 150, Screen.height / 2 - 75, 300, 150);
+        _logBonus = new Rect(170, 0, 200, 200);
 
-        _nvdRect = new Rect(10, 130, 25, 20);
+        _nvdRect = new Rect(10, 200, 50, 40);
 
-        _liveActorRect = new Rect(60, 105, 30, 30);
-        _helthResetRect = new Rect(70, 80, 30, 25);
+        _liveActorRect = new Rect(105, 110, 40, 40);
+        _helthResetRect = new Rect(75, 140, 40, 35);
 
-        _arrowRightWeaponsRect = new Rect(Screen.width - 40, 80, 30, 30);
-        _arrowLeftWeaponsRect = new Rect(Screen.width - 100, 80, 30, 30);
-        _weaponsRect = new Rect(Screen.width - 90, 40, 90, 30);
-        _weaponsBulletRect = new Rect(Screen.width - 70, 65, 40, 30);
+
+        _weaponsRect = new Rect(Screen.width - 100, 50, 100, 40);
+        _weaponsBulletRect = new Rect(Screen.width - 90, 80, 40, 30);
+        _arrowRightWeaponsRect = new Rect(Screen.width - 70, 100, 40, 40);
+        _arrowLeftWeaponsRect = new Rect(Screen.width - 130, 100, 40, 40);
 
         _exitRect = new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 200, 100);
 
@@ -110,17 +113,27 @@ public class Info : MonoBehaviour {
 
     void Update()
     {
-        if (Fps() > 55)
+        if (Fps() > 24)
             fpsGS.normal.textColor = Color.green;
-        if (Fps () < 54 && Fps() > 31)
+        if (Fps () < 24 && Fps() > 20)
             fpsGS.normal.textColor = Color.yellow;
-        if (Fps() < 30)
+        if (Fps() < 20)
             fpsGS.normal.textColor = Color.red;
     }
 
 
     void FixedUpdate()
     {
+        if (logBonusString != "")
+        {
+            _timeLogBonus += Time.deltaTime;
+            if (_timeLogBonus > 7)
+            {
+                _timeLogBonus = 0;
+                logBonusString = "";
+            }
+        }
+
 
         #region Magic
         switch (gameMode)
@@ -149,7 +162,7 @@ public class Info : MonoBehaviour {
                     {
                         magic2ParticleNew = Instantiate(magic2Particle, transform.position, Quaternion.Euler(90, 0, 0)) as Transform;
                         magic2ParticleNew.parent = transform; //Присвоение к актеру
-                        Destroy(GameObject.Find("magic2(Clone)"), 2.5f);
+                        Destroy(GameObject.Find("magic2(Clone)"), 4.5f);
                         bMagic2Play = true;
                     }
                  ZombAll.GetComponent<ZombieAll>().magic2 = true;
@@ -197,7 +210,7 @@ public class Info : MonoBehaviour {
              {
                  if (!bMagic4Play)
                  {
-                     magic4ParticleNew = Instantiate(magic4Particle, new Vector3(transform.position.x, transform.position.y, transform.position.z + 1.275401f), Quaternion.Euler(0, 0, 0)) as Transform;
+                     magic4ParticleNew = Instantiate(magic4Particle, transform.position, Quaternion.Euler(-90, 0, 0)) as Transform;
                      magic4ParticleNew.parent = transform; //Присвоение к актеру
                      bMagic4Play = true;
                      _magic4Helth = Player.GetComponent<Actor>().helth;
@@ -385,13 +398,16 @@ public class Info : MonoBehaviour {
 
 	void OnGUI (){
         //Beta версия, вывод FPS
-        GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height - 50, 100, 30), "fps " + fps.ToString(), fpsGS);
         if (gameMode != GameMode.level1)
         {
-            GUI.Label(new Rect(Screen.width / 2 - 150, Screen.height - 50, 100, 30), "time: " + ZombAll.GetComponent<ZombieAll>().timeInGame.ToString());
-            GUI.Label(new Rect(Screen.width / 2 - 210, Screen.height - 50, 100, 30), "zomb: " + ZombAll.GetComponent<ZombieAll>().accountZombNew.ToString());
+            GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height - 50, 100, 30), "fps " + ((int)fps).ToString() + "  g: " + QualitySettings.GetQualityLevel().ToString(), fpsGS);
+            if (gameMode != GameMode.level1)
+            {
+                GUI.Label(new Rect(Screen.width / 2 - 150, Screen.height - 50, 100, 30), "time: " + ZombAll.GetComponent<ZombieAll>().timeInGame.ToString());
+                GUI.Label(new Rect(Screen.width / 2 - 210, Screen.height - 50, 100, 30), "zomb: " + ZombAll.GetComponent<ZombieAll>().accountZombNew.ToString());
+            }
         }
-
+        
         //Vector2 mp = Event.current.mousePosition;
 		GUI.depth = 1;
 		GUI.DrawTexture (_leftInfoRect, leftInfo);
@@ -400,7 +416,8 @@ public class Info : MonoBehaviour {
 		GUI.Label (_helthRect, "hp " + Player.GetComponent<Actor>().helth.ToString());
 		GUI.Label (_armourRect, "A " + Player.GetComponent<Actor>().armour.ToString());
         GUI.Label (_accountRect, Player.GetComponent<Actor>().count.ToString());
-        GUI.Label(_liveActorRect, Player.GetComponent<Actor>().live.ToString());
+        GUI.Label (_liveActorRect, Player.GetComponent<Actor>().live.ToString());
+        GUI.Label (_logBonus, logBonusString, fpsGS);
 
         if (GUI.Button(_nvdRect, nvdT))
         {
@@ -444,6 +461,12 @@ public class Info : MonoBehaviour {
                 bMagic3 = true;
         }
 
+        if (magic4b == 1 && timeMagic4 >= 70)
+        {
+            if (GUI.Button(_magic4Rect, magic4))
+                bMagic4 = true;
+        }
+
         //Magic END        
 
 		if (Player.GetComponent<Actor> ().death) {
@@ -482,15 +505,15 @@ public class Info : MonoBehaviour {
                     break;
                 case "firegun(Clone)":
                     GUI.Label(_weaponsRect, "firegun");
-                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().firegunBullet.ToString());
+                    GUI.Label(_weaponsBulletRect, ((int) Player.GetComponent<Weapons>().firegunBullet).ToString());
                     break;
                 case "zeusgun(Clone)":
                     GUI.Label(_weaponsRect, "zeusgun");
-                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().zeusgunBullet.ToString());
+                    GUI.Label(_weaponsBulletRect, ((int) Player.GetComponent<Weapons>().zeusgunBullet).ToString());
                     break;
                 case "plasmicgun(Clone)":
                     GUI.Label(_weaponsRect, "plasmicgun");
-                    GUI.Label(_weaponsBulletRect, Player.GetComponent<Weapons>().plasmicgunBullet.ToString());
+                    GUI.Label(_weaponsBulletRect, ((int) Player.GetComponent<Weapons>().plasmicgunBullet).ToString());
                     break;
                 case "gaussgun(Clone)":
                     GUI.Label(_weaponsRect, "gaussgun");
@@ -529,7 +552,12 @@ public class Info : MonoBehaviour {
 				if(GUI.Button (new Rect(30, 155, 140, 30), "Сохранить")){
                         if (modeGame == "survival")
                         {
-                            Player.GetComponent<Global>().SaveResultGame("sirvival");
+                            if (Player.GetComponent<Survival>().day)
+                                Player.GetComponent<Global>().SaveResultGame("sirvival", true);
+
+                            if (!Player.GetComponent<Survival>().day)
+                                Player.GetComponent<Global>().SaveResultGame("sirvival", false);
+
                             if (PlayerPrefs.GetInt("ActorNameSurvivalScore") <= Player.GetComponent<Actor>().count)
                             {
                                 PlayerPrefs.SetString("ActorNameSurvival", actorName);
@@ -538,7 +566,7 @@ public class Info : MonoBehaviour {
                         }
                         else if (modeGame == "arena")
                         {
-                            Player.GetComponent<Global>().SaveResultGame("arena");
+                            Player.GetComponent<Global>().SaveResultGame("arena", false);
                             if (PlayerPrefs.GetInt("ActorNameArenaScore") <= Player.GetComponent<Actor>().count)
                             {
                                 PlayerPrefs.SetString("ActorNameArena", actorName);
@@ -547,7 +575,7 @@ public class Info : MonoBehaviour {
                         }
                         else
                         {
-                            Player.GetComponent<Global>().SaveResultGame("company");
+                            Player.GetComponent<Global>().SaveResultGame("company", false);
                             if (PlayerPrefs.GetInt("ActorNameCompanyScore") <= Player.GetComponent<Actor>().count)
                             {
                                 PlayerPrefs.SetString("ActorNameCompany", actorName);

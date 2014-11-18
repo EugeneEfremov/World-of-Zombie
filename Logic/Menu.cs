@@ -4,7 +4,7 @@ using System.Collections;
 public class Menu : MonoBehaviour {
 
 	private Rect _newGameRect, _continueGameRect, _inventoryRect, _settingsRect, _recordsRect, _authorsRect, _exitRect;
-	private bool _newGame, _newNameActor, _newGameClear, _settings, _records, _authors, _switchLevel;
+    private bool _newGame, _newNameActor, _newGameClear, _settings, _records, _authors, _switchLevel, _creatingShellBllet, _creatingBlood, _invertingMove;
     private int _modeController;
     private float _graphicQuality;
     private GameObject MenuObj;
@@ -26,6 +26,21 @@ public class Menu : MonoBehaviour {
 		_recordsRect = new Rect (Screen.width - 190, Screen.height - 140, 170, 35);
 		_authorsRect = new Rect (Screen.width - 190, Screen.height - 100, 170, 35);
 		_exitRect = new Rect (40, Screen.height - 80, 90, 35);
+
+        if (PlayerPrefs.GetInt("shellBullet") != 0)
+            _creatingShellBllet = true;
+        else
+            _creatingShellBllet = false;
+
+        if (PlayerPrefs.GetInt("blood") != 0)
+            _creatingBlood = true;
+        else
+            _creatingBlood = false;
+
+        if (PlayerPrefs.GetInt("invertingMove") != 0)
+            _invertingMove = true;
+        else
+            _invertingMove = false;
 	}
 
 	void Window(int id){
@@ -75,10 +90,10 @@ public class Menu : MonoBehaviour {
                 }
             break;
             case 4:
-                GUI.Label(new Rect(80, 30, 105, 30), "Громкость");
-                AudioListener.volume = GUI.HorizontalSlider (new Rect(30, 60, 165, 30), AudioListener.volume, 0, 1);
-                GUI.Label(new Rect(355, 30, 105, 30), "Графика");
-                _graphicQuality = GUI.HorizontalSlider (new Rect (300, 60, 165, 30), _graphicQuality, 0, 3);
+                GUI.Label(new Rect(500, 30, 105, 30), "Громкость");
+                AudioListener.volume = GUI.HorizontalSlider (new Rect(400, 60, 275, 30), AudioListener.volume, 0, 1);
+                GUI.Label(new Rect(505, 90, 105, 30), "Графика");
+                _graphicQuality = GUI.HorizontalSlider (new Rect (400, 130, 275, 30), _graphicQuality, 0, 3);
                 if (_graphicQuality <= 1)
                 {
                     QualitySettings.SetQualityLevel(0, true);
@@ -101,17 +116,59 @@ public class Menu : MonoBehaviour {
                     qualityGraphics = "Хорошая";
                 }
 
-                GUI.Label(new Rect(357, 75, 100, 30), qualityGraphics);
+                GUI.Label(new Rect(505, 150, 100, 30), qualityGraphics);
 
                 //Режим управления
-                if (GUI.Button(new Rect(25, 100, 450, 85), "Передвижение и поворот"))
+                if (GUI.Button(new Rect(25, 25, 350, 100), "Передвижение и поворот"))
                     PlayerPrefs.SetInt("Controllers", 1);
-                if (GUI.Button(new Rect (25, 195, 450, 85), "Передвижение"))
+                if (GUI.Button(new Rect (25, 150, 350, 100), "Передвижение"))
                     PlayerPrefs.SetInt("Controllers", 2);
-                if (GUI.Button(new Rect (25, 290 , 450, 85), "Передвижение/поворот и стрельба"))
+                if (GUI.Button(new Rect (25, 275 , 350, 100), "Передвижение/поворот и стрельба"))
                     PlayerPrefs.SetInt("Controllers", 3);
 
-                if (GUI.Button(new Rect(380, 390, 100, 30), "Закрыть")) _settings = false;
+                //Доп. настройки
+                //Кровь
+                GUI.Toggle(new Rect(420, 200, 100, 30), _creatingBlood, " Кровь");
+                if (GUI.Button(new Rect(400, 230, 40, 30), " Да"))
+                {
+                        _creatingBlood = true;
+                        PlayerPrefs.SetInt("blood", 1);
+                }
+                if (GUI.Button(new Rect(450, 230, 40, 30), " Нет"))
+                {
+                    _creatingBlood = false;
+                    PlayerPrefs.SetInt("blood", 0);
+                }
+
+                //Гильзы
+                GUI.Toggle(new Rect(530, 200, 100, 30), _creatingShellBllet, " Гильзы");
+                if (GUI.Button(new Rect(520, 230, 40, 30), " Да"))
+                {
+                    _creatingShellBllet = true;
+                    PlayerPrefs.SetInt("shellBullet", 1);
+                }
+                if (GUI.Button(new Rect(570, 230, 40, 30), " Нет"))
+                {
+                    _creatingShellBllet = false;
+                    PlayerPrefs.SetInt("shellBullet", 0);
+                }
+
+                //Инвертация в Move
+                GUI.Toggle(new Rect(400, 265, 320, 30), _invertingMove, " Инвертировать прицел в передвижени");
+                if (GUI.Button(new Rect(480, 295, 40, 30), " Да"))
+                {
+                    _invertingMove = true;
+                    PlayerPrefs.SetInt("invertingMove", 1);
+                }
+                if (GUI.Button(new Rect(530, 295, 40, 30), " Нет"))
+                {
+                    _invertingMove = false;
+                    PlayerPrefs.SetInt("invertingMove", 0);
+                }
+
+                GUI.Label(new Rect(400, 325, 320, 30), "*Влияет на производительность системы");
+
+                if (GUI.Button(new Rect(577, 350, 100, 30), "Закрыть")) _settings = false;
             break;
 			case 5:
 				GUI.Label (new Rect (90, 20, 105, 30), "Компания");
@@ -154,7 +211,7 @@ public class Menu : MonoBehaviour {
         if (_newNameActor)
             GUI.Window(112, new Rect(Screen.width / 2 - 90, Screen.height / 2 - 50, 200, 100), Window, "Введите ваше имя");
         if (_settings)
-            GUI.Window(4, new Rect(Screen.width / 2 - 250, Screen.height / 2 - 220, 500, 440), Window, "Настройки");
+            GUI.Window(4, new Rect(50, 50, 700, 400), Window, "Настройки");
 		if (_records) 
 			GUI.Window(5, new Rect (Screen.width/2 - 120, Screen.height/2 - 120, 240, 240), Window, "Рекорды");
 		}

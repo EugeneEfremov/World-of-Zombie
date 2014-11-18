@@ -9,6 +9,7 @@ public class Global : MonoBehaviour {
     public int helthMax, strongMax, speedMax, accuracyMax, countMax, magicMax; //Specifications of Actor
     public int pistolsLvl, gunLvl, grenadeLvl, minigunLvl, rocketLvl, diskgunLvl, firegunLvl, zeusgunLvl, plasmicgunLvl, gaussgunLvl; //Level of Weapons
     public int gunBullet, grenadeBullet, minigunBullet, rocketBullet, diskgunBullet; //Bullet of Weapons
+    public int shellBullet, blood;
     public GameObject Player;
 
     void Start(){
@@ -58,11 +59,17 @@ public class Global : MonoBehaviour {
         minigunBullet = PlayerPrefs.GetInt("ax90ab3");
         rocketBullet = PlayerPrefs.GetInt("ax90ab4");
         diskgunBullet = PlayerPrefs.GetInt("ax90ab5");
+
+        shellBullet = PlayerPrefs.GetInt("shellBullet");
+        blood = PlayerPrefs.GetInt("blood");
     }
 
-    public void SaveResultGame(string gameMode)
+    public void SaveResultGame(string gameMode, bool day)
     {
-        PlayerPrefs.SetInt("0x01001", money + Player.GetComponent<Actor>().count / 70);
+        if (day)
+            PlayerPrefs.SetInt("0x01001", money + Player.GetComponent<Actor>().count / 70);
+        if (!day)
+            PlayerPrefs.SetInt("0x01001", money + Player.GetComponent<Actor>().count / 35);
 
         PlayerPrefs.SetInt("0x01002", Player.GetComponent<Actor>().armour);
         PlayerPrefs.SetInt("0x02001", Player.GetComponent<Actor>().armourMax);

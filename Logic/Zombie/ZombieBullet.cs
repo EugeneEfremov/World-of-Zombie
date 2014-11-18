@@ -47,7 +47,7 @@ public class ZombieBullet : MonoBehaviour {
             }
         }
         if (other.collider.enabled)
-            Destroy(gameObject);
+           Destroy(gameObject);
     }
 
     void FixedUpdate()
