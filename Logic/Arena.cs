@@ -4,7 +4,7 @@ using System.Collections;
 public class Arena : MonoBehaviour {
 
     private float timeRecoveryHelth = 0, newTimeRecoveryHelth = 0;
-    private int helthActor, maxHelthActor, oldBulletSpawn = 1;
+    private int helthActor, maxHelthActor, oldBulletSpawn = 1, _creatingShellBullet;
     private Transform newBullet, newShellBullet;
     private Quaternion rotation;
 
@@ -18,6 +18,8 @@ public class Arena : MonoBehaviour {
         gun = GameObject.Find("Actor").transform;
         cam = GameObject.Find("Camera").transform;
         maxHelthActor = gun.GetComponent<Actor>().helthMax;
+
+        _creatingShellBullet = PlayerPrefs.GetInt("shellBullet");
     }
     void FixedUpdate()
     {
@@ -77,13 +79,15 @@ public class Arena : MonoBehaviour {
                                 oldBulletSpawn = 1;
                             }
                             //Свойства новой ракеты
-                            newBullet.rigidbody.AddForce(newBullet.up * 3000);
-                            //newBullet.GetComponent<Bullet>().position = new Vector3(goal.point.x, 0, goal.point.z);
-                            //newBullet.GetComponent<Bullet>().type = "ArenaBullet";
+                            newBullet.GetComponent<Bullet>().position = goal.point;
+                            newBullet.rigidbody.AddForce(newBullet.up * 1000);
                             
                             //Свойства новой гильзы
-                            newShellBullet = Instantiate(sheelBullet, sheelBulletSpawn.transform.position, transform.rotation) as Transform;
-                            newShellBullet.rigidbody.AddForce(newShellBullet.right * 30);
+                            if (_creatingShellBullet == 1)
+                            {
+                                newShellBullet = Instantiate(sheelBullet, sheelBulletSpawn.transform.position, transform.rotation) as Transform;
+                                newShellBullet.rigidbody.AddForce(newShellBullet.right * 2);
+                            }
 
                             //Запасной вариант (убиство лучем)
                             if (goal.transform.tag == "Zombie")

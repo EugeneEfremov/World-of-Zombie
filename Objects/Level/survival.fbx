@@ -10,10 +10,10 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2014
 		Month: 11
-		Day: 14
+		Day: 22
 		Hour: 21
-		Minute: 51
-		Second: 39
+		Minute: 53
+		Second: 11
 		Millisecond: 0
 	}
 	Creator: "FBX SDK/FBX Plugins build 20070228"
@@ -21,7 +21,7 @@ FBXHeaderExtension:  {
 		FlagPLE: 0
 	}
 }
-CreationTime: "2014-11-14 21:51:39:000"
+CreationTime: "2014-11-22 21:53:11:000"
 Creator: "Blender version 2.69 (sub 0)"
 
 ; Object definitions
@@ -252,11 +252,11 @@ Objects:  {
 			Name: "UVКарта"
 			MappingInformationType: "ByPolygonVertex"
 			ReferenceInformationType: "IndexToDirect"
-			UV: 10.099544,-5.972887,-9.099545,-5.972883,-9.099545,0.356927,5.900873,0.368405,10.099540,0.356927,5.900873,0.659750,
-			    -4.886353,0.368406,10.099540,6.629364,-4.886353,0.659758,2.468904,10.820121,10.099545,0.352528,-1.468904,-10.359705,
-			    2.467691,-10.361086,-4.861938,1.012209,5.925415,0.691095,-4.861938,0.691102,5.925415,1.012209,-9.099545,0.352528,
+			UV: 10.099540,0.356927,10.099540,6.629364,39.427006,-0.001595,-9.099545,0.356927,-38.430286,1.008717,39.427006,1.008717,
+			    -38.657215,0.998868,-38.430286,-0.001571,39.671730,-0.000002,39.671730,0.998842,-38.657215,-0.000000,2.468904,10.820121,
+			    -1.468904,-10.359705,2.467691,-10.361086,10.099544,-5.972887,-9.099545,0.352528,10.099545,0.352528,-9.099545,-5.972883,
 			    -9.099545,6.629364,-1.467692,10.821503
-			UVIndex: 12,9,19,11,15,14,16,13,1,0,10,17,6,3,5,8,2,4,7,18
+			UVIndex: 13,11,19,12,7,2,5,4,17,14,16,15,10,8,9,6,3,0,1,18
 		}
 		LayerElementTexture: 0 {
 			Version: 101
@@ -1406,7 +1406,7 @@ Objects:  {
 			Property: "Reflectivity", "double", "",0
 		}
 	}
-	Material: "Material::Concrete1__concrete_41_jpg", "" {
+	Material: "Material::Concrete1__cobble04_jpg", "" {
 		Version: 102
 		ShadingModel: "lambert"
 		MultiLayer: 0
@@ -1485,16 +1485,16 @@ Objects:  {
 		}
 		UseMipMap: 0
 		Filename: "asphalt.jpg"
-		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\asphalt.jpg"
+		RelativeFilename: "Documents\World of Zombie\Assets\Img\Objects\asphalt.jpg"
 	}
-	Video: "Video::concrete_41_jpg", "Clip" {
+	Video: "Video::cobble04_jpg", "Clip" {
 		Type: "Clip"
 		Properties60:  {
 			Property: "FrameRate", "double", "",0
 			Property: "LastFrame", "int", "",0
 			Property: "Width", "int", "",0
 			Property: "Height", "int", "",0
-			Property: "Path", "charptr", "", "concrete_41.jpg"
+			Property: "Path", "charptr", "", "cobble04.jpg"
 			Property: "StartFrame", "int", "",0
 			Property: "StopFrame", "int", "",0
 			Property: "PlaySpeed", "double", "",1
@@ -1505,8 +1505,8 @@ Objects:  {
 			Property: "AccessMode", "enum", "",0
 		}
 		UseMipMap: 0
-		Filename: "concrete_41.jpg"
-		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\concrete\concrete_41.jpg"
+		Filename: "cobble04.jpg"
+		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\tile\cobble04.jpg"
 	}
 	Video: "Video::ground_117121_jpg_001", "Clip" {
 		Type: "Clip"
@@ -1527,7 +1527,7 @@ Objects:  {
 		}
 		UseMipMap: 0
 		Filename: "ground_117121.jpg"
-		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\ground\ground_117121.jpg"
+		RelativeFilename: "Documents\World of Zombie\Assets\Img\Objects\ground\ground_117121.jpg"
 	}
 	Texture: "Texture::asphalt_jpg_001", "TextureVideoClip" {
 		Type: "TextureVideoClip"
@@ -1552,16 +1552,16 @@ Objects:  {
 		}
 		Media: "Video::asphalt_jpg_001"
 		FileName: "asphalt.jpg"
-		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\asphalt.jpg"
+		RelativeFilename: "Documents\World of Zombie\Assets\Img\Objects\asphalt.jpg"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"
 		Cropping: 0,0,0,0
 	}
-	Texture: "Texture::concrete_41_jpg", "TextureVideoClip" {
+	Texture: "Texture::cobble04_jpg", "TextureVideoClip" {
 		Type: "TextureVideoClip"
 		Version: 202
-		TextureName: "Texture::concrete_41_jpg"
+		TextureName: "Texture::cobble04_jpg"
 		Properties60:  {
 			Property: "Translation", "Vector", "A+",0,0,0
 			Property: "Rotation", "Vector", "A+",0,0,0
@@ -1579,9 +1579,9 @@ Objects:  {
 			Property: "TextureScalingPivot", "Vector3D", "",0,0,0
 			Property: "VideoProperty", "object", ""
 		}
-		Media: "Video::concrete_41_jpg"
-		FileName: "concrete_41.jpg"
-		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\concrete\concrete_41.jpg"
+		Media: "Video::cobble04_jpg"
+		FileName: "cobble04.jpg"
+		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\tile\cobble04.jpg"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"
@@ -1610,7 +1610,7 @@ Objects:  {
 		}
 		Media: "Video::ground_117121_jpg_001"
 		FileName: "ground_117121.jpg"
-		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\ground\ground_117121.jpg"
+		RelativeFilename: "Documents\World of Zombie\Assets\Img\Objects\ground\ground_117121.jpg"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"
@@ -1674,19 +1674,19 @@ Relations:  {
 	}
 	Material: "Material::Asphalt__asphalt_jpg_001", "" {
 	}
-	Material: "Material::Concrete1__concrete_41_jpg", "" {
+	Material: "Material::Concrete1__cobble04_jpg", "" {
 	}
 	Material: "Material::Ground1__ground_117121_jpg_001", "" {
 	}
 	Texture: "Texture::asphalt_jpg_001", "TextureVideoClip" {
 	}
-	Texture: "Texture::concrete_41_jpg", "TextureVideoClip" {
+	Texture: "Texture::cobble04_jpg", "TextureVideoClip" {
 	}
 	Texture: "Texture::ground_117121_jpg_001", "TextureVideoClip" {
 	}
 	Video: "Video::asphalt_jpg_001", "Clip" {
 	}
-	Video: "Video::concrete_41_jpg", "Clip" {
+	Video: "Video::cobble04_jpg", "Clip" {
 	}
 	Video: "Video::ground_117121_jpg_001", "Clip" {
 	}
@@ -1700,13 +1700,13 @@ Relations:  {
 Connections:  {
 	Connect: "OO", "Model::Survival", "Model::Scene"
 	Connect: "OO", "Material::Asphalt__asphalt_jpg_001", "Model::Survival"
-	Connect: "OO", "Material::Concrete1__concrete_41_jpg", "Model::Survival"
+	Connect: "OO", "Material::Concrete1__cobble04_jpg", "Model::Survival"
 	Connect: "OO", "Material::Ground1__ground_117121_jpg_001", "Model::Survival"
 	Connect: "OO", "Texture::asphalt_jpg_001", "Model::Survival"
-	Connect: "OO", "Texture::concrete_41_jpg", "Model::Survival"
+	Connect: "OO", "Texture::cobble04_jpg", "Model::Survival"
 	Connect: "OO", "Texture::ground_117121_jpg_001", "Model::Survival"
 	Connect: "OO", "Video::asphalt_jpg_001", "Texture::asphalt_jpg_001"
-	Connect: "OO", "Video::concrete_41_jpg", "Texture::concrete_41_jpg"
+	Connect: "OO", "Video::cobble04_jpg", "Texture::cobble04_jpg"
 	Connect: "OO", "Video::ground_117121_jpg_001", "Texture::ground_117121_jpg_001"
 	Connect: "OO", "Model::Survival", "GroupSelection::RigidBodyWorld"
 }

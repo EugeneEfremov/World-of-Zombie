@@ -10,10 +10,10 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2014
 		Month: 11
-		Day: 02
-		Hour: 15
-		Minute: 07
-		Second: 40
+		Day: 22
+		Hour: 22
+		Minute: 25
+		Second: 45
 		Millisecond: 0
 	}
 	Creator: "FBX SDK/FBX Plugins build 20070228"
@@ -21,7 +21,7 @@ FBXHeaderExtension:  {
 		FlagPLE: 0
 	}
 }
-CreationTime: "2014-11-02 15:07:40:000"
+CreationTime: "2014-11-22 22:25:45:000"
 Creator: "Blender version 2.69 (sub 0)"
 
 ; Object definitions
@@ -275,22 +275,22 @@ Objects:  {
 			Name: "UVКарта"
 			MappingInformationType: "ByPolygonVertex"
 			ReferenceInformationType: "IndexToDirect"
-			UV: 0.999761,0.131749,0.000210,0.262867,0.999761,0.262867,0.008000,0.298698,0.007276,0.310919,2.467691,-4.045789,
-			    0.016445,0.647893,0.999790,0.623156,-0.407595,0.018634,0.000210,0.394405,2.468499,1.655169,0.000210,0.509057,
-			    0.999763,0.131328,-0.398745,0.985158,0.990942,0.014105,1.337659,0.011780,0.999767,0.622736,0.000210,0.263287,
-			    0.000233,0.394824,1.390844,0.018655,-0.000494,0.959866,1.349448,0.985158,0.994936,0.284102,-1.468904,-4.045231,
-			    1.388990,0.964965,1.388985,0.002717,-0.022503,0.065009,0.999763,0.000210,-1.467692,4.506206,1.386175,0.015338,
-			    -0.394524,0.980686,1.002492,0.945781,0.975022,0.679409,-0.398675,0.011654,0.004007,0.028701,-1.468500,-1.194752,
-			    -0.371471,0.020476,1.011794,0.389220,0.999763,0.263287,0.928743,0.065159,1.394358,1.005520,1.382689,0.980686,
-			    -0.404080,1.005499,0.982189,0.310936,0.999775,0.509271,0.999761,0.508637,-0.003951,0.692047,-0.364234,0.002726,
-			    0.000210,0.000211,1.349371,0.020339,1.008326,0.660570,1.002780,0.652411,0.982193,0.027021,-0.391040,0.005468,
-			    0.999759,0.736762,0.000217,0.622663,0.000210,0.508430,1.337589,0.985283,0.000225,0.623159,-0.003655,0.945422,
-			    -0.371394,0.985295,-0.374017,1.002197,-0.003549,0.652411,0.007103,0.026655,0.019913,0.376543,2.468095,-1.195310,
-			    0.000210,0.131329,1.386173,0.005468,0.978480,0.947228,0.999785,0.395032,-0.022547,0.342376,1.386166,1.002213,
-			    0.000210,0.736625,-0.364229,0.964974,-0.374008,0.015322,0.928699,0.342527,0.999763,0.394405,0.000210,0.131749,
+			UV: 4.352493,-0.002607,-3.633755,-0.000908,0.008000,0.298698,3.822107,0.023593,2.467691,-4.045789,0.016445,0.647893,
+			    0.978480,0.947228,3.822107,0.996495,-0.407595,0.018634,2.468499,1.655169,1.002492,0.945781,-0.394524,0.980686,
+			    0.990942,0.014105,1.337659,0.011780,-3.849009,0.981955,0.019913,0.376543,0.007276,0.310919,1.390844,0.018655,
+			    -0.000494,0.959866,1.349448,0.985158,0.994936,0.284102,4.820371,0.982590,4.986609,0.980664,-3.594610,0.996494,
+			    1.388985,0.002717,-0.022503,0.065009,4.986812,0.000882,-1.467692,4.506206,1.386175,0.015338,4.049120,-0.009912,
+			    -3.594610,0.023597,0.975022,0.679409,4.478109,0.017646,-0.398675,0.011654,-0.022547,0.342376,0.004007,0.028701,
+			    -1.468500,-1.194752,-0.371471,0.020476,4.478110,0.991264,-1.468904,-4.045231,1.011794,0.389220,4.820443,-0.001530,
+			    4.352217,1.009666,1.394358,1.005520,1.382689,0.980686,-0.404080,1.005499,0.982189,0.310936,-0.398745,0.985158,
+			    -0.003549,0.652411,-4.553984,-0.002578,0.928743,0.065159,-0.364234,0.002726,1.349371,0.020339,1.008326,0.660570,
+			    1.002780,0.652411,0.982193,0.027021,-0.391040,0.005468,-2.944079,0.017658,1.388990,0.964965,1.337589,0.985283,
+			    -2.944077,0.991273,4.049120,0.986268,-0.371394,0.985295,-0.374017,1.002197,-0.003951,0.692047,0.007103,0.026655,
+			    -3.633958,0.978877,2.468095,-1.195310,1.386173,0.005468,-0.003655,0.945422,-3.849069,-0.003385,1.386166,1.002213,
+			    -3.545060,0.986271,-0.364229,0.964974,-0.374008,0.015322,-4.554122,1.008444,0.928699,0.342527,-3.545058,-0.009914,
 			    2.468904,4.505648,-1.468096,1.655726
-			UVIndex: 71,61,74,29,11,44,16,55,10,78,28,79,8,19,40,42,22,3,34,14,57,13,33,15,21,60,36,49,58,7,54,72,18,69,45,56,5,65,35,23,65,10,79,35,53,67,41,30,47,25,24,73,68,20,46,32,50,6,64,37,17,38,76,9,
-			         77,0,2,1,48,27,12,66,63,52,43,4,62,51,31,59,26,39,75,70
+			UVIndex: 71,63,74,28,70,41,21,14,9,78,27,79,8,17,43,45,20,2,35,12,59,47,33,13,19,62,37,52,49,0,42,75,1,26,22,66,4,67,36,39,67,9,79,36,56,68,44,11,51,24,58,73,6,18,64,31,53,5,15,40,30,3,7,23,
+			         77,29,61,72,57,32,38,60,65,55,46,16,48,54,10,69,25,50,76,34
 		}
 		LayerElementTexture: 0 {
 			Version: 101
@@ -1440,6 +1440,36 @@ Objects:  {
 			Property: "Reflectivity", "double", "",0
 		}
 	}
+	Material: "Material::Ground11711__cobble04_jpg", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties60:  {
+			Property: "ShadingModel", "KString", "", "Lambert"
+			Property: "MultiLayer", "bool", "",0
+			Property: "EmissiveColor", "ColorRGB", "",0.8000,0.8000,0.8000
+			Property: "EmissiveFactor", "double", "",0.0000
+			Property: "AmbientColor", "ColorRGB", "",1.0000,1.0000,1.0000
+			Property: "AmbientFactor", "double", "",1.0000
+			Property: "DiffuseColor", "ColorRGB", "",0.8000,0.8000,0.8000
+			Property: "DiffuseFactor", "double", "",0.8000
+			Property: "Bump", "Vector3D", "",0,0,0
+			Property: "TransparentColor", "ColorRGB", "",1,1,1
+			Property: "TransparencyFactor", "double", "",0.0000
+			Property: "SpecularColor", "ColorRGB", "",1.0000,1.0000,1.0000
+			Property: "SpecularFactor", "double", "",0.5000
+			Property: "ShininessExponent", "double", "",12.3
+			Property: "ReflectionColor", "ColorRGB", "",0,0,0
+			Property: "ReflectionFactor", "double", "",1
+			Property: "Emissive", "ColorRGB", "",0,0,0
+			Property: "Ambient", "ColorRGB", "",1.0,1.0,1.0
+			Property: "Diffuse", "ColorRGB", "",0.8,0.8,0.8
+			Property: "Specular", "ColorRGB", "",1.0,1.0,1.0
+			Property: "Shininess", "double", "",12.3
+			Property: "Opacity", "double", "",1.0
+			Property: "Reflectivity", "double", "",0
+		}
+	}
 	Material: "Material::Ground11711__ground_11711_jpg", "" {
 		Version: 102
 		ShadingModel: "lambert"
@@ -1500,36 +1530,6 @@ Objects:  {
 			Property: "Reflectivity", "double", "",0
 		}
 	}
-	Material: "Material::Ground11711__ground_11_jpg", "" {
-		Version: 102
-		ShadingModel: "lambert"
-		MultiLayer: 0
-		Properties60:  {
-			Property: "ShadingModel", "KString", "", "Lambert"
-			Property: "MultiLayer", "bool", "",0
-			Property: "EmissiveColor", "ColorRGB", "",0.8000,0.8000,0.8000
-			Property: "EmissiveFactor", "double", "",0.0000
-			Property: "AmbientColor", "ColorRGB", "",1.0000,1.0000,1.0000
-			Property: "AmbientFactor", "double", "",1.0000
-			Property: "DiffuseColor", "ColorRGB", "",0.8000,0.8000,0.8000
-			Property: "DiffuseFactor", "double", "",0.8000
-			Property: "Bump", "Vector3D", "",0,0,0
-			Property: "TransparentColor", "ColorRGB", "",1,1,1
-			Property: "TransparencyFactor", "double", "",0.0000
-			Property: "SpecularColor", "ColorRGB", "",1.0000,1.0000,1.0000
-			Property: "SpecularFactor", "double", "",0.5000
-			Property: "ShininessExponent", "double", "",12.3
-			Property: "ReflectionColor", "ColorRGB", "",0,0,0
-			Property: "ReflectionFactor", "double", "",1
-			Property: "Emissive", "ColorRGB", "",0,0,0
-			Property: "Ambient", "ColorRGB", "",1.0,1.0,1.0
-			Property: "Diffuse", "ColorRGB", "",0.8,0.8,0.8
-			Property: "Specular", "ColorRGB", "",1.0,1.0,1.0
-			Property: "Shininess", "double", "",12.3
-			Property: "Opacity", "double", "",1.0
-			Property: "Reflectivity", "double", "",0
-		}
-	}
 	Video: "Video::asphalt_jpg", "Clip" {
 		Type: "Clip"
 		Properties60:  {
@@ -1550,6 +1550,27 @@ Objects:  {
 		UseMipMap: 0
 		Filename: "asphalt.jpg"
 		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\asphalt.jpg"
+	}
+	Video: "Video::cobble04_jpg", "Clip" {
+		Type: "Clip"
+		Properties60:  {
+			Property: "FrameRate", "double", "",0
+			Property: "LastFrame", "int", "",0
+			Property: "Width", "int", "",0
+			Property: "Height", "int", "",0
+			Property: "Path", "charptr", "", "cobble04.jpg"
+			Property: "StartFrame", "int", "",0
+			Property: "StopFrame", "int", "",0
+			Property: "PlaySpeed", "double", "",1
+			Property: "Offset", "KTime", "",0
+			Property: "InterlaceMode", "enum", "",0
+			Property: "FreeRunning", "bool", "",0
+			Property: "Loop", "bool", "",0
+			Property: "AccessMode", "enum", "",0
+		}
+		UseMipMap: 0
+		Filename: "cobble04.jpg"
+		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\tile\cobble04.jpg"
 	}
 	Video: "Video::ground_11711_jpg", "Clip" {
 		Type: "Clip"
@@ -1593,27 +1614,6 @@ Objects:  {
 		Filename: "ground_117121.jpg"
 		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\ground\ground_117121.jpg"
 	}
-	Video: "Video::ground_11_jpg", "Clip" {
-		Type: "Clip"
-		Properties60:  {
-			Property: "FrameRate", "double", "",0
-			Property: "LastFrame", "int", "",0
-			Property: "Width", "int", "",0
-			Property: "Height", "int", "",0
-			Property: "Path", "charptr", "", "ground_11.jpg"
-			Property: "StartFrame", "int", "",0
-			Property: "StopFrame", "int", "",0
-			Property: "PlaySpeed", "double", "",1
-			Property: "Offset", "KTime", "",0
-			Property: "InterlaceMode", "enum", "",0
-			Property: "FreeRunning", "bool", "",0
-			Property: "Loop", "bool", "",0
-			Property: "AccessMode", "enum", "",0
-		}
-		UseMipMap: 0
-		Filename: "ground_11.jpg"
-		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\ground\ground_11.jpg"
-	}
 	Texture: "Texture::asphalt_jpg", "TextureVideoClip" {
 		Type: "TextureVideoClip"
 		Version: 202
@@ -1643,6 +1643,35 @@ Objects:  {
 		Texture_Alpha_Source: "None"
 		Cropping: 0,0,0,0
 	}
+	Texture: "Texture::cobble04_jpg", "TextureVideoClip" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::cobble04_jpg"
+		Properties60:  {
+			Property: "Translation", "Vector", "A+",0,0,0
+			Property: "Rotation", "Vector", "A+",0,0,0
+			Property: "Scaling", "Vector", "A+",1,1,1
+			Property: "Texture alpha", "Number", "A+",1
+			Property: "TextureTypeUse", "enum", "",0
+			Property: "CurrentTextureBlendMode", "enum", "",1
+			Property: "UseMaterial", "bool", "",0
+			Property: "UseMipMap", "bool", "",0
+			Property: "CurrentMappingType", "enum", "",0
+			Property: "UVSwap", "bool", "",0
+			Property: "WrapModeU", "enum", "",0
+			Property: "WrapModeV", "enum", "",0
+			Property: "TextureRotationPivot", "Vector3D", "",0,0,0
+			Property: "TextureScalingPivot", "Vector3D", "",0,0,0
+			Property: "VideoProperty", "object", ""
+		}
+		Media: "Video::cobble04_jpg"
+		FileName: "cobble04.jpg"
+		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\tile\cobble04.jpg"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
 	Texture: "Texture::ground_11711_jpg", "TextureVideoClip" {
 		Type: "TextureVideoClip"
 		Version: 202
@@ -1651,7 +1680,7 @@ Objects:  {
 			Property: "Translation", "Vector", "A+",0,0,0
 			Property: "Rotation", "Vector", "A+",0,0,0
 			Property: "Scaling", "Vector", "A+",1,1,1
-			Property: "Texture alpha", "Number", "A+",1
+			Property: "Texture alpha", "Number", "A+",2
 			Property: "TextureTypeUse", "enum", "",0
 			Property: "CurrentTextureBlendMode", "enum", "",1
 			Property: "UseMaterial", "bool", "",0
@@ -1680,7 +1709,7 @@ Objects:  {
 			Property: "Translation", "Vector", "A+",0,0,0
 			Property: "Rotation", "Vector", "A+",0,0,0
 			Property: "Scaling", "Vector", "A+",1,1,1
-			Property: "Texture alpha", "Number", "A+",2
+			Property: "Texture alpha", "Number", "A+",3
 			Property: "TextureTypeUse", "enum", "",0
 			Property: "CurrentTextureBlendMode", "enum", "",1
 			Property: "UseMaterial", "bool", "",0
@@ -1696,35 +1725,6 @@ Objects:  {
 		Media: "Video::ground_117121_jpg"
 		FileName: "ground_117121.jpg"
 		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\ground\ground_117121.jpg"
-		ModelUVTranslation: 0,0
-		ModelUVScaling: 1,1
-		Texture_Alpha_Source: "None"
-		Cropping: 0,0,0,0
-	}
-	Texture: "Texture::ground_11_jpg", "TextureVideoClip" {
-		Type: "TextureVideoClip"
-		Version: 202
-		TextureName: "Texture::ground_11_jpg"
-		Properties60:  {
-			Property: "Translation", "Vector", "A+",0,0,0
-			Property: "Rotation", "Vector", "A+",0,0,0
-			Property: "Scaling", "Vector", "A+",1,1,1
-			Property: "Texture alpha", "Number", "A+",3
-			Property: "TextureTypeUse", "enum", "",0
-			Property: "CurrentTextureBlendMode", "enum", "",1
-			Property: "UseMaterial", "bool", "",0
-			Property: "UseMipMap", "bool", "",0
-			Property: "CurrentMappingType", "enum", "",0
-			Property: "UVSwap", "bool", "",0
-			Property: "WrapModeU", "enum", "",0
-			Property: "WrapModeV", "enum", "",0
-			Property: "TextureRotationPivot", "Vector3D", "",0,0,0
-			Property: "TextureScalingPivot", "Vector3D", "",0,0,0
-			Property: "VideoProperty", "object", ""
-		}
-		Media: "Video::ground_11_jpg"
-		FileName: "ground_11.jpg"
-		RelativeFilename: "C:\Users\Admin-men\Documents\World of Zombie\Assets\Img\Objects\ground\ground_11.jpg"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"
@@ -1788,27 +1788,27 @@ Relations:  {
 	}
 	Material: "Material::Ground11711__asphalt_jpg", "" {
 	}
+	Material: "Material::Ground11711__cobble04_jpg", "" {
+	}
 	Material: "Material::Ground11711__ground_11711_jpg", "" {
 	}
 	Material: "Material::Ground11711__ground_117121_jpg", "" {
 	}
-	Material: "Material::Ground11711__ground_11_jpg", "" {
-	}
 	Texture: "Texture::asphalt_jpg", "TextureVideoClip" {
+	}
+	Texture: "Texture::cobble04_jpg", "TextureVideoClip" {
 	}
 	Texture: "Texture::ground_11711_jpg", "TextureVideoClip" {
 	}
 	Texture: "Texture::ground_117121_jpg", "TextureVideoClip" {
 	}
-	Texture: "Texture::ground_11_jpg", "TextureVideoClip" {
-	}
 	Video: "Video::asphalt_jpg", "Clip" {
+	}
+	Video: "Video::cobble04_jpg", "Clip" {
 	}
 	Video: "Video::ground_11711_jpg", "Clip" {
 	}
 	Video: "Video::ground_117121_jpg", "Clip" {
-	}
-	Video: "Video::ground_11_jpg", "Clip" {
 	}
 	GroupSelection: "GroupSelection::RigidBodyWorld", "Default" {
 	}
@@ -1820,17 +1820,17 @@ Relations:  {
 Connections:  {
 	Connect: "OO", "Model::Arena", "Model::Scene"
 	Connect: "OO", "Material::Ground11711__asphalt_jpg", "Model::Arena"
-	Connect: "OO", "Material::Ground11711__ground_11_jpg", "Model::Arena"
+	Connect: "OO", "Material::Ground11711__cobble04_jpg", "Model::Arena"
 	Connect: "OO", "Material::Ground11711__ground_11711_jpg", "Model::Arena"
 	Connect: "OO", "Material::Ground11711__ground_117121_jpg", "Model::Arena"
 	Connect: "OO", "Texture::asphalt_jpg", "Model::Arena"
-	Connect: "OO", "Texture::ground_11_jpg", "Model::Arena"
+	Connect: "OO", "Texture::cobble04_jpg", "Model::Arena"
 	Connect: "OO", "Texture::ground_11711_jpg", "Model::Arena"
 	Connect: "OO", "Texture::ground_117121_jpg", "Model::Arena"
 	Connect: "OO", "Video::asphalt_jpg", "Texture::asphalt_jpg"
+	Connect: "OO", "Video::cobble04_jpg", "Texture::cobble04_jpg"
 	Connect: "OO", "Video::ground_11711_jpg", "Texture::ground_11711_jpg"
 	Connect: "OO", "Video::ground_117121_jpg", "Texture::ground_117121_jpg"
-	Connect: "OO", "Video::ground_11_jpg", "Texture::ground_11_jpg"
 	Connect: "OO", "Model::Arena", "GroupSelection::RigidBodyWorld"
 }
 ;Takes and animation section

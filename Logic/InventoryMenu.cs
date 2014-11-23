@@ -67,7 +67,8 @@ public class InventoryMenu : MonoBehaviour {
             PlayerPrefs.SetInt("fx106f4", 0);
             PlayerPrefs.SetInt("shellBullet", 0);
             PlayerPrefs.SetInt("blood", 1);
-            PlayerPrefs.SetFloat("invertingMove", 0);
+            PlayerPrefs.SetInt("invertingMove", 0);
+            PlayerPrefs.SetInt("light", 0);
         }
 
         nameActor = PlayerPrefs.GetString("ActorNameCompany").ToString();

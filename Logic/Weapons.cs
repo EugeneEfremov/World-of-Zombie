@@ -265,7 +265,7 @@ public class Weapons : MonoBehaviour{
             if (_creatingShellBullet != 0)
             {
                 newShellBullet = Instantiate(shellBullet, shellSpawn.position, Quaternion.Euler(0, 0, 0)) as Transform;
-                newShellBullet.rigidbody.AddForce(transform.right * 10);
+                newShellBullet.rigidbody.AddForce(transform.forward * 1);
             }
 				}
 				if (delayShot <= 0) {

@@ -17,19 +17,22 @@ MonoImporter:
   - zeusgunBul50: {fileID: 400000, guid: c1e5d31d860136b42af36e9f3af2d84c, type: 2}
   - plasmicgunBul50: {fileID: 400000, guid: 0cf6b69e816091d42ad975c82216204a, type: 2}
   - gaussgunBul100: {fileID: 400000, guid: 106b9f7107102014e97d311768221e6d, type: 2}
-  - gun: {fileID: 400000, guid: 7e0439ebd2a509e428445be12ae82d55, type: 2}
-  - grenage: {fileID: 400000, guid: e073b9cce0748664eb3b2576fa5bc3fb, type: 2}
-  - minigun: {fileID: 400000, guid: f3f5942cda856954b90b37822da59934, type: 2}
-  - rocket: {fileID: 400000, guid: 5dbcac1471281a144a53d51af9698e34, type: 2}
-  - diskgun: {fileID: 400000, guid: 7067534f934441c4c9b26d521de3556f, type: 2}
-  - firegun: {fileID: 400000, guid: e7b5ae3a4d38b1848b0c90f0ab09235b, type: 2}
-  - zeusgun: {fileID: 400000, guid: a507dc261f51b5647bade31f276d4bcf, type: 2}
-  - plasmicgun: {fileID: 400002, guid: d5b9433bce45be5458b653e68ea53330, type: 2}
-  - gaussgun: {fileID: 400002, guid: 22fee3447974abd45ab935c7c0a69ec8, type: 2}
+  - gun: {fileID: 400000, guid: 3c80ba6a093ae224bb357d953d657866, type: 2}
+  - grenage: {fileID: 400002, guid: 8a84136751633824e873a5bec0230322, type: 2}
+  - minigun: {fileID: 400000, guid: 1189b16b57904de4d8dca89e85595328, type: 2}
+  - rocket: {fileID: 400000, guid: 74dc0afc1336c09469660e183143b62f, type: 2}
+  - diskgun: {fileID: 400000, guid: 9fa6f369c7f409141bb0a1b29fbef04d, type: 2}
+  - firegun: {fileID: 400000, guid: 9d0c6116a7d923943aed3f9fdbe3189f, type: 2}
+  - zeusgun: {fileID: 400002, guid: 7bfaa4e44e8672b439538a2306da93db, type: 2}
+  - plasmicgun: {fileID: 400000, guid: f72505f25da6af942b3484cc0a1de107, type: 2}
+  - gaussgun: {fileID: 400000, guid: e6e54aa0996ec954d886555b5a17061d, type: 2}
   - accuracyMaxBonus: {fileID: 400002, guid: 65b6d243146d72f4ea76557ac286416f, type: 2}
   - strongMaxBonus: {fileID: 400002, guid: 159965662c1dfc048be02058b19e7331, type: 2}
   - speedMaxBonus: {fileID: 400002, guid: 222102d9db8cdd04eac37abbc9aa1f56, type: 2}
   - helthMaxBonus: {fileID: 400002, guid: 8921d50afdee2164abbb01d469e65158, type: 2}
+  - BanditBullet: {fileID: 400000, guid: 24fe72556f7366e44a5e9b42abcb2252, type: 2}
+  - ForesterBullet: {fileID: 400000, guid: e43495707f9864d428d8af21f320854e, type: 2}
+  - BulletSpawn: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

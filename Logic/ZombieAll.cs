@@ -3,12 +3,11 @@ using System.Collections;
 
 public class ZombieAll : MonoBehaviour {
 
-	private int _newNameZomb = 0, rand, _countTypeZombieInGame = 1, _accountZombMax = 10;
+	public int _newNameZomb = 0, rand, _countTypeZombieInGame = 1, _accountZombMax = 10;
 	private Transform Player;
 	private bool _bRat = false, _bZombie, _bDog = false, _bSolders = false, _bGrenade = false, _bBigZ = false; //Можно ли создавать зомби
     private string gameMode;
-    public bool magic1 = false, magic2 = false, magic2kill = false;
-    public Transform zombie, rat, dog, solders, grenade, bigZ, instans; //Объекты
+    public Transform rat, zombie1, zombie2, dog, bandit, forester, bigZ, instans; //Объекты
 	public int  accountZombNew = 0; //Кол-во зомби в игре на данный момент
     public int accuracyMax, strongMax, speedMax, helthMax; //Сколько раз вываливались бонусы способностей актера
     public float timeZombie = 0.5f, timeZombieNew = 0, timeInGame = 0, instNewWeapTime = 0; //Время до создания зомби, Новое время до создания, Время в игре, время до появления нового оружия
@@ -72,9 +71,9 @@ public class ZombieAll : MonoBehaviour {
 
 		if (timeInGame > 300) {
             _bBigZ = true;
-            _accountZombMax = 16;
+            _accountZombMax = 30;/*
 			if(_countTypeZombieInGame == 5) 
-                _countTypeZombieInGame++;
+                _countTypeZombieInGame++;*/
 		}
 
 		timeZombieNew -= Time.deltaTime;
@@ -96,7 +95,7 @@ public class ZombieAll : MonoBehaviour {
 		}
 		if (rand == 2 && _bZombie) {
 			accountZombNew++;
-			return zombie;
+			return zombie1;
 		}
 		if (rand == 3 && _bDog) {
 			accountZombNew++;
@@ -104,18 +103,18 @@ public class ZombieAll : MonoBehaviour {
 		}
 		if (rand == 4 && _bSolders) {
 			accountZombNew++;
-			return solders;
+			return bandit;
 		}
 		if (rand == 5 && _bGrenade) {
 			accountZombNew++;
-			return grenade;
+			return forester;
 		}
 		if (rand == 6 && _bBigZ) {
 			accountZombNew++;
 			return bigZ;
 		} else {
 			accountZombNew++;
-			return zombie;
+			return zombie2;
 		}
 	}
 
@@ -123,25 +122,25 @@ public class ZombieAll : MonoBehaviour {
         if (gameMode == "survival"){
             rand = Random.Range(0, 4);
             if (rand == 1) //top
-                return new Vector3(Random.Range(-30, 22), 2.5f, 35);
+                return Player.position + new Vector3(Random.Range(-20, 20), 1, 25);
             if (rand == 2)//down
-                return new Vector3(Random.Range(-30, 22), 2.5f, -35);
+                return Player.position + new Vector3(Random.Range(-20, 20), 1, -25);
             if (rand == 3) //left
-                return new Vector3(-40, 2.5f, Random.Range(-25, 25));
+                return Player.position + new Vector3(-20, 1f, Random.Range(-25, 25));
             else //right
-                return new Vector3(40, 2.5f, Random.Range(-25, 25));
+                return Player.position + new Vector3(20, 1f, Random.Range(-25, 25));
 	    }
         if (gameMode == "arena")
         {
             rand = Random.Range(0,4);
             if (rand == 1) //top
-                return new Vector3(Random.Range(-34,34), 2, 40);
+                return new Vector3(Random.Range(-37,30), 2, 40);
             if (rand == 2)//down
-                return new Vector3(Random.Range(-34,34), 2, -20);
+                return new Vector3(Random.Range(-37,30), 2, -20);
             if (rand == 3) //left
-                return new Vector3(-34, 2, Random.Range(-20, 40));
+                return new Vector3(-37, 2, Random.Range(-20, 40));
             else //right
-                return new Vector3(34, 2, Random.Range(-20, 40));
+                return new Vector3(30, 2, Random.Range(-20, 40));
         }
         return new Vector3(); //default
     }

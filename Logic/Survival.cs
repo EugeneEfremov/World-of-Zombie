@@ -12,7 +12,7 @@ public class Survival : MonoBehaviour {
     public float LightIntens()
     {
         if (Random.Range(0, 3) == 1)
-            return 0.05f;
+            return 0.1f;
         else
             return 0.5f;
     }
@@ -24,16 +24,5 @@ public class Survival : MonoBehaviour {
         //Рандомный день/ночь
         DLight1 = GameObject.Find("DirectionalLight1").GetComponent<Light>().intensity = LightIntens();
         GameObject.Find("DirectionalLight2").GetComponent<Light>().intensity = GameObject.Find("DirectionalLight1").GetComponent<Light>().intensity;
-
-        //Включение фонарика, если он есть
-        if (DLight1 < 0.2f)
-        {
-            day = false;
-            if (Actor.GetComponent<Global>().lantern == 1)
-                GameObject.Find("Lantern").light.enabled = true;
-
-            else if (Actor.GetComponent<Global>().lantern == 0)
-                GameObject.Find("Lantern").light.enabled = false;
-        }
     }
 }

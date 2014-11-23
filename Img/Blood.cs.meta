@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2916b8163e70232468c0dbf2d928f30b
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - ratBlood: {instanceID: 0}
+  - zombie1Blood: {instanceID: 0}
+  - zombie2Blood: {instanceID: 0}
+  - dogBlood: {instanceID: 0}
+  - banditBlood: {instanceID: 0}
+  - foresterBlood: {instanceID: 0}
+  - ratParticle: {fileID: 400000, guid: 3fb5d0cc4bc1b4843855a78aa756e976, type: 2}
+  - zombieParticle: {fileID: 400000, guid: 0d64b31b0e40c2f4d9199412318f53f3, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

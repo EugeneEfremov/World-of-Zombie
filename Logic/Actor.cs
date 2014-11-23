@@ -28,10 +28,6 @@ public class Actor : MonoBehaviour {
         armourMax = GetComponent<Global>().armourMax;
         speedMax = GetComponent<Global>().speedMax * speed;
 
-        myCam = GameObject.Find("Camera").transform;
-        topBody = GameObject.Find("topBody").transform;
-        downBody = GameObject.Find("downBody").transform;
-
         speed += speedMax / 2;
 
         if (gameMode == "arena")
@@ -42,6 +38,10 @@ public class Actor : MonoBehaviour {
 
         if (gameMode != "arena")
         {
+            myCam = GameObject.Find("Camera").transform;
+            topBody = GameObject.Find("topBody").transform;
+            downBody = GameObject.Find("downBody").transform;
+
             //Top
             animTop.AddClip(TopSteps, "TopSteps");
             animTop["TopSteps"].speed = TopStepsSpeed;
@@ -71,7 +71,8 @@ public class Actor : MonoBehaviour {
         helthReset = transform.GetComponent<Global>().helthReset;
 
         //Слежка камеры
-        myCam.transform.position = new Vector3(transform.position.x + 9, transform.position.y + 15, transform.position.z + 4);
+        if (gameMode != "arena")
+            myCam.transform.position = new Vector3(transform.position.x + 9, transform.position.y + 15, transform.position.z + 4);
 
         if (!death && gameMode != "arena")
         {
@@ -152,7 +153,8 @@ public class Actor : MonoBehaviour {
             }
             else
             {
-                transform.GetComponent<Controllers>().deathActor = true;
+                if(gameMode != "arena")
+                    transform.GetComponent<Controllers>().deathActor = true;
                 death = true;
                 helth = 0;
             }

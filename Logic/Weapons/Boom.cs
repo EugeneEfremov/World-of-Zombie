@@ -17,6 +17,8 @@ public class Boom : MonoBehaviour {
 
     void FixedUpdate()
     {
+        transform.position += new Vector3(0.1f, 0, 0.1f);
+
         timeDestroyParticle -= Time.deltaTime;
         timeDeactivateObject -= Time.deltaTime;
         timeDestrooyObject -= Time.deltaTime;

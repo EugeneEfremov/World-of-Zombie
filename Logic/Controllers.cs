@@ -20,7 +20,7 @@ public class Controllers : MonoBehaviour
     private Actor Player;
     private Transform topBody;
 
-    public Texture jost;
+    public Texture jostRed, jostBlue;
     public bool deathActor = false;
     public float rotationCC, forwardCC;
     public int shot;
@@ -52,10 +52,11 @@ public class Controllers : MonoBehaviour
         }
         //Конец выбор режима управления
 
-        homePosLeft = new Vector2(50, Screen.height - 100);
-        homePosRight = new Vector2(Screen.width - 100, Screen.height - 100);
-        textureRectLeft = new Rect(homePosLeft.x, homePosLeft.y, 50, 50);
-        textureRectRight = new Rect(homePosRight.x, homePosRight.y, 50, 50);
+        homePosLeft = new Vector2(100, Screen.height - 200);
+        homePosRight = new Vector2(Screen.width - 200, Screen.height - 200);
+
+        textureRectLeft = new Rect(homePosLeft.x, homePosLeft.y, 100, 100);
+        textureRectRight = new Rect(homePosRight.x, homePosRight.y, 100, 100);
 
         endPosLeft.x = homePosRight.x;
         endPosLeft.y = homePosRight.y;
@@ -63,9 +64,17 @@ public class Controllers : MonoBehaviour
 
     void OnGUI()
     {
-            GUI.DrawTexture(textureRectLeft, jost);
-            if (controllMode == ControllersMode.moveAndRotation || controllMode == ControllersMode.moveAndShot)
-                GUI.DrawTexture(textureRectRight, jost);
+        if (controllMode == ControllersMode.moveAndRotation || controllMode == ControllersMode.move)
+            GUI.DrawTexture(textureRectLeft, jostBlue);
+
+        if (controllMode == ControllersMode.moveAndShot)
+            GUI.DrawTexture(textureRectLeft, jostRed);
+
+        if (controllMode == ControllersMode.moveAndRotation)
+            GUI.DrawTexture(textureRectRight, jostRed);
+
+        if (controllMode == ControllersMode.moveAndShot)
+            GUI.DrawTexture(textureRectRight, jostBlue);
     }
 
     //Длина вектора
@@ -100,7 +109,8 @@ public class Controllers : MonoBehaviour
 
     void RotationCC(bool forward)
     {
-        rotationCC = AngleRight(new Vector2(75, 75), new Vector2(75, 80), new Vector2(Screen.width - endPosRight.x, endPosRight.y));
+        if (endPosRight != Vector2.zero)
+            rotationCC = AngleRight(new Vector2(150, 150), new Vector2(150, 300), new Vector2(Screen.width - endPosRight.x, endPosRight.y));
 
         touches = Input.touches;
         foreach (Touch t in touches)
@@ -108,39 +118,40 @@ public class Controllers : MonoBehaviour
             switch (t.phase)
             {
                 case TouchPhase.Began:
-                    if (t.position.x > Screen.width - 151 && t.position.y < 151)
+                    if (t.position.x > Screen.width - 301 && t.position.y < 301)
                         if (!forward)
-                        shot = 1;
+                            shot = 1;
                     break;
                 case TouchPhase.Moved:
-                    if (t.position.x > Screen.width - 151 && t.position.y < 151)
+                    if (t.position.x > Screen.width - 301 && t.position.y < 301)
                     {
-                        textureRectRight = new Rect(endPosRight.x - 25, Screen.height - endPosRight.y - 25, 50, 50);
+                        textureRectRight = new Rect(endPosRight.x - 50, Screen.height - endPosRight.y - 50, 100, 100);
                         endPosRight = t.position;
-                        if (forward)
+                        if (forward && (endPosRight.x != Screen.width - 150 && endPosRight.y != 150))
                         {
                             //поворот актера
-                            transform.eulerAngles = new Vector3(0, AngleRight(new Vector2(75, 75), new Vector2(75, 150), new Vector2(Screen.width - endPosRight.x, endPosRight.y)), 0);
+                            transform.eulerAngles = new Vector3(0, AngleRight(new Vector2(150, 150), new Vector2(150, 300), new Vector2(Screen.width - endPosRight.x, endPosRight.y)), 0);
 
                             //вперед
-                            forwardCC = DistanceVector2(new Vector2(75, 75), new Vector2(Screen.width - endPosRight.x, endPosRight.y)) / 100;
+                            forwardCC = DistanceVector2(new Vector2(150, 150), new Vector2(Screen.width - endPosRight.x, endPosRight.y)) / 100;
                         }
                     }
                     break;
                 case TouchPhase.Ended:
-                    shot = 0;
+                    if (!(t.position.x < 301 && t.position.y < 301))
+                        shot = 0;
 
-                    textureRectRight = new Rect(homePosRight.x, homePosRight.y, 50, 50);
-                    endPosRight.x = Screen.width - 50;
-                    endPosRight.y = 75;
+                    textureRectRight = new Rect(homePosRight.x, homePosRight.y, 100, 100);
+                    endPosRight.x = Screen.width - 150;
+                    endPosRight.y = 150;
 
                     if (forward)
-                    {
                         forwardCC = 0;
-                    }
                     break;
+
                 case TouchPhase.Canceled:
-                    shot = 0;
+                    if (t.position.x < 301 && t.position.y < 301)
+                        shot = 0;
                 break;
             }
         }
@@ -150,7 +161,7 @@ public class Controllers : MonoBehaviour
     {
         if (!deathActor)
         {
-            Player.forwardCC = forwardCC;
+            Player.forwardCC = forwardCC * 0.7f;
             topBody.transform.localEulerAngles = new Vector3(0,  -transform.localEulerAngles.y + rotationCC, 0);
             
             #region Left
@@ -164,22 +175,22 @@ public class Controllers : MonoBehaviour
                     switch (t.phase)
                     {
                         case TouchPhase.Moved:
-                            if (t.position.x < 151 && t.position.y < 151)
+                            if (t.position.x < 301 && t.position.y < 301)
                             {
-                                textureRectLeft = new Rect(endPosLeft.x - 25, Screen.height - endPosLeft.y - 25, 50, 50);
+                                textureRectLeft = new Rect(endPosLeft.x - 50, Screen.height - endPosLeft.y - 50, 100, 100);
                                 endPosLeft = t.position;
                                 
                                 //поворот актера
-                                transform.eulerAngles = new Vector3(0, Angle(new Vector2(75, 75), new Vector2(75, 150), new Vector2(endPosLeft.x, endPosLeft.y)), 0);
+                                transform.eulerAngles = new Vector3(0, Angle(new Vector2(150, 150), new Vector2(150, 300), new Vector2(endPosLeft.x, endPosLeft.y)), 0);
 
                                 //вперед
-                                forwardCC = DistanceVector2(new Vector2(75, 75), new Vector2(endPosLeft.x, endPosLeft.y)) / 100;
+                                forwardCC = DistanceVector2(new Vector2(150, 150), new Vector2(endPosLeft.x, endPosLeft.y)) / 100;
                             }
                             break;
                         case TouchPhase.Ended:
-                            textureRectLeft = new Rect(homePosLeft.x, homePosLeft.y, 50, 50);
-                            endPosLeft.x = 50;
-                            endPosLeft.y = 75;
+                            textureRectLeft = new Rect(homePosLeft.x, homePosLeft.y, 100, 100);
+                            endPosLeft.x = 150;
+                            endPosLeft.y = 150;
                             forwardCC = 0;
                             break;
                     }
@@ -195,14 +206,16 @@ public class Controllers : MonoBehaviour
                     switch (t.phase)
                     {
                         case TouchPhase.Began:
-                            if (t.position.x < 149 && t.position.y < 149)
+                            if (t.position.x < 301 && t.position.y < 301)
                                 shot = 1;
                             break;
                         case TouchPhase.Ended:
-                            shot = 0;
+                            if (t.position.x < 301 && t.position.y < 301)
+                                shot = 0;
                             break;
                         case TouchPhase.Canceled:
-                            shot = 0;
+                            if (t.position.x < 301 && t.position.y < 301)
+                                shot = 0;
                             break;
                     }
                 }
@@ -227,7 +240,7 @@ public class Controllers : MonoBehaviour
                 {
                     if (t.phase == TouchPhase.Began || t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
                     {
-                        if (!(t.position.x < 149 && t.position.y < 149))
+                        if (!(t.position.x < 301 && t.position.y < 301))
                         {
                             if (!invertingMove)
                                 topBody.transform.eulerAngles = new Vector3(0, Angle(new Vector2(Screen.width / 2, Screen.height / 2), new Vector2(Screen.width / 2, Screen.height), new Vector2(t.position.x, t.position.y)) - 30, 0);
@@ -240,7 +253,10 @@ public class Controllers : MonoBehaviour
                     }
 
                     if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)
-                        shot = 0;
+                    {
+                        if (!(t.position.x < 301 && t.position.y < 301))
+                            shot = 0;
+                    }
                 }
             }
             //КОНЕЦ правый джойстик 

@@ -9,10 +9,13 @@ public class Global : MonoBehaviour {
     public int helthMax, strongMax, speedMax, accuracyMax, countMax, magicMax; //Specifications of Actor
     public int pistolsLvl, gunLvl, grenadeLvl, minigunLvl, rocketLvl, diskgunLvl, firegunLvl, zeusgunLvl, plasmicgunLvl, gaussgunLvl; //Level of Weapons
     public int gunBullet, grenadeBullet, minigunBullet, rocketBullet, diskgunBullet; //Bullet of Weapons
-    public int shellBullet, blood;
+    public int shellBullet, blood, Mylight;
     public GameObject Player;
 
     void Start(){
+        //Ограничение FPS
+        Application.targetFrameRate = 25;
+
         Player = GameObject.Find("Actor");
 
         money = PlayerPrefs.GetInt("0x01001");
@@ -62,14 +65,26 @@ public class Global : MonoBehaviour {
 
         shellBullet = PlayerPrefs.GetInt("shellBullet");
         blood = PlayerPrefs.GetInt("blood");
+
+        //Нормальное освещение
+        Mylight = PlayerPrefs.GetInt("light");
+
+        if (Mylight == 1)
+        {
+            GameObject.Find("Camera").camera.renderingPath = RenderingPath.DeferredLighting;
+        }
+        if (Mylight != 1)
+        {
+            GameObject.Find("Camera").camera.renderingPath = RenderingPath.VertexLit;
+        }
     }
 
     public void SaveResultGame(string gameMode, bool day)
     {
         if (day)
-            PlayerPrefs.SetInt("0x01001", money + Player.GetComponent<Actor>().count / 70);
+            PlayerPrefs.SetInt("0x01001", money + Player.GetComponent<Actor>().count / 2);
         if (!day)
-            PlayerPrefs.SetInt("0x01001", money + Player.GetComponent<Actor>().count / 35);
+            PlayerPrefs.SetInt("0x01001", money + Player.GetComponent<Actor>().count);
 
         PlayerPrefs.SetInt("0x01002", Player.GetComponent<Actor>().armour);
         PlayerPrefs.SetInt("0x02001", Player.GetComponent<Actor>().armourMax);

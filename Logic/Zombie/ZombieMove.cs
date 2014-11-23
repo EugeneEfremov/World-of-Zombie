@@ -3,19 +3,20 @@ using System.Collections;
 
 public class ZombieMove : MonoBehaviour {
 
-	private Transform Player;
+	private Transform Player, newbloodObj;
 	private CharacterController cc;
     private GameObject ZombieAll;
     public float timeInGame, instNewWeapTime, timeDamage = 1.2f, bloodY = 1f; //время в игре, время до создания нового оружия, переодичность нанесения урона, смещение текстуры
     private int blood; //Создавать ли кровь?
-   // public bool InstNewWeap = false;
 
 	Vector3 moveDirection = Vector3.zero;
 
+    public Animation anim;
+    public AnimationClip steps, attack;
 	public string typeZomb, gameMode;
     public bool shoting = false, magic1, magic1enabled, magic2, magic2kill; //Применена ли магия
-    public Transform blod, helth20, armour100, armour200, armour300, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, firegunBul50, zeusgunBul50, plasmicgunBul50, gaussgunBul100, gun, grenage, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun, accuracyMaxBonus, strongMaxBonus, speedMaxBonus, helthMaxBonus;
-    public Transform SoldersBullet, GrenadeBullet, bZombBullet;
+    public Transform ice, blod, helth20, armour100, armour200, armour300, gunBul50, grenadeBul50, minigunBul500, rocketBul50, diskgunBul50, firegunBul50, zeusgunBul50, plasmicgunBul50, gaussgunBul100, gun, grenage, minigun, rocket, diskgun, firegun, zeusgun, plasmicgun, gaussgun, accuracyMaxBonus, strongMaxBonus, speedMaxBonus, helthMaxBonus;
+    public Transform BanditBullet, ForesterBullet, BulletSpawn;
     public int helth = 100, done = 2; //жизнь, урон
     public float speed = 3, speedMax = 3;
 	public AudioClip[] ratA;
@@ -27,45 +28,53 @@ public class ZombieMove : MonoBehaviour {
         ZombieAll = GameObject.Find("ZombieLogic");
         gameMode = Player.GetComponent<Info>().gameMode.ToString();
 
+        anim.AddClip(steps, "Steps");
+
 		if (typeZomb == "Zombie") {
-            speed = 2.5f;
-            speedMax = 2.5f;
+            speed = 1.5f;
+            speedMax = 1.5f;
 			helth = 70;
 			done = 6;
-            bloodY = 0.9f;
+            bloodY = 0.6f;
             shoting = false;
+            anim["Steps"].speed = 1.5f;
 		}
 		if (typeZomb == "Rat") {
-			speed = 6;
-            speedMax = 6;
+			speed = 4;
+            speedMax = 4;
 			helth = 30;
 			done = 2;
             bloodY = 0.1f;
             shoting = false;
+            anim["Steps"].speed = 3f;
 		}
 		if (typeZomb == "Dog") {
-			speed = 7;
-            speedMax = 7;
+			speed = 3.5f;
+            speedMax = 3.5f;
 			helth = 70;
-			done = 10;
+			done = 8;
             bloodY = 0.1f;
             shoting = false;
+            anim["Steps"].speed = 1.5f;
+            anim.AddClip(attack, "Attack");
 		}
-		if (typeZomb == "Solders") {
-			speed = 5.5f;
-            speedMax = 5.5f;
+		if (typeZomb == "Bandit") {
+			speed = 2.5f;
+            speedMax = 2.5f;
 			helth = 150;
+			done = 9;
+            bloodY = 0.9f;
+            shoting = true;
+            anim["Steps"].speed = 1.5f;
+		}
+		if (typeZomb == "Forester") {
+			speed = 2.5f;
+            speedMax = 2.5f;
+			helth = 300;
 			done = 15;
             bloodY = 0.9f;
             shoting = true;
-		}
-		if (typeZomb == "Grenade") {
-			speed = 3;
-            speedMax = 3;
-			helth = 300;
-			done = 20;
-            bloodY = 0.9f;
-            shoting = true;
+            anim["Steps"].speed = 1.5f;
 		}
 		if (typeZomb == "bZomb") {
 			speed = 4;
@@ -73,7 +82,8 @@ public class ZombieMove : MonoBehaviour {
 			helth = 350;
 			done = 30;
             bloodY = 0.9f;
-            shoting = true;
+            shoting = false;
+            anim["Steps"].speed = 1.5f;
 		}
 
         blood = PlayerPrefs.GetInt("blood");
@@ -82,7 +92,7 @@ public class ZombieMove : MonoBehaviour {
 //Оружие в бонус
     //Кидать на оружие колайдер и скрипт бонуса и анимацию
 	void GunBonus(){
-        if (timeInGame > 20 && ZombieAll.GetComponent<Survival>().gunBonus == false && instNewWeapTime <= 0)
+        if (timeInGame > 15 && ZombieAll.GetComponent<Survival>().gunBonus == false && instNewWeapTime <= 0)
         {
 				Instantiate(gun, transform.position, Quaternion.Euler(0,0,0));
                 ZombieAll.GetComponent<ZombieAll>().instNewWeapTime = 14;
@@ -212,20 +222,27 @@ public class ZombieMove : MonoBehaviour {
     RaycastHit Hit; //Что перед зомби
     RaycastHit HitRight; //Справа от зомби
 
-	void FixedUpdate () {
+    void FixedUpdate()
+    {
+        #region Animation
+
+        anim.CrossFade("Steps");
+        #endregion
+
         timeInGame = GameObject.Find("ZombieLogic").GetComponent<ZombieAll>().timeInGame;
 
         instNewWeapTime = ZombieAll.GetComponent<ZombieAll>().instNewWeapTime;
-        magic1 = ZombieAll.GetComponent<ZombieAll>().magic1;
-        magic2 = ZombieAll.GetComponent<ZombieAll>().magic2;
-        magic2kill = ZombieAll.GetComponent<ZombieAll>().magic2kill;
+        magic1 = ZombieAll.GetComponent<Magic>().magic1;
+        magic2 = ZombieAll.GetComponent<Magic>().magic2;
+        magic2kill = ZombieAll.GetComponent<Magic>().magic2kill;
 
-//Физика движения зомби
+        //Физика движения зомби
         //Луч вперед
-        if (Physics.Raycast(gameObject.transform.position, gameObject.transform.forward, out Hit, 100f)){
+        if (Physics.Raycast(gameObject.transform.position, gameObject.transform.forward, out Hit, 100f))
+        {
             if (Hit.transform.tag == "Limiter")
                 Physics.IgnoreCollision(transform.collider, Hit.transform.collider);
-            if (Hit.transform.tag == "Player" && !magic1 && !magic2) 
+            if (Hit.transform.tag == "Player" && !magic1 && !magic2)
                 speed = speedMax;
             if (Hit.transform.tag == "Zombie")
                 speed = speedMax / 2;
@@ -242,90 +259,126 @@ public class ZombieMove : MonoBehaviour {
             }
 
             if (magic2)
+            {
                 speed = 0;
+                ice.renderer.enabled = true;
+            }
             if (magic2kill)
                 helth = 0;
         }
 
-            //Поворот
-            Vector3 relativePos = Player.position - transform.position;
-            Quaternion rotation = Quaternion.LookRotation(relativePos);
+        #region Rotation
+        Vector3 relativePos = Player.position - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(relativePos);
 
-            if (!magic2)
-                transform.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, rotation.eulerAngles.z);
-		 
-				//Перемещение
-				moveDirection = new Vector3 (0, 0, 1);
-				moveDirection = transform.TransformDirection (moveDirection);
-				moveDirection *= speed;
-				moveDirection.y -= 150 * Time.deltaTime;
-				cc.Move (moveDirection * Time.deltaTime);
-		
-				//Смерть 
-				if (helth < 1) {
-                    if (blood != 0)
-                        Instantiate(blod, new Vector3(transform.position.x, transform.position.y - bloodY, transform.position.z), Quaternion.Euler(0, transform.rotation.y, transform.rotation.z));
+        if (!magic2)
+            transform.eulerAngles = new Vector3(0, rotation.eulerAngles.y, rotation.eulerAngles.z);
+        #endregion
 
+        #region Moved
+        moveDirection = new Vector3(0, 0, 1);
+        moveDirection = transform.TransformDirection(moveDirection);
+        moveDirection *= speed;
+        moveDirection.y -= 150 * Time.deltaTime;
+        cc.Move(moveDirection * Time.deltaTime);
+        #endregion
 
-                    if (gameMode != "arena")
-                    {
-                        BonusRandom();
-                        GunBonus();
-                    }
+        #region Death Zombie
+        if (transform.position.y < -2)
+            Destroy(gameObject);
 
-                    ZombieAll.GetComponent<ZombieAll>().accountZombNew--;
-					Destroy (gameObject);
-				}
+        if (helth < 1)
+        {
+            if (blood != 0)
+            {
+                newbloodObj = Instantiate(blod, new Vector3(transform.position.x, transform.position.y - bloodY, transform.position.z), Quaternion.Euler(-90, transform.rotation.y, transform.rotation.z)) as Transform;
+                newbloodObj.GetComponent<Blood>().typeZombie = typeZomb;
+            }
 
-				RaycastHit zombHit;
-				//Урон
-				timeDamage -= Time.deltaTime;
+            if (gameMode != "arena")
+            {
+                BonusRandom();
+                GunBonus();
+            }
 
-                //Стрельба
-                if (shoting && timeDamage <= 0)
+            ZombieAll.GetComponent<ZombieAll>().accountZombNew--;
+            Destroy(gameObject);
+        }
+        #endregion
+
+        #region Damage
+        RaycastHit HitZomb;
+
+        //Урон
+
+        timeDamage -= Time.deltaTime;
+
+        if (Physics.Raycast(transform.position, transform.forward, out HitZomb, 2.5f))
+        {
+            if (HitZomb.transform.tag == "OtherHelth")
+            {
+                if (timeDamage <= 0)
                 {
-                    switch (typeZomb)
-                    {
-                        case "Solders":
-                            Instantiate(SoldersBullet, new Vector3(transform.position.x + 0.5f, transform.position.y, transform.position.z + 1), transform.rotation);
-                            timeDamage = 1f;
-                        break;
-                        case "Grenade":
-                            Instantiate(GrenadeBullet, new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z + 2), transform.rotation);
-                            timeDamage = 2f;
-                        break;
-                        case "bZomb":
-                            Instantiate(bZombBullet, new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z + 2), transform.rotation);
-                            timeDamage = 2f;
-                        break;
-                    }
+                    HitZomb.transform.GetComponent<OtherHelth>().helth -= done;
+                    timeDamage = 1.2f;
                 }
+            }
 
-                if (Physics.Raycast(gameObject.transform.position, transform.forward, out zombHit, 2.5f))
+            if (HitZomb.transform.name == "Actor")
+            {
+                if (typeZomb == "Dog")
+                    anim.CrossFade("Attack");
+
+                if (timeDamage <= 0)
                 {
-                    if (zombHit.transform.tag == "OtherHelth")
+                    if (Player.GetComponent<Actor>().armour > 0)
                     {
-                        if (timeDamage <= 0)
-                        {
-                            zombHit.transform.GetComponent<OtherHelth>().helth -= done;
-                            timeDamage = 1.2f;
-                        }
+                        Player.GetComponent<Actor>().helth -= (int)(done / 2f);
+                        Player.GetComponent<Actor>().armour -= (int)(done / 2f);
                     }
-                    if (zombHit.transform.tag == "Player")
-                    {
-                        if (timeDamage <= 0)
-                        {
-                            if (Player.GetComponent<Actor>().armour > 0)
-                            {
-                                Player.GetComponent<Actor>().helth -= (int)(done / 2f);
-                                Player.GetComponent<Actor>().armour -= (int)(done / 2f);
-                            }
-                            if (Player.GetComponent<Actor>().armour <= 0)
-                                Player.GetComponent<Actor>().helth -= done;
+                    if (Player.GetComponent<Actor>().armour <= 0)
+                        Player.GetComponent<Actor>().helth -= done;
 
-                            timeDamage = 1.2f;
-                        }
-                    }
+                    timeDamage = 1.2f;
                 }
-				}
+            }
+
+            if (HitZomb.transform.name == "Bmp")
+            {
+                if (typeZomb == "Dog")
+                    anim.CrossFade("Attack");
+
+                if (timeDamage <= 0)
+                {
+                    if (Player.GetComponent<Actor>().armour > 0)
+                    {
+                        Player.GetComponent<Actor>().helth -= done;
+                        Player.GetComponent<Actor>().armour -= done;
+                    }
+                    if (Player.GetComponent<Actor>().armour <= 0)
+                        Player.GetComponent<Actor>().helth -= done * 2;
+
+                    timeDamage = 1.2f;
+                }
+            }
+        }
+        #endregion
+
+        #region Shoting
+        if (shoting && timeDamage <= 0)
+        {
+            switch (typeZomb)
+            {
+                case "Bandit":
+                    Instantiate(BanditBullet, BulletSpawn.position, transform.rotation);
+                    timeDamage = 1f;
+                    break;
+                case "Forester":
+                    Instantiate(ForesterBullet, BulletSpawn.position, transform.rotation);
+                    timeDamage = 2f;
+                    break;
+            }
+        }
+        #endregion
+    }
 }

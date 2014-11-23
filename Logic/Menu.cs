@@ -4,7 +4,7 @@ using System.Collections;
 public class Menu : MonoBehaviour {
 
 	private Rect _newGameRect, _continueGameRect, _inventoryRect, _settingsRect, _recordsRect, _authorsRect, _exitRect;
-    private bool _newGame, _newNameActor, _newGameClear, _settings, _records, _authors, _switchLevel, _creatingShellBllet, _creatingBlood, _invertingMove;
+    private bool _newGame, _newNameActor, _newGameClear, _settings, _records, _authors, _switchLevel, _creatingShellBllet, _creatingBlood, _invertingMove, _light;
     private int _modeController;
     private float _graphicQuality;
     private GameObject MenuObj;
@@ -41,6 +41,12 @@ public class Menu : MonoBehaviour {
             _invertingMove = true;
         else
             _invertingMove = false;
+
+        if (PlayerPrefs.GetInt("light") != 0)
+            _light = true;
+        else
+            _light = false;
+
 	}
 
 	void Window(int id){
@@ -76,6 +82,7 @@ public class Menu : MonoBehaviour {
                 if (GUI.Button(new Rect(20, 60, 70, 30), "Сохранить"))
                 {
                     PlayerPrefs.SetString("ActorNameCompany", actorName);
+                    _newNameActor = false;
                     _newGameClear = false;
                     _newGame = false;
                     MenuObj.GetComponent<InventoryMenu>().nameActor = actorName;
@@ -119,11 +126,11 @@ public class Menu : MonoBehaviour {
                 GUI.Label(new Rect(505, 150, 100, 30), qualityGraphics);
 
                 //Режим управления
-                if (GUI.Button(new Rect(25, 25, 350, 100), "Передвижение и поворот"))
+                if (GUI.Button(new Rect(25, 125, 350, 100), "Передвижение и поворот"))
                     PlayerPrefs.SetInt("Controllers", 1);
-                if (GUI.Button(new Rect (25, 150, 350, 100), "Передвижение"))
+                if (GUI.Button(new Rect (25, 250, 350, 100), "Передвижение"))
                     PlayerPrefs.SetInt("Controllers", 2);
-                if (GUI.Button(new Rect (25, 275 , 350, 100), "Передвижение/поворот и стрельба"))
+                if (GUI.Button(new Rect (25, 375 , 350, 100), "Передвижение/поворот и стрельба"))
                     PlayerPrefs.SetInt("Controllers", 3);
 
                 //Доп. настройки
@@ -166,9 +173,22 @@ public class Menu : MonoBehaviour {
                     PlayerPrefs.SetInt("invertingMove", 0);
                 }
 
-                GUI.Label(new Rect(400, 325, 320, 30), "*Влияет на производительность системы");
+                //Освещение
+                GUI.Toggle(new Rect(400, 330, 320, 30), _light, " Динамическое освещение");
+                if (GUI.Button(new Rect(480, 350, 40, 30), " Да"))
+                {
+                    _light = true;
+                    PlayerPrefs.SetInt("light", 1);
+                }
+                if (GUI.Button(new Rect(530, 350, 40, 30), " Нет"))
+                {
+                    _light = false;
+                    PlayerPrefs.SetInt("light", 0);
+                }
 
-                if (GUI.Button(new Rect(577, 350, 100, 30), "Закрыть")) _settings = false;
+                GUI.Label(new Rect(400, 425, 320, 30), "*Влияет на производительность системы");
+
+                if (GUI.Button(new Rect(577, 450, 100, 30), "Закрыть")) _settings = false;
             break;
 			case 5:
 				GUI.Label (new Rect (90, 20, 105, 30), "Компания");
@@ -211,7 +231,7 @@ public class Menu : MonoBehaviour {
         if (_newNameActor)
             GUI.Window(112, new Rect(Screen.width / 2 - 90, Screen.height / 2 - 50, 200, 100), Window, "Введите ваше имя");
         if (_settings)
-            GUI.Window(4, new Rect(50, 50, 700, 400), Window, "Настройки");
+            GUI.Window(4, new Rect(50, 50, 700, 500), Window, "Настройки");
 		if (_records) 
 			GUI.Window(5, new Rect (Screen.width/2 - 120, Screen.height/2 - 120, 240, 240), Window, "Рекорды");
 		}

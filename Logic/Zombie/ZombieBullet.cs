@@ -3,49 +3,88 @@ using System.Collections;
 
 public class ZombieBullet : MonoBehaviour {
 
+    private Actor Player;
+
     public string type;
-    public Transform GrenadeBoom;
     float timeToDestroy;
 
 	void Start () {
-        if (type == "Solders")
-            transform.rigidbody.AddForce(transform.forward * 800);
-        if (type == "Grenade")
-            transform.rigidbody.AddForce(transform.forward * 700);
-        if (type == "bZomb")
-            transform.rigidbody.AddForce(transform.forward * 500);
+        Player = GameObject.Find("Actor").transform.GetComponent<Actor>();
+
+        if (type == "Bandit")
+            transform.rigidbody.AddForce(transform.forward * 550);
+        if (type == "Forester")
+            transform.rigidbody.AddForce(transform.forward * 550);
 	}
 
     void OnTriggerEnter(Collider other)
     {
+        #region Actor
         if (other.transform.name == "Actor")
         {
-            switch (type)
+            if (other.GetComponent<Actor>().armour > 0)
             {
-                case "Solders":
-                    other.transform.GetComponent<Actor>().helth -= 5;
-                break;
-                case "bZomb":
-                    other.transform.GetComponent<Actor>().helth -= 15;
-                break;
-                case "Grenade":
-                    Instantiate(GrenadeBoom, transform.position, Quaternion.Euler(0, 0, 0));
-                break;
+                switch (type)
+                {
+                    case "Bandit":
+                        other.transform.GetComponent<Actor>().helth -= 1;
+                        other.transform.GetComponent<Actor>().armour -= 1;
+                        break;
+                    case "Forester":
+                        other.transform.GetComponent<Actor>().helth -= 2;
+                        other.transform.GetComponent<Actor>().armour -= 2;
+                        break;
+                }
+            }
+
+            if (other.GetComponent<Actor>().armour < 0)
+            {
+                switch (type)
+                {
+                    case "Bandit":
+                        other.transform.GetComponent<Actor>().helth -= 2;
+                        break;
+                    case "Forester":
+                        other.transform.GetComponent<Actor>().helth -= 3;
+                        break;
+                }
             }
         }
+        #endregion
 
+        #region Bmp
         if (other.transform.name == "bmp")
         {
-            switch (type)
+            if (Player.armour > 0)
             {
-                case "Solders":
-                    GameObject.Find("Actor").transform.GetComponent<Actor>().helth -= 5;
-                    break;
-                case "bZomb":
-                    GameObject.Find("Actor").transform.GetComponent<Actor>().helth -= 15;
-                    break;
+                switch (type)
+                {
+                    case "Bandit":
+                        Player.transform.GetComponent<Actor>().helth -= 1;
+                        Player.transform.GetComponent<Actor>().armour -= 1;
+                        break;
+                    case "Forester":
+                        Player.transform.GetComponent<Actor>().helth -= 2;
+                        Player.transform.GetComponent<Actor>().armour -= 2;
+                        break;
+                }
+            }
+
+            if (Player.armour <= 0)
+            {
+                switch (type)
+                {
+                    case "Bandit":
+                        Player.transform.GetComponent<Actor>().helth -= 2;
+                        break;
+                    case "Forester":
+                        Player.transform.GetComponent<Actor>().helth -= 3;
+                        break;
+                }
             }
         }
+        #endregion
+
         if (other.collider.enabled)
            Destroy(gameObject);
     }
